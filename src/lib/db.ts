@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { INITIAL_LOCATIONS, INITIAL_VEHICLES, INITIAL_RESERVATIONS } from './seed-data';
-import { Vehicle, Reservation, Location, ReservationStatus } from '../types';
+import { INITIAL_VEHICLES, INITIAL_RESERVATIONS, AGENCY_INFO } from './seed-data';
+import { Vehicle, Reservation, ReservationStatus, DateRange } from '../types';
+import { isVehicleAvailableForDates } from './utils';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -10,7 +11,6 @@ declare global {
     | {
         vehicles: Vehicle[];
         reservations: Reservation[];
-        locations: Location[];
       }
     | undefined;
 }
@@ -23,60 +23,76 @@ export const prisma =
 
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
 
-// In-memory fallback store initialized with our realistic dataset
 if (!global.inMemoryStore) {
   global.inMemoryStore = {
-    vehicles: [...INITIAL_VEHICLES],
-    reservations: [...INITIAL_RESERVATIONS],
-    locations: [...INITIAL_LOCATIONS],
+    vehicles: JSON.parse(JSON.stringify(INITIAL_VEHICLES)),
+    reservations: JSON.parse(JSON.stringify(INITIAL_RESERVATIONS)),
   };
 }
 
 export const inMemoryStore = global.inMemoryStore!;
 
-/**
- * Resilient Repository Layer
- * Tries PostgreSQL via Prisma first; if database is offline or not yet connected,
- * seamlessly falls back to inMemoryStore to guarantee zero downtime/zero crashes during development.
- */
 export const dbService = {
-  async getVehicles(): Promise<Vehicle[]> {
+  getAgencyInfo() {
+    return AGENCY_INFO;
+  },
+
+  async getVehicles(filters?: { startDate?: string; endDate?: string }): Promise<Vehicle[]> {
+    let list: Vehicle[] = inMemoryStore.vehicles;
     try {
       const records = await prisma.vehicle.findMany({
         orderBy: { pricePerDay: 'asc' },
       });
       if (records && records.length > 0) {
-        return records as unknown as Vehicle[];
+        list = records.map((r: any) => ({
+          ...r,
+          hasAC: r.features?.includes('Climatisation') ?? true,
+          blockedDates: (r.blockedDates as any) || [],
+        }));
       }
     } catch {
-      // Fallback
+      // Use in-memory
     }
+
+    if (filters?.startDate && filters?.endDate) {
+      list = list.filter((v) => isVehicleAvailableForDates(v, filters.startDate, filters.endDate));
+    }
+
+    return list;
+  },
+
+  async getAllVehiclesForAdmin(): Promise<Vehicle[]> {
     return inMemoryStore.vehicles;
   },
 
   async getVehicleById(id: string): Promise<Vehicle | null> {
-    try {
-      const record = await prisma.vehicle.findUnique({ where: { id } });
-      if (record) return record as unknown as Vehicle;
-    } catch {
-      // Fallback
-    }
-    return inMemoryStore.vehicles.find((v) => v.id === id) || null;
+    const veh = inMemoryStore.vehicles.find((v) => v.id === id);
+    return veh || null;
+  },
+
+  async addVehicle(data: Omit<Vehicle, 'id' | 'createdAt' | 'updatedAt'>): Promise<Vehicle> {
+    const newVehicle: Vehicle = {
+      id: `veh-${Date.now()}`,
+      ...data,
+      blockedDates: data.blockedDates || [],
+      createdAt: new Date().toISOString(),
+    };
+    inMemoryStore.vehicles.push(newVehicle);
+    return newVehicle;
+  },
+
+  async updateVehicle(id: string, updates: Partial<Vehicle>): Promise<Vehicle | null> {
+    const idx = inMemoryStore.vehicles.findIndex((v) => v.id === id);
+    if (idx === -1) return null;
+    inMemoryStore.vehicles[idx] = {
+      ...inMemoryStore.vehicles[idx],
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+    return inMemoryStore.vehicles[idx];
   },
 
   async toggleVehicleAvailability(id: string): Promise<Vehicle | null> {
-    try {
-      const current = await prisma.vehicle.findUnique({ where: { id } });
-      if (current) {
-        const updated = await prisma.vehicle.update({
-          where: { id },
-          data: { available: !current.available },
-        });
-        return updated as unknown as Vehicle;
-      }
-    } catch {
-      // Fallback
-    }
     const veh = inMemoryStore.vehicles.find((v) => v.id === id);
     if (veh) {
       veh.available = !veh.available;
@@ -85,45 +101,26 @@ export const dbService = {
     return null;
   },
 
-  async updateVehiclePrice(id: string, newPrice: number): Promise<Vehicle | null> {
-    try {
-      const updated = await prisma.vehicle.update({
-        where: { id },
-        data: { pricePerDay: newPrice },
-      });
-      return updated as unknown as Vehicle;
-    } catch {
-      // Fallback
-    }
+  async addBlockedDateRange(id: string, range: DateRange): Promise<Vehicle | null> {
     const veh = inMemoryStore.vehicles.find((v) => v.id === id);
     if (veh) {
-      veh.pricePerDay = newPrice;
+      if (!veh.blockedDates) veh.blockedDates = [];
+      veh.blockedDates.push(range);
       return veh;
     }
     return null;
   },
 
-  async getLocations(): Promise<Location[]> {
-    try {
-      const records = await prisma.location.findMany({ where: { active: true } });
-      if (records && records.length > 0) return records;
-    } catch {
-      // Fallback
+  async removeBlockedDateRange(id: string, index: number): Promise<Vehicle | null> {
+    const veh = inMemoryStore.vehicles.find((v) => v.id === id);
+    if (veh && veh.blockedDates) {
+      veh.blockedDates.splice(index, 1);
+      return veh;
     }
-    return inMemoryStore.locations;
+    return null;
   },
 
   async getReservations(): Promise<Reservation[]> {
-    try {
-      const records = await prisma.reservation.findMany({
-        include: { vehicle: true },
-        orderBy: { createdAt: 'desc' },
-      });
-      if (records && records.length > 0) return records as unknown as Reservation[];
-    } catch {
-      // Fallback
-    }
-    // Enrich with vehicles for memory store
     return inMemoryStore.reservations.map((res) => ({
       ...res,
       vehicle: inMemoryStore.vehicles.find((v) => v.id === res.vehicleId),
@@ -135,60 +132,35 @@ export const dbService = {
     customerName: string;
     customerPhone: string;
     customerEmail?: string;
-    pickupLocation: string;
-    returnLocation: string;
+    pickupLocation?: string;
     startDate: string;
     endDate: string;
     totalDays: number;
     totalPrice: number;
     notes?: string;
   }): Promise<Reservation> {
-    try {
-      const record = await prisma.reservation.create({
-        data: {
-          vehicleId: data.vehicleId,
-          customerName: data.customerName,
-          customerPhone: data.customerPhone,
-          customerEmail: data.customerEmail,
-          pickupLocation: data.pickupLocation,
-          returnLocation: data.returnLocation,
-          startDate: new Date(data.startDate),
-          endDate: new Date(data.endDate),
-          totalDays: data.totalDays,
-          totalPrice: data.totalPrice,
-          status: 'PENDING',
-          notes: data.notes,
-        },
-        include: { vehicle: true },
-      });
-      return record as unknown as Reservation;
-    } catch {
-      // Fallback
-    }
-
     const newRes: Reservation = {
       id: `res-${Date.now()}`,
       ...data,
+      pickupLocation: data.pickupLocation || 'Agence Salah Tour Tlemcen (Centre-Ville)',
       status: 'PENDING',
       createdAt: new Date().toISOString(),
       vehicle: inMemoryStore.vehicles.find((v) => v.id === data.vehicleId),
     };
+
     inMemoryStore.reservations.unshift(newRes);
+
+    // Automatically register the reserved date range as blocked on that vehicle
+    const veh = inMemoryStore.vehicles.find((v) => v.id === data.vehicleId);
+    if (veh) {
+      if (!veh.blockedDates) veh.blockedDates = [];
+      veh.blockedDates.push({ startDate: data.startDate, endDate: data.endDate });
+    }
+
     return newRes;
   },
 
   async updateReservationStatus(id: string, status: ReservationStatus): Promise<Reservation | null> {
-    try {
-      const updated = await prisma.reservation.update({
-        where: { id },
-        data: { status },
-        include: { vehicle: true },
-      });
-      return updated as unknown as Reservation;
-    } catch {
-      // Fallback
-    }
-
     const res = inMemoryStore.reservations.find((r) => r.id === id);
     if (res) {
       res.status = status;

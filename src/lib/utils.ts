@@ -1,13 +1,13 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { Vehicle } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 /**
- * Format a number as Algerian Dinars (DA)
- * e.g. 21000 -> "21 000 DA"
+ * Format number as Algerian Dinars (DA)
  */
 export function formatDA(amount: number): string {
   if (isNaN(amount)) return '0 DA';
@@ -16,11 +16,12 @@ export function formatDA(amount: number): string {
 }
 
 /**
- * Calculate the number of rental days between two dates.
+ * Calculate the number of rental days between two YYYY-MM-DD dates.
  * Defaults to minimum 1 day.
  */
-export function calculateRentalDays(startDate: string | Date, endDate: string | Date): number {
+export function calculateRentalDays(startDate: string, endDate: string): number {
   try {
+    if (!startDate || !endDate) return 1;
     const start = new Date(startDate);
     const end = new Date(endDate);
     if (isNaN(start.getTime()) || isNaN(end.getTime())) return 1;
@@ -36,22 +37,52 @@ export function calculateRentalDays(startDate: string | Date, endDate: string | 
 }
 
 /**
- * Format date for friendly display
- * e.g. "2026-09-24T10:00" -> "24/09/2026 à 10:00"
+ * Format YYYY-MM-DD to friendly French date display: "24/09/2026"
  */
-export function formatDateTimeFR(dateInput: string | Date): string {
+export function formatDateFR(dateStr: string): string {
   try {
-    const d = new Date(dateInput);
-    if (isNaN(d.getTime())) return String(dateInput);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
-    const hours = String(d.getHours()).padStart(2, '0');
-    const minutes = String(d.getMinutes()).padStart(2, '0');
-    return `${day}/${month}/${year} à ${hours}:${minutes}`;
+    if (!dateStr) return '';
+    const parts = dateStr.split('T')[0].split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? dateStr : d.toLocaleDateString('fr-FR');
   } catch {
-    return String(dateInput);
+    return dateStr;
   }
+}
+
+export const formatDateTimeFR = formatDateFR;
+
+/**
+ * Check if a vehicle is available for a given date range
+ */
+export function isVehicleAvailableForDates(
+  vehicle: Vehicle,
+  startDateStr?: string,
+  endDateStr?: string
+): boolean {
+  if (!vehicle.available) return false;
+  if (!startDateStr || !endDateStr) return true;
+
+  const reqStart = new Date(startDateStr).getTime();
+  const reqEnd = new Date(endDateStr).getTime();
+
+  if (isNaN(reqStart) || isNaN(reqEnd)) return true;
+
+  if (vehicle.blockedDates && vehicle.blockedDates.length > 0) {
+    for (const range of vehicle.blockedDates) {
+      const bStart = new Date(range.startDate).getTime();
+      const bEnd = new Date(range.endDate).getTime();
+      // Overlap condition
+      if (reqStart <= bEnd && reqEnd >= bStart) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -60,8 +91,6 @@ export function formatDateTimeFR(dateInput: string | Date): string {
 export function buildWhatsAppLink(params: {
   phone?: string;
   vehicleName?: string;
-  pickupLocation: string;
-  returnLocation?: string;
   startDate: string;
   endDate: string;
   days: number;
@@ -69,20 +98,19 @@ export function buildWhatsAppLink(params: {
   customerName?: string;
 }): string {
   const targetPhone = params.phone || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '213550505050';
-  
+
   const lines = [
     `🚗 *DEMANDE DE RÉSERVATION — SALAH TOUR TLEMCEN*`,
     `----------------------------------------`,
     params.vehicleName ? `🚘 *Véhicule :* ${params.vehicleName}` : `🚘 *Véhicule :* À définir selon disponibilité`,
-    `📍 *Lieu de prise :* ${params.pickupLocation}`,
-    params.returnLocation ? `📍 *Lieu de retour :* ${params.returnLocation}` : '',
-    `📅 *Départ :* ${formatDateTimeFR(params.startDate)}`,
-    `🏁 *Retour :* ${formatDateTimeFR(params.endDate)}`,
+    `📍 *Retrait & Retour :* À l'Agence Salah Tour (Tlemcen Centre)`,
+    `📅 *Date de début :* ${formatDateFR(params.startDate)}`,
+    `🏁 *Date de fin :* ${formatDateFR(params.endDate)}`,
     `⏱️ *Durée :* ${params.days} jour(s)`,
-    `💰 *Estimation :* ${formatDA(params.totalPrice)}`,
+    `💰 *Montant estimé :* ${formatDA(params.totalPrice)}`,
     params.customerName ? `👤 *Client :* ${params.customerName}` : '',
     `----------------------------------------`,
-    `Bonjour, je souhaite vérifier la disponibilité et confirmer cette réservation. Merci !`,
+    `Bonjour, je souhaite réserver ce véhicule à l'agence. Merci de me confirmer la disponibilité !`,
   ].filter(Boolean);
 
   const text = encodeURIComponent(lines.join('\n'));

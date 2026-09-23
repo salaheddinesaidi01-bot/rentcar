@@ -1,15 +1,16 @@
 import React from 'react';
-import Link from 'next/link';
-import { MapPin, Phone, Mail, Clock, MessageSquare, Car, Shield } from 'lucide-react';
+import { MapPin, Clock, MessageSquare, Car, Phone } from 'lucide-react';
+import { AGENCY_INFO } from '@/lib/seed-data';
 
 export default function Footer() {
   return (
     <footer id="contact" className="relative bg-midnight-950 border-t border-white/5 pt-16 pb-12 overflow-hidden">
+      
       {/* Background subtle radial glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-48 bg-brand-orange/5 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
           
           {/* Col 1: Brand & Bio */}
           <div className="space-y-4">
@@ -22,15 +23,15 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Votre agence de référence pour la location de véhicules récents à Tlemcen. Prise en charge express à l'aéroport Messali Hadj, en gare ou directement à domicile.
+              Votre agence de location de véhicules récents à Tlemcen. Retrait rapide des clés directement dans nos locaux avec un contrat clair et sans surprise.
             </p>
             <div className="flex items-center gap-2 text-xs font-mono text-brand-amber">
               <MapPin className="w-3.5 h-3.5" />
-              <span>TLEMCEN 13000 • 34°52&apos;N 1°19&apos;W</span>
+              <span>{AGENCY_INFO.address}</span>
             </div>
           </div>
 
-          {/* Col 2: Fast Links */}
+          {/* Col 2: Fast Navigation Links (No Admin link) */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
               Navigation Rapide
@@ -38,61 +39,35 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-slate-400">
               <li>
                 <a href="#reservation" className="hover:text-brand-orange transition-colors">
-                  Vérification de disponibilité
+                  Vérification de disponibilité par date
                 </a>
               </li>
               <li>
-                <a href="#etapes" className="hover:text-brand-orange transition-colors">
-                  Processus en 3 étapes
+                <a href="#a-propos" className="hover:text-brand-orange transition-colors">
+                  À Propos de Nous (Salah Tour)
                 </a>
               </li>
               <li>
                 <a href="#flotte" className="hover:text-brand-orange transition-colors">
-                  Catalogue des citadines & berlines
+                  Catalogue de nos véhicules
                 </a>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-brand-orange transition-colors flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-brand-amber" />
-                  <span>Portail d&apos;administration</span>
-                </Link>
+                <a href="#agence" className="hover:text-brand-orange transition-colors">
+                  Localisation & itinéraire vers l&apos;agence
+                </a>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Points de Livraison */}
-          <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
-              Points de Livraison
-            </h4>
-            <ul className="space-y-2.5 text-sm text-slate-400">
-              <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 flex-shrink-0" />
-                <span>Aéroport International Messali Hadj (Zenata)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 flex-shrink-0" />
-                <span>Tlemcen Centre-Ville (Place El Mechouar)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 flex-shrink-0" />
-                <span>Gare Ferroviaire et Gare Routière</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 flex-shrink-0" />
-                <span>Livraison sur mesure à votre domicile / hôtel</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Contact & Horaires */}
+          {/* Col 3: Assistance & Contact direct */}
           <div className="space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-wider text-white">
-              Assistance & Réservations
+              Contact & Accueil Agence
             </h4>
             <div className="space-y-3 text-sm text-slate-300">
               <a
-                href="https://wa.me/213550505050"
+                href={`https://wa.me/${AGENCY_INFO.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-white group"
@@ -101,14 +76,27 @@ export default function Footer() {
                   <MessageSquare className="w-4 h-4 fill-emerald-400" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">WhatsApp 7j/7</div>
-                  <div className="font-bold text-emerald-400">0550 50 50 50</div>
+                  <div className="text-xs text-slate-400">WhatsApp & Réservations</div>
+                  <div className="font-bold text-emerald-400">{AGENCY_INFO.phone}</div>
+                </div>
+              </a>
+
+              <a
+                href={`tel:${AGENCY_INFO.phone.replace(/[^0-9]/g, '')}`}
+                className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-white"
+              >
+                <div className="w-9 h-9 rounded-md bg-brand-orange/20 text-brand-orange flex items-center justify-center">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-400">Standard Téléphonique</div>
+                  <div className="font-bold text-white">{AGENCY_INFO.phone}</div>
                 </div>
               </a>
 
               <div className="flex items-center gap-2.5 text-xs text-slate-400 pt-1">
                 <Clock className="w-4 h-4 text-brand-orange flex-shrink-0" />
-                <span>Service client actif : 07h00 - 23h00</span>
+                <span>{AGENCY_INFO.openingHours}</span>
               </div>
             </div>
           </div>

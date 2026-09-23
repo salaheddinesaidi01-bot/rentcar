@@ -2,9 +2,23 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Vehicle } from '@/types';
-import { formatDA } from '@/lib/utils';
-import { Car, Check, X, Edit2, Save, RefreshCw } from 'lucide-react';
+import { Vehicle, DateRange } from '@/types';
+import { formatDA, formatDateFR } from '@/lib/utils';
+import {
+  Car,
+  Plus,
+  Calendar,
+  X,
+  Check,
+  Edit2,
+  Trash2,
+  Snowflake,
+  Fuel,
+  Gauge,
+  Users,
+  AlertCircle,
+  RefreshCw,
+} from 'lucide-react';
 
 interface FleetManagementProps {
   initialVehicles: Vehicle[];
@@ -13,9 +27,32 @@ interface FleetManagementProps {
 export default function FleetManagement({ initialVehicles }: FleetManagementProps) {
   const [vehicles, setVehicles] = useState<Vehicle[]>(initialVehicles);
   const [loadingId, setLoadingId] = useState<string | null>(null);
-  const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
-  const [newPrice, setNewPrice] = useState<number>(0);
 
+  // Add vehicle modal state
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newVehicle, setNewVehicle] = useState({
+    name: '',
+    brand: 'Renault',
+    category: 'Citadine' as Vehicle['category'],
+    transmission: 'Manuelle' as Vehicle['transmission'],
+    fuel: 'Essence' as Vehicle['fuel'],
+    seats: 5,
+    hasAC: true,
+    pricePerDay: 7000,
+    year: 2024,
+    plateNumber: '',
+    imageUrl: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80',
+  });
+
+  // Date blocking modal state for a specific car
+  const [blockingVehicle, setBlockingVehicle] = useState<Vehicle | null>(null);
+  const [blockStart, setBlockStart] = useState('');
+  const [blockEnd, setBlockEnd] = useState('');
+
+  // Edit vehicle characteristics modal
+  const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null);
+
+  // Toggle general availability
   const handleToggle = async (id: string) => {
     setLoadingId(id);
     try {
@@ -37,26 +74,126 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
     }
   };
 
-  const startEditPrice = (vehicle: Vehicle) => {
-    setEditingPriceId(vehicle.id);
-    setNewPrice(vehicle.pricePerDay);
-  };
+  // Add blocked date range
+  const handleAddBlockedDate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!blockingVehicle || !blockStart || !blockEnd) return;
 
-  const handleSavePrice = async (id: string) => {
-    if (newPrice <= 0) return;
-    setLoadingId(id);
+    setLoadingId(blockingVehicle.id);
     try {
       const res = await fetch('/api/vehicles', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, action: 'update-price', price: newPrice }),
+        body: JSON.stringify({
+          id: blockingVehicle.id,
+          action: 'block-dates',
+          range: { startDate: blockStart, endDate: blockEnd },
+        }),
       });
+
       if (res.ok) {
         const updated = await res.json();
         setVehicles((prev) =>
-          prev.map((v) => (v.id === id ? { ...v, pricePerDay: updated.pricePerDay } : v))
+          prev.map((v) => (v.id === blockingVehicle.id ? updated : v))
         );
-        setEditingPriceId(null);
+        setBlockingVehicle(updated);
+        setBlockStart('');
+        setBlockEnd('');
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Remove blocked date range
+  const handleRemoveBlockedDate = async (vehId: string, index: number) => {
+    setLoadingId(vehId);
+    try {
+      const res = await fetch('/api/vehicles', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: vehId,
+          action: 'unblock-dates',
+          index,
+        }),
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        setVehicles((prev) =>
+          prev.map((v) => (v.id === vehId ? updated : v))
+        );
+        if (blockingVehicle?.id === vehId) {
+          setBlockingVehicle(updated);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Save edited vehicle characteristics
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingVehicle) return;
+
+    setLoadingId(editingVehicle.id);
+    try {
+      const res = await fetch('/api/vehicles', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: editingVehicle.id,
+          action: 'update-details',
+          updates: {
+            name: editingVehicle.name,
+            category: editingVehicle.category,
+            transmission: editingVehicle.transmission,
+            fuel: editingVehicle.fuel,
+            seats: Number(editingVehicle.seats),
+            hasAC: Boolean(editingVehicle.hasAC),
+            pricePerDay: Number(editingVehicle.pricePerDay),
+            plateNumber: editingVehicle.plateNumber,
+            year: Number(editingVehicle.year),
+            imageUrl: editingVehicle.imageUrl,
+          },
+        }),
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        setVehicles((prev) =>
+          prev.map((v) => (v.id === editingVehicle.id ? updated : v))
+        );
+        setEditingVehicle(null);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Submit new vehicle
+  const handleCreateVehicle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoadingId('new');
+    try {
+      const res = await fetch('/api/vehicles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newVehicle),
+      });
+
+      if (res.ok) {
+        const created = await res.json();
+        setVehicles((prev) => [...prev, created]);
+        setIsAddModalOpen(false);
       }
     } catch (e) {
       console.error(e);
@@ -66,14 +203,30 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-black uppercase tracking-wider text-white flex items-center gap-2">
-          <Car className="w-5 h-5 text-brand-orange" />
-          <span>Gestion du Parc Automobile ({vehicles.length} Véhicules)</span>
-        </h2>
+    <div className="space-y-8">
+      
+      {/* Top action header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-black uppercase tracking-wider text-white flex items-center gap-2">
+            <Car className="w-5 h-5 text-brand-orange" />
+            <span>Catalogue & Disponibilités de la Flotte</span>
+          </h2>
+          <p className="text-xs text-slate-400 mt-1">
+            Gérez les véhicules, leurs caractéristiques (boîte, énergie, climatisation...) et lancez les disponibilités par dates.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-amber text-white font-bold text-xs uppercase tracking-wider shadow-glow-orange transition-all"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Ajouter un Véhicule</span>
+        </button>
       </div>
 
+      {/* Vehicles Table / Cards */}
       <div className="rounded-2xl glass-panel border border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
@@ -81,11 +234,11 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
               <tr>
                 <th className="px-6 py-4">Véhicule</th>
                 <th className="px-6 py-4">Catégorie</th>
-                <th className="px-6 py-4">Immatriculation</th>
-                <th className="px-6 py-4">Boîte / Carburant</th>
-                <th className="px-6 py-4">Tarif Journalier</th>
+                <th className="px-6 py-4">Caractéristiques</th>
+                <th className="px-6 py-4">Tarif/Jour</th>
+                <th className="px-6 py-4">Disponibilité par Dates</th>
                 <th className="px-6 py-4">Statut</th>
-                <th className="px-6 py-4 text-right">Action Disponibilité</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -94,7 +247,7 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
                   
                   {/* Photo & Name */}
                   <td className="px-6 py-4 flex items-center gap-3">
-                    <div className="relative w-16 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-midnight-900 border border-white/10">
+                    <div className="relative w-16 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-midnight-900 border border-white/10">
                       <Image
                         src={v.imageUrl}
                         alt={v.name}
@@ -104,65 +257,58 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
                     </div>
                     <div>
                       <div className="font-bold text-white text-sm">{v.name}</div>
-                      <div className="text-[11px] text-slate-400">Année {v.year}</div>
+                      <div className="text-[11px] text-slate-400 font-mono">
+                        {v.plateNumber || `Modèle ${v.year}`}
+                      </div>
                     </div>
                   </td>
 
                   {/* Category */}
                   <td className="px-6 py-4">
-                    <span className="px-2 py-0.5 rounded bg-white/5 font-mono text-slate-300 border border-white/5">
+                    <span className="px-2.5 py-1 rounded bg-white/5 font-mono text-slate-300 border border-white/5">
                       {v.category}
                     </span>
                   </td>
 
-                  {/* Plate */}
-                  <td className="px-6 py-4 font-mono text-slate-300">
-                    {v.plateNumber || 'Non renseigné'}
-                  </td>
-
-                  {/* Specs */}
-                  <td className="px-6 py-4 text-slate-300">
-                    <div>{v.transmission}</div>
-                    <div className="text-slate-400 text-[11px]">{v.fuel}</div>
+                  {/* Characteristics */}
+                  <td className="px-6 py-4 space-y-1">
+                    <div className="flex items-center gap-3 text-[11px]">
+                      <span className="text-white font-medium">{v.transmission}</span>
+                      <span>•</span>
+                      <span className="text-slate-300">{v.fuel}</span>
+                      <span>•</span>
+                      <span className="text-slate-300">{v.seats} pl.</span>
+                    </div>
+                    <div className="text-[11px] flex items-center gap-1">
+                      <Snowflake className={`w-3 h-3 ${v.hasAC ? 'text-cyan-400' : 'text-slate-600'}`} />
+                      <span className={v.hasAC ? 'text-cyan-300' : 'text-slate-500'}>
+                        {v.hasAC ? 'Climatisé' : 'Sans clim'}
+                      </span>
+                    </div>
                   </td>
 
                   {/* Price */}
                   <td className="px-6 py-4">
-                    {editingPriceId === v.id ? (
-                      <div className="flex items-center gap-1.5">
-                        <input
-                          type="number"
-                          value={newPrice}
-                          onChange={(e) => setNewPrice(Number(e.target.value))}
-                          className="w-24 h-8 bg-midnight-950 border border-brand-orange rounded px-2 text-xs text-white"
-                        />
-                        <button
-                          onClick={() => handleSavePrice(v.id)}
-                          className="p-1.5 rounded bg-emerald-600 text-white hover:bg-emerald-500"
-                        >
-                          <Save className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => setEditingPriceId(null)}
-                          className="p-1.5 rounded bg-white/10 text-slate-400 hover:text-white"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-black text-brand-orange">
-                          {formatDA(v.pricePerDay)}
-                        </span>
-                        <button
-                          onClick={() => startEditPrice(v)}
-                          className="p-1 rounded text-slate-500 hover:text-slate-300"
-                          title="Modifier le prix"
-                        >
-                          <Edit2 className="w-3 h-3" />
-                        </button>
-                      </div>
-                    )}
+                    <span className="text-sm font-black text-brand-orange">
+                      {formatDA(v.pricePerDay)}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-mono block">/ jour</span>
+                  </td>
+
+                  {/* Dates blocked / Availability */}
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => setBlockingVehicle(v)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-midnight-950 hover:bg-white/5 border border-white/10 text-xs font-mono text-slate-300 transition-colors"
+                      title="Gérer les dates d'indisponibilité"
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-brand-orange" />
+                      <span>
+                        {v.blockedDates && v.blockedDates.length > 0
+                          ? `${v.blockedDates.length} période(s) bloquée(s)`
+                          : 'Disponible en continu'}
+                      </span>
+                    </button>
                   </td>
 
                   {/* Availability badge */}
@@ -179,29 +325,39 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
                           v.available ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'
                         }`}
                       />
-                      {v.available ? 'Disponible' : 'Indisponible'}
+                      {v.available ? 'Actif' : 'En pause'}
                     </span>
                   </td>
 
-                  {/* Action */}
+                  {/* Actions */}
                   <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => handleToggle(v.id)}
-                      disabled={loadingId === v.id}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                        v.available
-                          ? 'bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/40'
-                          : 'bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/40'
-                      }`}
-                    >
-                      {loadingId === v.id ? (
-                        <RefreshCw className="w-3 h-3 animate-spin" />
-                      ) : v.available ? (
-                        'Mettre en maintenance'
-                      ) : (
-                        'Rendre disponible'
-                      )}
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => setEditingVehicle(v)}
+                        className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
+                        title="Modifier les caractéristiques"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        onClick={() => handleToggle(v.id)}
+                        disabled={loadingId === v.id}
+                        className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                          v.available
+                            ? 'bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/40'
+                            : 'bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/40'
+                        }`}
+                      >
+                        {loadingId === v.id ? (
+                          <RefreshCw className="w-3 h-3 animate-spin" />
+                        ) : v.available ? (
+                          'Désactiver'
+                        ) : (
+                          'Activer'
+                        )}
+                      </button>
+                    </div>
                   </td>
 
                 </tr>
@@ -210,6 +366,453 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
           </table>
         </div>
       </div>
+
+      {/* MODAL 1: Gérer les dates de disponibilité pour une voiture */}
+      {blockingVehicle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="w-full max-w-lg bg-midnight-900 border border-white/10 rounded-2xl p-6 space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-brand-orange" />
+                  <span>Disponibilité par Dates : {blockingVehicle.name}</span>
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Bloquez des dates de réservation pour que les clients ne puissent pas la louer durant cette période.
+                </p>
+              </div>
+              <button
+                onClick={() => setBlockingVehicle(null)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* List of current blocked ranges */}
+            <div className="space-y-2">
+              <label className="block text-xs font-mono uppercase text-slate-400">
+                Périodes actuellement indisponibles :
+              </label>
+
+              {(!blockingVehicle.blockedDates || blockingVehicle.blockedDates.length === 0) ? (
+                <div className="text-xs text-emerald-400 p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/20">
+                  ✓ Ce véhicule est actuellement disponible sur toutes les dates.
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                  {blockingVehicle.blockedDates.map((range, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between p-2.5 rounded-lg bg-midnight-950 border border-white/5 text-xs font-mono"
+                    >
+                      <span className="text-rose-400">
+                        Du {formatDateFR(range.startDate)} au {formatDateFR(range.endDate)}
+                      </span>
+                      <button
+                        onClick={() => handleRemoveBlockedDate(blockingVehicle.id, idx)}
+                        className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 transition-colors"
+                        title="Débloquer cette période"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Form to add a new blocked period */}
+            <form onSubmit={handleAddBlockedDate} className="pt-4 border-t border-white/10 space-y-3">
+              <label className="block text-xs font-mono uppercase text-slate-300">
+                Bloquer une nouvelle période (Réservation / Entretien) :
+              </label>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] text-slate-400 mb-1">Du</label>
+                  <input
+                    type="date"
+                    required
+                    value={blockStart}
+                    onChange={(e) => setBlockStart(e.target.value)}
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white [color-scheme:dark]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-400 mb-1">Au</label>
+                  <input
+                    type="date"
+                    required
+                    value={blockEnd}
+                    min={blockStart}
+                    onChange={(e) => setBlockEnd(e.target.value)}
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white [color-scheme:dark]"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="submit"
+                  disabled={loadingId === blockingVehicle.id}
+                  className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase transition-all"
+                >
+                  Bloquer cette période
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: Modifier les caractéristiques d'un véhicule */}
+      {editingVehicle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+          <div className="w-full max-w-lg bg-midnight-900 border border-white/10 rounded-2xl p-6 space-y-4 shadow-2xl my-8">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <h3 className="text-base font-black text-white flex items-center gap-2">
+                <Edit2 className="w-4 h-4 text-brand-orange" />
+                <span>Modifier les Caractéristiques</span>
+              </h3>
+              <button
+                onClick={() => setEditingVehicle(null)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Nom du véhicule</label>
+                <input
+                  type="text"
+                  required
+                  value={editingVehicle.name}
+                  onChange={(e) =>
+                    setEditingVehicle({ ...editingVehicle, name: e.target.value })
+                  }
+                  className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Catégorie</label>
+                  <select
+                    value={editingVehicle.category}
+                    onChange={(e) =>
+                      setEditingVehicle({
+                        ...editingVehicle,
+                        category: e.target.value as any,
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white"
+                  >
+                    <option value="Citadine">Citadine</option>
+                    <option value="Berline">Berline</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Luxe">Luxe</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Tarif journalier (DA)</label>
+                  <input
+                    type="number"
+                    required
+                    value={editingVehicle.pricePerDay}
+                    onChange={(e) =>
+                      setEditingVehicle({
+                        ...editingVehicle,
+                        pricePerDay: Number(e.target.value),
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Boîte</label>
+                  <select
+                    value={editingVehicle.transmission}
+                    onChange={(e) =>
+                      setEditingVehicle({
+                        ...editingVehicle,
+                        transmission: e.target.value as any,
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white"
+                  >
+                    <option value="Manuelle">Manuelle</option>
+                    <option value="Automatique">Automatique</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Énergie</label>
+                  <select
+                    value={editingVehicle.fuel}
+                    onChange={(e) =>
+                      setEditingVehicle({
+                        ...editingVehicle,
+                        fuel: e.target.value as any,
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white"
+                  >
+                    <option value="Essence">Essence</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Hybride">Hybride</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Places</label>
+                  <input
+                    type="number"
+                    value={editingVehicle.seats}
+                    onChange={(e) =>
+                      setEditingVehicle({
+                        ...editingVehicle,
+                        seats: Number(e.target.value),
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-200">
+                  <input
+                    type="checkbox"
+                    checked={editingVehicle.hasAC}
+                    onChange={(e) =>
+                      setEditingVehicle({
+                        ...editingVehicle,
+                        hasAC: e.target.checked,
+                      })
+                    }
+                    className="rounded border-white/20 text-brand-orange focus:ring-0"
+                  />
+                  <span>Équipé de la Climatisation (A/C)</span>
+                </label>
+              </div>
+
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Photo URL</label>
+                <input
+                  type="url"
+                  value={editingVehicle.imageUrl}
+                  onChange={(e) =>
+                    setEditingVehicle({
+                      ...editingVehicle,
+                      imageUrl: e.target.value,
+                    })
+                  }
+                  className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setEditingVehicle(null)}
+                  className="px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-white text-xs"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={loadingId === editingVehicle.id}
+                  className="px-4 py-2 rounded-xl bg-brand-orange hover:bg-brand-amber text-white font-bold text-xs uppercase"
+                >
+                  Sauvegarder
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: Ajouter un nouveau véhicule au catalogue */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+          <div className="w-full max-w-lg bg-midnight-900 border border-white/10 rounded-2xl p-6 space-y-4 shadow-2xl my-8">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <h3 className="text-base font-black text-white flex items-center gap-2">
+                <Plus className="w-4 h-4 text-brand-orange" />
+                <span>Ajouter un Véhicule à la Flotte</span>
+              </h3>
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateVehicle} className="space-y-4">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Modèle & Finition *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Renault Clio 5 Life"
+                  value={newVehicle.name}
+                  onChange={(e) =>
+                    setNewVehicle({ ...newVehicle, name: e.target.value })
+                  }
+                  className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Catégorie *</label>
+                  <select
+                    value={newVehicle.category}
+                    onChange={(e) =>
+                      setNewVehicle({
+                        ...newVehicle,
+                        category: e.target.value as any,
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white"
+                  >
+                    <option value="Citadine">Citadine</option>
+                    <option value="Berline">Berline</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Luxe">Luxe</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Tarif journalier (DA) *</label>
+                  <input
+                    type="number"
+                    required
+                    value={newVehicle.pricePerDay}
+                    onChange={(e) =>
+                      setNewVehicle({
+                        ...newVehicle,
+                        pricePerDay: Number(e.target.value),
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Boîte</label>
+                  <select
+                    value={newVehicle.transmission}
+                    onChange={(e) =>
+                      setNewVehicle({
+                        ...newVehicle,
+                        transmission: e.target.value as any,
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white"
+                  >
+                    <option value="Manuelle">Manuelle</option>
+                    <option value="Automatique">Automatique</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Énergie</label>
+                  <select
+                    value={newVehicle.fuel}
+                    onChange={(e) =>
+                      setNewVehicle({
+                        ...newVehicle,
+                        fuel: e.target.value as any,
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white"
+                  >
+                    <option value="Essence">Essence</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Hybride">Hybride</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Places</label>
+                  <input
+                    type="number"
+                    value={newVehicle.seats}
+                    onChange={(e) =>
+                      setNewVehicle({
+                        ...newVehicle,
+                        seats: Number(e.target.value),
+                      })
+                    }
+                    className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-2 text-xs text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-200">
+                  <input
+                    type="checkbox"
+                    checked={newVehicle.hasAC}
+                    onChange={(e) =>
+                      setNewVehicle({
+                        ...newVehicle,
+                        hasAC: e.target.checked,
+                      })
+                    }
+                    className="rounded border-white/20 text-brand-orange focus:ring-0"
+                  />
+                  <span>Équipé de la Climatisation (A/C)</span>
+                </label>
+              </div>
+
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Photo URL</label>
+                <input
+                  type="url"
+                  value={newVehicle.imageUrl}
+                  onChange={(e) =>
+                    setNewVehicle({
+                      ...newVehicle,
+                      imageUrl: e.target.value,
+                    })
+                  }
+                  className="w-full h-10 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-white text-xs"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={loadingId === 'new'}
+                  className="px-4 py-2 rounded-xl bg-brand-orange hover:bg-brand-amber text-white font-bold text-xs uppercase"
+                >
+                  Ajouter au catalogue
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

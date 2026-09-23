@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       notes,
     } = body;
 
-    if (!vehicleId || !customerName || !customerPhone || !pickupLocation || !startDate || !endDate) {
+    if (!vehicleId || !customerName || !customerPhone || !startDate || !endDate) {
       return NextResponse.json(
         { error: 'Champs obligatoires manquants' },
         { status: 400 }
@@ -53,8 +53,7 @@ export async function POST(request: Request) {
       customerName,
       customerPhone,
       customerEmail,
-      pickupLocation,
-      returnLocation: returnLocation || pickupLocation,
+      pickupLocation: pickupLocation || 'Agence Salah Tour Tlemcen (Centre-Ville)',
       startDate,
       endDate,
       totalDays,

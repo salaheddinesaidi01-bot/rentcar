@@ -2,35 +2,29 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { X, Calendar, MapPin, CheckCircle, MessageSquare, ShieldCheck, AlertCircle, Phone } from 'lucide-react';
-import { Vehicle, Location } from '@/types';
-import { formatDA, calculateRentalDays, buildWhatsAppLink } from '@/lib/utils';
+import { X, Calendar, CheckCircle, MessageSquare, ShieldCheck, AlertCircle, Phone, Building2 } from 'lucide-react';
+import { Vehicle } from '@/types';
+import { formatDA, calculateRentalDays, buildWhatsAppLink, formatDateFR } from '@/lib/utils';
 
 interface BookingModalProps {
   vehicle: Vehicle | null;
   isOpen: boolean;
   onClose: () => void;
-  initialLocation?: string;
   initialStartDate?: string;
   initialEndDate?: string;
-  locations?: Location[];
 }
 
 export default function BookingModal({
   vehicle,
   isOpen,
   onClose,
-  initialLocation = 'Tlemcen Centre-Ville',
-  initialStartDate = '2026-09-24T10:00',
-  initialEndDate = '2026-09-27T10:00',
+  initialStartDate = '2026-09-24',
+  initialEndDate = '2026-09-27',
 }: BookingModalProps) {
-  const [pickupLocation, setPickupLocation] = useState(initialLocation);
-  const [returnLocation, setReturnLocation] = useState(initialLocation);
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState(initialEndDate);
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
   const [notes, setNotes] = useState('');
 
   const [loading, setLoading] = useState(false);
@@ -60,9 +54,6 @@ export default function BookingModal({
           vehicleId: vehicle.id,
           customerName,
           customerPhone,
-          customerEmail: customerEmail || undefined,
-          pickupLocation,
-          returnLocation,
           startDate,
           endDate,
           totalDays: rentalDays,
@@ -85,8 +76,6 @@ export default function BookingModal({
 
   const whatsappDirectLink = buildWhatsAppLink({
     vehicleName: vehicle.name,
-    pickupLocation,
-    returnLocation,
     startDate,
     endDate,
     days: rentalDays,
@@ -96,14 +85,14 @@ export default function BookingModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-midnight-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden my-8">
+      <div className="relative w-full max-w-xl bg-midnight-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden my-8">
         
         {/* Modal Top Bar */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10 bg-midnight-950/60">
+        <div className="flex items-center justify-between p-6 border-b border-white/10 bg-midnight-950/70">
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-brand-orange animate-ping" />
-            <h3 className="text-lg font-black uppercase tracking-wider text-white">
-              Réservation Immédiate
+            <h3 className="text-base font-black uppercase tracking-wider text-white">
+              Réserver Votre Véhicule
             </h3>
           </div>
           <button
@@ -122,9 +111,9 @@ export default function BookingModal({
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-2xl font-black text-white">Demande Enregistrée avec Succès !</h4>
+              <h4 className="text-2xl font-black text-white">Réservation Confirmée !</h4>
               <p className="text-sm text-slate-300 max-w-md mx-auto">
-                Merci <span className="text-brand-orange font-bold">{customerName}</span>. Salah Tour confirme la disponibilité de votre <span className="font-bold text-white">{vehicle.name}</span> sous 2 minutes par téléphone ou WhatsApp.
+                Merci <span className="text-brand-orange font-bold">{customerName}</span>. Salah Tour prépare votre contrat pour votre <span className="font-bold text-white">{vehicle.name}</span>. Retrait prévu à l&apos;agence de Tlemcen.
               </p>
             </div>
 
@@ -135,8 +124,8 @@ export default function BookingModal({
                 <span className="text-white font-bold">{vehicle.name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Prise en charge :</span>
-                <span className="text-slate-200">{pickupLocation}</span>
+                <span className="text-slate-400">Période :</span>
+                <span className="text-slate-200">Du {formatDateFR(startDate)} au {formatDateFR(endDate)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Durée :</span>
@@ -154,14 +143,14 @@ export default function BookingModal({
                 href={whatsappDirectLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all"
               >
                 <MessageSquare className="w-4 h-4 fill-white" />
-                <span>Ouvrir dans WhatsApp maintenant</span>
+                <span>Ouvrir WhatsApp maintenant</span>
               </a>
               <button
                 onClick={onClose}
-                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-sm transition-all"
+                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-xs uppercase tracking-wider transition-all"
               >
                 Fermer
               </button>
@@ -169,11 +158,11 @@ export default function BookingModal({
           </div>
         ) : (
           /* Booking Form View */
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6 space-y-5">
             
             {/* Selected Vehicle Overview */}
             <div className="flex items-center gap-4 p-4 rounded-xl bg-midnight-950/80 border border-white/5">
-              <div className="relative w-24 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-midnight-800">
+              <div className="relative w-20 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-midnight-800">
                 <Image
                   src={vehicle.imageUrl}
                   alt={vehicle.name}
@@ -182,17 +171,23 @@ export default function BookingModal({
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="text-base font-bold text-white truncate">{vehicle.name}</h4>
+                <h4 className="text-sm font-bold text-white truncate">{vehicle.name}</h4>
                 <div className="text-xs text-slate-400">
-                  {vehicle.category} • {vehicle.transmission} • {vehicle.fuel}
+                  {vehicle.category} • Boîte {vehicle.transmission} • {vehicle.fuel}
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-xs font-mono text-slate-400">Tarif</div>
-                <div className="text-lg font-black text-brand-orange">
-                  {formatDA(vehicle.pricePerDay)}
+                <div className="text-base font-black text-brand-orange">
+                  {formatDA(vehicle.pricePerDay)}/j
                 </div>
               </div>
+            </div>
+
+            {/* Retrait à l'agence rappel */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 text-xs text-slate-300">
+              <Building2 className="w-4 h-4 text-brand-orange flex-shrink-0" />
+              <span>Retrait & Paiement sur place à l&apos;Agence Salah Tour (Tlemcen Centre)</span>
             </div>
 
             {error && (
@@ -202,83 +197,45 @@ export default function BookingModal({
               </div>
             )}
 
-            {/* Reservation details */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Date Pickers (simple date, no hours) */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-                  Lieu de prise en charge
-                </label>
-                <div className="relative">
-                  <select
-                    value={pickupLocation}
-                    onChange={(e) => setPickupLocation(e.target.value)}
-                    className="w-full h-11 bg-midnight-950 border border-white/10 rounded-lg px-3 pl-9 text-xs text-white focus:border-brand-orange focus:outline-none"
-                  >
-                    <option value="Tlemcen Centre-Ville">Tlemcen Centre-Ville</option>
-                    <option value="Aéroport Messali Hadj Tlemcen (Zenata)">Aéroport Messali Hadj Tlemcen (Zenata)</option>
-                    <option value="Gare Routière Tlemcen">Gare Routière Tlemcen</option>
-                    <option value="Livraison à Domicile (Grand Tlemcen)">Livraison à Domicile (Grand Tlemcen)</option>
-                  </select>
-                  <MapPin className="w-3.5 h-3.5 text-brand-orange absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-                  Lieu de retour
-                </label>
-                <div className="relative">
-                  <select
-                    value={returnLocation}
-                    onChange={(e) => setReturnLocation(e.target.value)}
-                    className="w-full h-11 bg-midnight-950 border border-white/10 rounded-lg px-3 pl-9 text-xs text-white focus:border-brand-orange focus:outline-none"
-                  >
-                    <option value="Tlemcen Centre-Ville">Tlemcen Centre-Ville</option>
-                    <option value="Aéroport Messali Hadj Tlemcen (Zenata)">Aéroport Messali Hadj Tlemcen (Zenata)</option>
-                    <option value="Gare Routière Tlemcen">Gare Routière Tlemcen</option>
-                    <option value="Livraison à Domicile (Grand Tlemcen)">Livraison à Domicile (Grand Tlemcen)</option>
-                  </select>
-                  <MapPin className="w-3.5 h-3.5 text-brand-orange absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-                  Date de départ
+                  Date de début
                 </label>
                 <div className="relative">
                   <input
-                    type="datetime-local"
+                    type="date"
+                    required
                     value={startDate}
+                    min={new Date().toISOString().split('T')[0]}
                     onChange={(e) => setStartDate(e.target.value)}
                     className="w-full h-11 bg-midnight-950 border border-white/10 rounded-lg px-3 pl-9 text-xs text-white focus:border-brand-orange focus:outline-none [color-scheme:dark]"
                   />
-                  <Calendar className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Calendar className="w-3.5 h-3.5 text-brand-orange absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-                  Date de retour
+                  Date de fin
                 </label>
                 <div className="relative">
                   <input
-                    type="datetime-local"
+                    type="date"
+                    required
                     value={endDate}
+                    min={startDate}
                     onChange={(e) => setEndDate(e.target.value)}
                     className="w-full h-11 bg-midnight-950 border border-white/10 rounded-lg px-3 pl-9 text-xs text-white focus:border-brand-orange focus:outline-none [color-scheme:dark]"
                   />
-                  <Calendar className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Calendar className="w-3.5 h-3.5 text-brand-orange absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
             </div>
 
             {/* Customer Contact */}
-            <div className="pt-4 border-t border-white/5 space-y-4">
-              <h5 className="text-xs font-mono uppercase tracking-wider text-slate-300">
-                Vos Coordonnées (Salah Tour vous rappelle)
-              </h5>
-
+            <div className="space-y-3 pt-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">
@@ -314,13 +271,13 @@ export default function BookingModal({
 
               <div>
                 <label className="block text-xs text-slate-400 mb-1">
-                  Remarques particulières (vol d&apos;arrivée, permis, etc.)
+                  Remarques particulières (optionnel)
                 </label>
                 <input
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Ex: Arrivée vol AH1085 à 11h30"
+                  placeholder="Ex: Passe à l'agence vers 11h"
                   className="w-full h-11 bg-midnight-950 border border-white/10 rounded-lg px-3 text-xs text-white focus:border-brand-orange focus:outline-none"
                 />
               </div>

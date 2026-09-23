@@ -1,3 +1,8 @@
+export interface DateRange {
+  startDate: string; // YYYY-MM-DD
+  endDate: string;   // YYYY-MM-DD
+}
+
 export interface Vehicle {
   id: string;
   name: string;
@@ -6,22 +11,16 @@ export interface Vehicle {
   transmission: 'Manuelle' | 'Automatique';
   fuel: 'Essence' | 'Diesel' | 'Hybride';
   seats: number;
+  hasAC: boolean;
   pricePerDay: number;
   imageUrl: string;
   features: string[];
   available: boolean;
+  blockedDates?: DateRange[];
   plateNumber?: string;
   year: number;
   createdAt?: string;
   updatedAt?: string;
-}
-
-export interface Location {
-  id: string;
-  name: string;
-  city: string;
-  fee: number;
-  active: boolean;
 }
 
 export type ReservationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
@@ -34,9 +33,8 @@ export interface Reservation {
   customerPhone: string;
   customerEmail?: string;
   pickupLocation: string;
-  returnLocation: string;
-  startDate: string;
-  endDate: string;
+  startDate: string; // YYYY-MM-DD
+  endDate: string;   // YYYY-MM-DD
   totalDays: number;
   totalPrice: number;
   status: ReservationStatus;
@@ -46,13 +44,10 @@ export interface Reservation {
 }
 
 export interface BookingFormData {
-  pickupLocation: string;
-  returnLocation: string;
   startDate: string;
   endDate: string;
   customerName: string;
   customerPhone: string;
-  customerEmail?: string;
   notes?: string;
   vehicleId?: string;
 }

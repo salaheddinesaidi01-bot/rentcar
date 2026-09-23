@@ -1,35 +1,24 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import { Clock, Calendar, MapPin, ArrowRight, MessageSquare, PhoneCall } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Clock, Calendar, ArrowRight, MessageSquare, PhoneCall, Building2 } from 'lucide-react';
 import { formatDA, calculateRentalDays, buildWhatsAppLink } from '@/lib/utils';
-import { Location } from '@/types';
 
 interface BookingWidgetProps {
-  locations?: Location[];
-  onContinue?: (data: {
-    pickupLocation: string;
-    startDate: string;
-    endDate: string;
-    days: number;
-    estimatedPrice: number;
-  }) => void;
+  startDate: string;
+  endDate: string;
+  onDatesChange: (start: string, end: string) => void;
+  availableCount?: number;
 }
 
-const DEFAULT_LOCATIONS = [
-  'Tlemcen Centre-Ville',
-  'Aéroport Messali Hadj Tlemcen (Zenata)',
-  'Gare Routière Tlemcen',
-  'Livraison à Domicile (Grand Tlemcen)',
-];
-
-export default function BookingWidget({ onContinue }: BookingWidgetProps) {
-  // Pre-fill matching mockup: 24/09/2026 10:00 to 27/09/2026 10:00
-  const [pickupLocation, setPickupLocation] = useState('Tlemcen Centre-Ville');
-  const [startDate, setStartDate] = useState('2026-09-24T10:00');
-  const [endDate, setEndDate] = useState('2026-09-27T10:00');
-
-  const baseRatePerDay = 7000; // 7 000 DA / jour (from mockup)
+export default function BookingWidget({
+  startDate,
+  endDate,
+  onDatesChange,
+  availableCount = 6,
+}: BookingWidgetProps) {
+  const baseRatePerDay = 7000;
 
   const calculatedDays = useMemo(() => {
     return calculateRentalDays(startDate, endDate);
@@ -39,26 +28,15 @@ export default function BookingWidget({ onContinue }: BookingWidgetProps) {
     return calculatedDays * baseRatePerDay;
   }, [calculatedDays]);
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handleFilterClick = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onContinue) {
-      onContinue({
-        pickupLocation,
-        startDate,
-        endDate,
-        days: calculatedDays,
-        estimatedPrice,
-      });
-    } else {
-      const fleetEl = document.getElementById('flotte');
-      if (fleetEl) {
-        fleetEl.scrollIntoView({ behavior: 'smooth' });
-      }
+    const fleetEl = document.getElementById('flotte');
+    if (fleetEl) {
+      fleetEl.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const whatsappLink = buildWhatsAppLink({
-    pickupLocation,
     startDate,
     endDate,
     days: calculatedDays,
@@ -66,9 +44,12 @@ export default function BookingWidget({ onContinue }: BookingWidgetProps) {
   });
 
   return (
-    <div
+    <motion.div
       id="reservation"
-      className="w-full max-w-5xl mx-auto rounded-2xl glass-panel p-6 sm:p-8 border border-white/10 shadow-2xl relative z-20 backdrop-blur-xl"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="w-full max-w-4xl mx-auto rounded-2xl glass-panel p-6 sm:p-8 border border-white/10 shadow-2xl relative z-20 backdrop-blur-xl"
     >
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-white/10">
@@ -79,78 +60,78 @@ export default function BookingWidget({ onContinue }: BookingWidgetProps) {
           </h3>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-mono font-bold uppercase tracking-wider self-start sm:self-auto">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-ping" />
-          Réponse en 2 min
+        <div className="flex items-center gap-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-mono font-bold uppercase tracking-wider">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-ping" />
+            Réponse en 2 min
+          </div>
         </div>
       </div>
 
-      {/* Main Input Controls */}
-      <form onSubmit={handleContinue} className="mt-6">
+      {/* Retrait à l'agence Info Banner */}
+      <div className="mt-4 py-2 px-3.5 rounded-xl bg-midnight-950/80 border border-white/5 flex items-center justify-between text-xs text-slate-300">
+        <div className="flex items-center gap-2">
+          <Building2 className="w-4 h-4 text-brand-orange flex-shrink-0" />
+          <span>
+            Retrait & Restitution à l&apos;<strong>Agence Salah Tour</strong> (Centre-Ville Tlemcen)
+          </span>
+        </div>
+        <span className="hidden sm:inline font-mono text-[11px] text-emerald-400 font-semibold">
+          ✓ Prêt en 2 min chrono
+        </span>
+      </div>
+
+      {/* Date Pickers & CTA (Pure date, no hours) */}
+      <form onSubmit={handleFilterClick} className="mt-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
           
-          {/* 1. Lieu de récupération */}
+          {/* 1. Date de départ */}
           <div className="md:col-span-4 space-y-2">
             <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-              Lieu de récupération
-            </label>
-            <div className="relative">
-              <select
-                value={pickupLocation}
-                onChange={(e) => setPickupLocation(e.target.value)}
-                className="w-full h-12 bg-midnight-950/80 border border-white/10 rounded-xl px-4 pl-10 text-sm font-medium text-white focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all appearance-none cursor-pointer"
-              >
-                {DEFAULT_LOCATIONS.map((loc) => (
-                  <option key={loc} value={loc} className="bg-midnight-900 text-white">
-                    {loc}
-                  </option>
-                ))}
-              </select>
-              <MapPin className="w-4 h-4 text-brand-orange absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* 2. Date & heure départ */}
-          <div className="md:col-span-3 space-y-2">
-            <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-              Date & Heure de départ
+              Date de début
             </label>
             <div className="relative">
               <input
-                type="datetime-local"
+                type="date"
+                required
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full h-12 bg-midnight-950/80 border border-white/10 rounded-xl px-4 pl-10 text-sm font-medium text-white focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all [color-scheme:dark]"
+                min={new Date().toISOString().split('T')[0]}
+                onChange={(e) => onDatesChange(e.target.value, endDate)}
+                className="w-full h-12 bg-midnight-950/90 border border-white/10 rounded-xl px-4 pl-10 text-sm font-semibold text-white focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all [color-scheme:dark] cursor-pointer"
               />
-              <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Calendar className="w-4 h-4 text-brand-orange absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 
-          {/* 3. Date & heure retour */}
-          <div className="md:col-span-3 space-y-2">
+          {/* 2. Date de retour */}
+          <div className="md:col-span-4 space-y-2">
             <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-              Date & Heure de retour
+              Date de fin
             </label>
             <div className="relative">
               <input
-                type="datetime-local"
+                type="date"
+                required
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full h-12 bg-midnight-950/80 border border-white/10 rounded-xl px-4 pl-10 text-sm font-medium text-white focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all [color-scheme:dark]"
+                min={startDate || new Date().toISOString().split('T')[0]}
+                onChange={(e) => onDatesChange(startDate, e.target.value)}
+                className="w-full h-12 bg-midnight-950/90 border border-white/10 rounded-xl px-4 pl-10 text-sm font-semibold text-white focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all [color-scheme:dark] cursor-pointer"
               />
-              <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Calendar className="w-4 h-4 text-brand-orange absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 
-          {/* 4. Action CTA Button */}
-          <div className="md:col-span-2">
-            <button
+          {/* 3. Action Button: Check & Filter Fleet */}
+          <div className="md:col-span-4">
+            <motion.button
               type="submit"
-              className="w-full h-12 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-brand-light hover:to-brand-orange text-white font-extrabold text-sm uppercase tracking-wider shadow-glow-orange hover:shadow-glow-orange-lg flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 group"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full h-12 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-brand-light hover:to-brand-orange text-white font-extrabold text-xs uppercase tracking-wider shadow-glow-orange hover:shadow-glow-orange-lg flex items-center justify-center gap-2 transition-all duration-300"
             >
-              <span>Continuer</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
+              <span>Voir les Disponibles ({availableCount})</span>
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
           </div>
         </div>
       </form>
@@ -165,8 +146,6 @@ export default function BookingWidget({ onContinue }: BookingWidgetProps) {
             {calculatedDays} jour{calculatedDays > 1 ? 's' : ''}
           </span>
           <span className="text-slate-600">•</span>
-          <span className="text-slate-300">{pickupLocation}</span>
-          <span className="text-slate-600">•</span>
           <span>Estimation :</span>
           <span className="text-brand-orange font-bold text-sm">
             {formatDA(estimatedPrice)}
@@ -176,7 +155,7 @@ export default function BookingWidget({ onContinue }: BookingWidgetProps) {
 
         {/* WhatsApp & Instant hotline */}
         <div className="flex items-center gap-2">
-          <span className="text-slate-400">Besoin d&apos;aide immédiate ?</span>
+          <span className="text-slate-400">Assistance directe ?</span>
           <span className="text-slate-600">•</span>
           <a
             href={whatsappLink}
@@ -198,6 +177,6 @@ export default function BookingWidget({ onContinue }: BookingWidgetProps) {
         </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 }

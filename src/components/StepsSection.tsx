@@ -1,26 +1,29 @@
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const STEPS = [
   {
     stepNumber: '01',
-    phase: 'ÉTAPE 01 • SAISIE',
-    title: 'DATES & LIEU',
+    phase: 'ÉTAPE 01 • VÉRIFICATION',
+    title: 'CHOIX DES DATES',
     description:
-      'Définissez vos dates de prise en charge et choisissez votre point de remise : aéroport Messali Hadj, gare routière, centre-ville ou directement à domicile.',
+      'Indiquez vos dates de départ et de retour pour filtrer et afficher instantanément les véhicules réellement disponibles à l\'agence.',
   },
   {
     stepNumber: '02',
     phase: 'ÉTAPE 02 • VALIDATION',
     title: 'CONFIRMATION RAPIDE',
     description:
-      'Salah Tour confirme immédiatement la disponibilité du véhicule par téléphone ou WhatsApp. Vos documents et votre contrat sont préparés à l\'avance.',
+      'Salah Tour confirme immédiatement votre réservation par téléphone ou WhatsApp. Vos documents et votre contrat sont préparés à l\'avance.',
   },
   {
     stepNumber: '03',
     phase: 'ÉTAPE 03 • DÉPART',
-    title: 'REMISE DES CLÉS',
+    title: 'RETRAIT À L\'AGENCE',
     description:
-      'Contrôle rapide du permis de conduire et de la pièce d\'identité, paiement sur place au moment de la récupération, et vous prenez la route en toute sérénité.',
+      'Passez récupérer les clés directement à notre agence à Tlemcen. Contrôle rapide du permis, paiement sur place et vous prenez la route en 2 min chrono.',
   },
 ];
 
@@ -34,26 +37,43 @@ export default function StepsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Badge matching mockup */}
-        <div className="flex items-center gap-2 mb-3">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-2 mb-3"
+        >
           <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
             ( 01 )
           </span>
           <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-400">
-            PROCESSUS SIMPLE & SANS DÉPLACEMENT
+            PROCESSUS SIMPLE & RETRAIT DIRECT EN AGENCE
           </span>
-        </div>
+        </motion.div>
 
         {/* Section Heading */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-14">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-14"
+        >
           RÉSERVEZ EN <span className="text-brand-orange">3 ÉTAPES</span> CHRONO.
-        </h2>
+        </motion.h2>
 
-        {/* 3 Step Cards Grid */}
+        {/* 3 Step Cards Grid with animations */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {STEPS.map((step) => (
-            <div
+          {STEPS.map((step, idx) => (
+            <motion.div
               key={step.stepNumber}
-              className="group relative rounded-xl glass-panel p-8 transition-all duration-300 hover:border-brand-orange/30 hover:bg-midnight-800/90 hud-bracket overflow-hidden"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 107, 0, 0.4)' }}
+              className="group relative rounded-xl glass-panel p-8 transition-all duration-300 hover:bg-midnight-800/90 hud-bracket overflow-hidden"
             >
               {/* Outlined Watermark Number in background */}
               <div className="absolute right-4 top-4 select-none pointer-events-none watermark-number transition-all duration-500 group-hover:scale-105">
@@ -74,7 +94,7 @@ export default function StepsSection() {
                   {step.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
