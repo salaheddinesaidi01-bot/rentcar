@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vehicle {
+  id           String        @id @default(cuid())
+  name         String
+  brand        String
+  category     String        // Citadine, Berline, SUV, Luxe
+  transmission String        // Manuelle, Automatique
+  fuel         String        // Essence, Diesel, Hybride
+  seats        Int           @default(5)
+  pricePerDay  Float
+  imageUrl     String
+  features     String[]
+  available    Boolean       @default(true)
+  plateNumber  String?
+  year         Int           @default(2023)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  name      String
+  city      String   @default("Tlemcen")
+  fee       Float    @default(0)
+  active    Boolean  @default(true)
+}
+
+model Reservation {
+  id             String    @id @default(cuid())
+  vehicleId      String
+  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  customerName   String
+  customerPhone  String
+  customerEmail  String?
+  pickupLocation String
+  returnLocation String
+  startDate      DateTime
+  endDate        DateTime
+  totalDays      Int
+  totalPrice     Float
+  status         String    @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
