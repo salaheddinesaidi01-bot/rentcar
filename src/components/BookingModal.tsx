@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, Calendar, CheckCircle, MessageSquare, ShieldCheck, AlertCircle, Phone, Building2 } from 'lucide-react';
 import { Vehicle } from '@/types';
@@ -31,6 +31,29 @@ export default function BookingModal({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Close on Escape key press and manage body scroll
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  // Sync dates if initial dates change
+  useEffect(() => {
+    if (initialStartDate) setStartDate(initialStartDate);
+    if (initialEndDate) setEndDate(initialEndDate);
+  }, [initialStartDate, initialEndDate]);
 
   if (!isOpen || !vehicle) return null;
 
@@ -85,28 +108,48 @@ export default function BookingModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden my-6">
+    <div
+      onClick={(e) => {
+        // Close if backdrop clicked directly
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm overflow-y-auto cursor-pointer animate-fadeIn"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden my-4 sm:my-6 cursor-default max-h-[92vh] flex flex-col"
+      >
         
-        {/* Modal Top Bar */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50/80">
+        {/* Modal Top Bar - Sticky & Unmissable Close */}
+        <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50/95 backdrop-blur-md z-20">
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-brand-orange animate-ping" />
-            <h3 className="text-base font-black uppercase tracking-wider text-slate-900">
-              Réserver Votre Véhicule
-            </h3>
+            <div>
+              <h3 className="text-base font-black uppercase tracking-wider text-slate-900">
+                Réservation • {vehicle.name}
+              </h3>
+              <p className="text-[11px] font-mono text-slate-500">
+                Salah Tour Tlemcen • Retrait en agence
+              </p>
+            </div>
           </div>
+          
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-200/80 hover:bg-rose-100 text-slate-700 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-sm cursor-pointer"
+            title="Fermer la fenêtre (ou touche Échap)"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
+            <span>Fermer</span>
           </button>
         </div>
 
         {/* Success View */}
         {success ? (
-          <div className="p-8 text-center space-y-6">
+          <div className="flex-1 overflow-y-auto p-6 sm:p-8 text-center space-y-6">
             <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
               <CheckCircle className="w-8 h-8" />
             </div>
@@ -150,8 +193,9 @@ export default function BookingModal({
                 <span>Ouvrir WhatsApp maintenant</span>
               </a>
               <button
+                type="button"
                 onClick={onClose}
-                className="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs uppercase tracking-wider transition-all"
+                className="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs uppercase tracking-wider transition-all cursor-pointer"
               >
                 Fermer
               </button>
@@ -159,7 +203,7 @@ export default function BookingModal({
           </div>
         ) : (
           /* Booking Form View */
-          <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
             
             {/* Selected Vehicle Overview */}
             <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
@@ -322,7 +366,7 @@ export default function BookingModal({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 h-12 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-xs uppercase tracking-wider shadow-md hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 h-12 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-xs uppercase tracking-wider shadow-md hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 {loading ? 'Enregistrement en cours...' : 'Confirmer Ma Réservation'}
               </button>
@@ -336,6 +380,15 @@ export default function BookingModal({
                 <MessageSquare className="w-4 h-4 fill-white" />
                 <span>WhatsApp Direct</span>
               </a>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="sm:w-auto px-5 h-12 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-200 hover:border-rose-200 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <X className="w-4 h-4 text-slate-500" />
+                <span>Annuler</span>
+              </button>
             </div>
 
           </form>

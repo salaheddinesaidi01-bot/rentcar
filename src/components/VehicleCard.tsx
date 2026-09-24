@@ -28,7 +28,11 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
       }`}
     >
       {/* Top Image Container */}
-      <div className="relative w-full h-56 overflow-hidden bg-slate-100">
+      <div
+        onClick={() => onSelect(vehicle)}
+        className="relative w-full h-56 overflow-hidden bg-slate-100 cursor-pointer"
+        title="Voir les disponibilités et réserver"
+      >
         <Image
           src={vehicle.imageUrl}
           alt={vehicle.name}
@@ -71,7 +75,11 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
       {/* Body Information */}
       <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
         <div>
-          <h3 className="text-xl font-black text-slate-900 group-hover:text-brand-orange transition-colors">
+          <h3
+            onClick={() => onSelect(vehicle)}
+            className="text-xl font-black text-slate-900 group-hover:text-brand-orange transition-colors cursor-pointer"
+            title="Voir les disponibilités et réserver"
+          >
             {vehicle.name}
           </h3>
 

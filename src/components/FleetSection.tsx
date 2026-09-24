@@ -175,7 +175,10 @@ export default function FleetSection({
       <BookingModal
         vehicle={selectedVehicle}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedVehicle(null);
+        }}
         initialStartDate={startDate}
         initialEndDate={endDate}
       />

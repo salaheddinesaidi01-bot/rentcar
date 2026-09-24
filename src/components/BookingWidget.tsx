@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Calendar, ArrowRight, MessageSquare, PhoneCall, Building2, AlertTriangle } from 'lucide-react';
-import { formatDA, calculateRentalDays, buildWhatsAppLink } from '@/lib/utils';
+import { calculateRentalDays, buildWhatsAppLink } from '@/lib/utils';
 
 interface BookingWidgetProps {
   startDate: string;
@@ -18,15 +18,9 @@ export default function BookingWidget({
   onDatesChange,
   availableCount,
 }: BookingWidgetProps) {
-  const baseRatePerDay = 7000;
-
   const calculatedDays = useMemo(() => {
     return calculateRentalDays(startDate, endDate);
   }, [startDate, endDate]);
-
-  const estimatedPrice = useMemo(() => {
-    return calculatedDays * baseRatePerDay;
-  }, [calculatedDays]);
 
   const handleFilterClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +34,7 @@ export default function BookingWidget({
     startDate,
     endDate,
     days: calculatedDays,
-    totalPrice: estimatedPrice,
+    totalPrice: 0,
   });
 
   return (
@@ -178,18 +172,16 @@ export default function BookingWidget({
       {/* Footer Details: Realtime Calculation & Instant Assistance */}
       <div className="mt-6 pt-5 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-mono text-slate-600">
         
-        {/* Real-time duration & estimated calculation */}
+        {/* Real-time duration & availability counter - NO PRICE ESTIMATION */}
         <div className="flex flex-wrap items-center gap-2">
-          <span>Durée calculée :</span>
+          <span>Durée sélectionnée :</span>
           <span className="text-brand-orange font-bold">
             {calculatedDays} jour{calculatedDays > 1 ? 's' : ''}
           </span>
           <span className="text-slate-300">•</span>
-          <span>Estimation :</span>
-          <span className="text-brand-orange font-bold text-sm">
-            {formatDA(estimatedPrice)}
+          <span className="text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded font-bold border border-emerald-200">
+            {availableCount} véhicule{availableCount > 1 ? 's' : ''} disponible{availableCount > 1 ? 's' : ''}
           </span>
-          <span className="text-slate-400">(à partir de 7 000 DA/j)</span>
         </div>
 
         {/* WhatsApp & Instant hotline */}

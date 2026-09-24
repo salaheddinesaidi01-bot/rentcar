@@ -107,7 +107,7 @@ export function buildWhatsAppLink(params: {
     `📅 *Date de début :* ${formatDateFR(params.startDate)}`,
     `🏁 *Date de fin :* ${formatDateFR(params.endDate)}`,
     `⏱️ *Durée :* ${params.days} jour(s)`,
-    `💰 *Montant estimé :* ${formatDA(params.totalPrice)}`,
+    params.totalPrice > 0 ? `💰 *Montant estimé :* ${formatDA(params.totalPrice)}` : '',
     params.customerName ? `👤 *Client :* ${params.customerName}` : '',
     `----------------------------------------`,
     `Bonjour, je souhaite réserver ce véhicule à l'agence. Merci de me confirmer la disponibilité !`,

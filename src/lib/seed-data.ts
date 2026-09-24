@@ -28,7 +28,10 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-12456-123',
-    blockedDates: [],
+    blockedDates: [
+      { startDate: '2026-09-24', endDate: '2026-09-27' },
+      { startDate: '2026-10-10', endDate: '2026-10-14' },
+    ],
   },
   {
     id: 'veh-stepway',
@@ -45,7 +48,10 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2024,
     plateNumber: '13-25890-124',
-    blockedDates: [],
+    blockedDates: [
+      { startDate: '2026-09-28', endDate: '2026-09-30' },
+      { startDate: '2026-10-18', endDate: '2026-10-22' },
+    ],
   },
   {
     id: 'veh-accent',
@@ -81,7 +87,10 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-44109-123',
-    blockedDates: [],
+    blockedDates: [
+      { startDate: '2026-09-25', endDate: '2026-09-26' },
+      { startDate: '2026-10-05', endDate: '2026-10-08' },
+    ],
   },
   {
     id: 'veh-peugeot-208',
@@ -98,7 +107,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-55912-123',
-    blockedDates: [],
+    blockedDates: [
+      { startDate: '2026-10-12', endDate: '2026-10-16' },
+    ],
   },
   {
     id: 'veh-tucson',
@@ -115,7 +126,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2024,
     plateNumber: '13-67891-124',
-    blockedDates: [],
+    blockedDates: [
+      { startDate: '2026-09-29', endDate: '2026-10-02' },
+    ],
   },
 ];
 
