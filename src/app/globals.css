@@ -4,27 +4,27 @@
 
 @layer base {
   :root {
-    --background: 7 10 18;
-    --foreground: 248 250 252;
+    --background: 248 250 252;
+    --foreground: 15 23 42;
   }
 
   body {
-    background-color: #070A12;
-    color: #F8FAFC;
+    background-color: #F8FAFC;
+    color: #0F172A;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
   }
 
-  /* Custom dark scrollbar */
+  /* Custom clean scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #070A12;
+    background: #F1F5F9;
   }
   ::-webkit-scrollbar-thumb {
-    background: #162340;
+    background: #CBD5E1;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -34,28 +34,29 @@
 
 @layer utilities {
   .glass-panel {
-    background: rgba(13, 21, 39, 0.75);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
   }
 
   .glass-panel-subtle {
-    background: rgba(13, 21, 39, 0.5);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(226, 232, 240, 0.7);
   }
 
   .text-glow-orange {
-    text-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
+    text-shadow: 0 0 20px rgba(255, 107, 0, 0.25);
   }
 
   .border-glow-orange {
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.35);
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
   }
 
-  /* HUD brackets for the 3-step cards */
+  /* HUD brackets for cards */
   .hud-bracket {
     position: relative;
   }
@@ -67,8 +68,8 @@
     left: 0;
     width: 14px;
     height: 14px;
-    border-top: 1.5px solid rgba(255, 107, 0, 0.6);
-    border-left: 1.5px solid rgba(255, 107, 0, 0.6);
+    border-top: 2px solid rgba(255, 107, 0, 0.8);
+    border-left: 2px solid rgba(255, 107, 0, 0.8);
     pointer-events: none;
   }
 
@@ -79,8 +80,8 @@
     right: 0;
     width: 14px;
     height: 14px;
-    border-bottom: 1.5px solid rgba(255, 107, 0, 0.6);
-    border-right: 1.5px solid rgba(255, 107, 0, 0.6);
+    border-bottom: 2px solid rgba(255, 107, 0, 0.8);
+    border-right: 2px solid rgba(255, 107, 0, 0.8);
     pointer-events: none;
   }
 
@@ -89,12 +90,12 @@
     font-size: 5.5rem;
     font-weight: 800;
     line-height: 1;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.08);
+    -webkit-text-stroke: 1.5px rgba(15, 23, 42, 0.08);
     color: transparent;
     user-select: none;
   }
 
   .group:hover .watermark-number {
-    -webkit-text-stroke: 1.5px rgba(255, 107, 0, 0.25);
+    -webkit-text-stroke: 1.5px rgba(255, 107, 0, 0.4);
   }
 }

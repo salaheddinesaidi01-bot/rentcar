@@ -4,10 +4,10 @@ import { AGENCY_INFO } from '@/lib/seed-data';
 
 export default function Footer() {
   return (
-    <footer id="contact" className="relative bg-midnight-950 border-t border-white/5 pt-16 pb-12 overflow-hidden">
+    <footer id="contact" className="relative bg-slate-900 text-slate-300 pt-16 pb-12 overflow-hidden border-t border-slate-800">
       
       {/* Background subtle radial glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-48 bg-brand-orange/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-48 bg-brand-orange/10 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
@@ -15,7 +15,7 @@ export default function Footer() {
           {/* Col 1: Brand & Bio */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-orange flex items-center justify-center shadow-glow-orange">
+              <div className="w-8 h-8 rounded-lg bg-brand-orange flex items-center justify-center shadow-md">
                 <Car className="w-4 h-4 text-white" />
               </div>
               <span className="text-xl font-black text-white">
@@ -43,11 +43,6 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#a-propos" className="hover:text-brand-orange transition-colors">
-                  À Propos de Nous (Salah Tour)
-                </a>
-              </li>
-              <li>
                 <a href="#flotte" className="hover:text-brand-orange transition-colors">
                   Catalogue de nos véhicules
                 </a>
@@ -55,6 +50,11 @@ export default function Footer() {
               <li>
                 <a href="#agence" className="hover:text-brand-orange transition-colors">
                   Localisation & itinéraire vers l&apos;agence
+                </a>
+              </li>
+              <li>
+                <a href="#a-propos" className="hover:text-brand-orange transition-colors">
+                  À Propos de Nous (Salah Tour)
                 </a>
               </li>
             </ul>
@@ -70,7 +70,7 @@ export default function Footer() {
                 href={`https://wa.me/${AGENCY_INFO.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-white group"
+                className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-white group"
               >
                 <div className="w-9 h-9 rounded-md bg-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <MessageSquare className="w-4 h-4 fill-emerald-400" />
@@ -83,7 +83,7 @@ export default function Footer() {
 
               <a
                 href={`tel:${AGENCY_INFO.phone.replace(/[^0-9]/g, '')}`}
-                className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-white"
+                className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-white"
               >
                 <div className="w-9 h-9 rounded-md bg-brand-orange/20 text-brand-orange flex items-center justify-center">
                   <Phone className="w-4 h-4" />
@@ -104,7 +104,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} Salah Tour Tlemcen. Tous droits réservés.</p>
           <div className="flex items-center gap-4 font-mono text-[11px]">
             <span className="text-slate-400">FLOTTE RÉCENTE 2023 - 2024</span>

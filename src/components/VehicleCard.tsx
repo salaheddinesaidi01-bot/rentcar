@@ -21,41 +21,41 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
       viewport={{ once: true }}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.4 }}
-      className={`group relative rounded-2xl glass-panel overflow-hidden border transition-all duration-300 flex flex-col justify-between ${
+      className={`group relative rounded-2xl bg-white overflow-hidden border transition-all duration-300 flex flex-col justify-between ${
         isAvailable
-          ? 'border-white/10 hover:border-brand-orange/50 hover:shadow-glow-orange'
-          : 'border-white/5 opacity-60'
+          ? 'border-slate-200 shadow-md hover:shadow-xl hover:border-brand-orange/40'
+          : 'border-slate-200/60 opacity-60 bg-slate-50'
       }`}
     >
       {/* Top Image Container */}
-      <div className="relative w-full h-56 overflow-hidden bg-midnight-950">
+      <div className="relative w-full h-56 overflow-hidden bg-slate-100">
         <Image
           src={vehicle.imageUrl}
           alt={vehicle.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-95 group-hover:brightness-105"
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
         />
 
         {/* Ambient Gradient Over Image */}
-        <div className="absolute inset-0 bg-gradient-to-t from-midnight-900 via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-black/20" />
 
         {/* Category & Availability Badges */}
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-          <span className="px-3 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider bg-midnight-950/80 text-brand-orange border border-brand-orange/30 backdrop-blur-md">
+          <span className="px-3 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider bg-white/90 text-brand-orange border border-slate-200 shadow-sm backdrop-blur-md">
             {vehicle.category}
           </span>
 
           <span
-            className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider backdrop-blur-md flex items-center gap-1.5 ${
+            className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider backdrop-blur-md flex items-center gap-1.5 shadow-sm ${
               isAvailable
-                ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/30'
-                : 'bg-rose-950/80 text-rose-400 border border-rose-500/30'
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                : 'bg-rose-50 text-rose-700 border border-rose-200'
             }`}
           >
             <span
               className={`w-1.5 h-1.5 rounded-full ${
-                isAvailable ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'
+                isAvailable ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
               }`}
             />
             {isAvailable ? 'Disponible' : 'Réservée aux dates'}
@@ -63,7 +63,7 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
         </div>
 
         {/* Year tag */}
-        <div className="absolute bottom-3 left-4 text-xs font-mono text-slate-300 bg-midnight-950/70 px-2.5 py-0.5 rounded backdrop-blur-sm border border-white/5">
+        <div className="absolute bottom-3 left-4 text-xs font-mono text-white bg-slate-900/70 px-2.5 py-0.5 rounded backdrop-blur-sm border border-white/10">
           Modèle {vehicle.year}
         </div>
       </div>
@@ -71,26 +71,26 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
       {/* Body Information */}
       <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
         <div>
-          <h3 className="text-xl font-black text-white group-hover:text-brand-orange transition-colors">
+          <h3 className="text-xl font-black text-slate-900 group-hover:text-brand-orange transition-colors">
             {vehicle.name}
           </h3>
 
-          {/* Detailed vehicle characteristics requested by user */}
-          <div className="grid grid-cols-2 gap-2.5 mt-4 pt-4 border-t border-white/5 text-xs text-slate-300">
+          {/* Detailed vehicle characteristics */}
+          <div className="grid grid-cols-2 gap-2.5 mt-4 pt-4 border-t border-slate-100 text-xs text-slate-600">
             <div className="flex items-center gap-2">
-              <Gauge className="w-3.5 h-3.5 text-brand-amber flex-shrink-0" />
+              <Gauge className="w-3.5 h-3.5 text-brand-orange flex-shrink-0" />
               <span>Boîte {vehicle.transmission}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Fuel className="w-3.5 h-3.5 text-brand-amber flex-shrink-0" />
+              <Fuel className="w-3.5 h-3.5 text-brand-orange flex-shrink-0" />
               <span>Énergie : {vehicle.fuel}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Users className="w-3.5 h-3.5 text-brand-amber flex-shrink-0" />
+              <Users className="w-3.5 h-3.5 text-brand-orange flex-shrink-0" />
               <span>{vehicle.seats} places assises</span>
             </div>
             <div className="flex items-center gap-2">
-              <Snowflake className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
+              <Snowflake className="w-3.5 h-3.5 text-cyan-600 flex-shrink-0" />
               <span>{vehicle.hasAC ? 'Climatisation A/C' : 'Sans climatisation'}</span>
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
             {vehicle.features.slice(0, 3).map((feat, idx) => (
               <span
                 key={idx}
-                className="text-[11px] px-2 py-0.5 rounded bg-white/5 text-slate-300 border border-white/5 flex items-center gap-1"
+                className="text-[11px] px-2.5 py-1 rounded bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1"
               >
                 <CheckCircle2 className="w-3 h-3 text-brand-orange" />
                 {feat}
@@ -110,16 +110,16 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
         </div>
 
         {/* Pricing and Action CTA */}
-        <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+        <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">
+            <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
               Tarif journalier
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-black text-white">
+              <span className="text-2xl font-black text-slate-900">
                 {formatDA(vehicle.pricePerDay)}
               </span>
-              <span className="text-xs text-slate-400 font-mono">/ jour</span>
+              <span className="text-xs text-slate-500 font-mono">/ jour</span>
             </div>
           </div>
 
@@ -129,8 +129,8 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
             disabled={!isAvailable}
             className={`px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 ${
               isAvailable
-                ? 'bg-brand-orange hover:bg-brand-amber text-white shadow-glow-orange hover:scale-105'
-                : 'bg-white/10 text-slate-500 cursor-not-allowed'
+                ? 'bg-brand-orange hover:bg-brand-amber text-white shadow-md hover:shadow-orange-500/30 hover:scale-105'
+                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
             }`}
           >
             <span>{isAvailable ? 'Réserver' : 'Indisponible'}</span>

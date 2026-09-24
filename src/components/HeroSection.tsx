@@ -20,53 +20,47 @@ export default function HeroSection({
   return (
     <section className="relative min-h-[96vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden bg-slate-50">
       
-      {/* Background Sharp Driving Car with Shadow - NOT BLURRY */}
+      {/* Background Sharp Driving Car with Road Shadow - ZERO BLUR, 100% CRISP */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         
-        {/* Crisp, Sharp Image of Car Rolling on Road with its Shadow */}
+        {/* Crisp, Sharp Image of Car Rolling on Asphalt with Tire Shadows */}
         <motion.div
           initial={{ opacity: 0, scale: 1 }}
           animate={{
             opacity: 1,
-            scale: [1, 1.025, 1],
-            x: [-15, 15, -15],
-            y: [-2, 3, -2],
+            scale: [1, 1.03, 1],
           }}
           transition={{
-            opacity: { duration: 1 },
-            scale: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
-            x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
-            y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' },
+            opacity: { duration: 0.8 },
+            scale: { duration: 14, repeat: Infinity, ease: 'easeInOut' },
           }}
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-[center_35%] bg-no-repeat"
           style={{
             backgroundImage: `url('/images/hero-driving-car.jpg')`,
           }}
         />
 
-        {/* Subtle, elegant light gradient overlay to keep text 100% crisp while keeping car perfectly visible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/45 to-slate-50/95" />
+        {/* Minimal gradient strictly at top for navbar readability and bottom for section transition - NO BLUR, car remains vivid and sharp */}
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/80 via-white/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-100 via-slate-100/60 to-transparent" />
 
-        {/* Ambient warm light accent */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-brand-orange/15 rounded-full blur-[140px]" />
-
-        {/* Animated road speed light streaks */}
-        <div className="absolute inset-x-0 bottom-1/3 h-20 overflow-hidden opacity-40">
-          {[...Array(5)].map((_, i) => (
+        {/* Crisp road speed dynamic streaks */}
+        <div className="absolute inset-x-0 bottom-1/4 h-24 overflow-hidden opacity-50">
+          {[...Array(4)].map((_, i) => (
             <motion.div
               key={i}
               initial={{ x: '120%', opacity: 0 }}
-              animate={{ x: '-150%', opacity: [0, 0.9, 0] }}
+              animate={{ x: '-150%', opacity: [0, 0.95, 0] }}
               transition={{
-                duration: 2 + i * 0.4,
+                duration: 2.2 + i * 0.4,
                 repeat: Infinity,
                 ease: 'linear',
-                delay: i * 0.45,
+                delay: i * 0.5,
               }}
               className="absolute h-0.5 bg-gradient-to-r from-transparent via-brand-orange to-transparent"
               style={{
-                top: `${i * 16}px`,
-                width: `${140 + i * 50}px`,
+                top: `${i * 20}px`,
+                width: `${160 + i * 60}px`,
               }}
             />
           ))}

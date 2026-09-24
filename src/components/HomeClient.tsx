@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import FleetSection from '@/components/FleetSection';
@@ -8,6 +8,7 @@ import AboutSection from '@/components/AboutSection';
 import MapSection from '@/components/MapSection';
 import Footer from '@/components/Footer';
 import { Vehicle } from '@/types';
+import { isVehicleAvailableForDates } from '@/lib/utils';
 
 interface HomeClientProps {
   initialVehicles: Vehicle[];
@@ -23,8 +24,13 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
     setEndDate(newEnd);
   };
 
+  // Synchronize available vehicles count automatically in real-time based on selected dates
+  const availableCount = useMemo(() => {
+    return initialVehicles.filter((v) => isVehicleAvailableForDates(v, startDate, endDate)).length;
+  }, [initialVehicles, startDate, endDate]);
+
   return (
-    <div className="min-h-screen bg-midnight-950 text-slate-100 flex flex-col selection:bg-brand-orange selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col selection:bg-brand-orange selection:text-white">
       {/* 1. Top Navbar with 'À Propos de Nous' as last item */}
       <Navbar />
 
@@ -33,7 +39,7 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
         startDate={startDate}
         endDate={endDate}
         onDatesChange={handleDatesChange}
-        availableCount={initialVehicles.length}
+        availableCount={availableCount}
       />
 
       {/* 3. Fleet Catalog filtered by date availability & categories */}
