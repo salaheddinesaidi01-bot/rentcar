@@ -69,30 +69,47 @@ export default function HeroSection({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center text-center">
         
-        {/* Massive Bold Heading: LOUEZ. ROULEZ. */}
+        {/* Massive Bold Heading: LOUEZ. ROULEZ. with Deep Contrast Shadows */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] select-none"
         >
-          <span className="block text-slate-900 drop-shadow-[0_4px_20px_rgba(255,255,255,0.9)]">
+          <span
+            className="block text-white"
+            style={{
+              filter: 'drop-shadow(0 6px 20px rgba(0, 0, 0, 0.95)) drop-shadow(0 2px 4px rgba(0, 0, 0, 1))',
+            }}
+          >
             LOUEZ.
           </span>
-          <span className="block bg-gradient-to-r from-brand-orange via-brand-amber to-brand-dark bg-clip-text text-transparent filter drop-shadow-[0_6px_30px_rgba(255,107,0,0.45)]">
+          <span
+            className="block bg-gradient-to-r from-brand-orange via-brand-amber to-orange-400 bg-clip-text text-transparent"
+            style={{
+              filter: 'drop-shadow(0 8px 25px rgba(0, 0, 0, 0.95)) drop-shadow(0 2px 6px rgba(0, 0, 0, 1))',
+            }}
+          >
             ROULEZ.
           </span>
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p
+        {/* Subtitle: La liberté ... with strong shadow & frosted contrast capsule */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-8 max-w-2xl text-base sm:text-lg text-slate-700 font-medium leading-relaxed text-balance drop-shadow-sm"
+          className="mt-6 max-w-2xl px-6 py-3.5 rounded-2xl bg-black/45 backdrop-blur-md border border-white/20 shadow-2xl text-balance"
         >
-          La liberté de la route à Tlemcen. Citadines et berlines récentes et entretenues, retrait rapide des clés directement à notre agence sans démarche superflue.
-        </motion.p>
+          <p
+            className="text-base sm:text-lg text-white font-bold leading-relaxed"
+            style={{
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 1)',
+            }}
+          >
+            La liberté de la route à Tlemcen. Citadines et berlines récentes et entretenues, retrait rapide des clés directement à notre agence sans démarche superflue.
+          </p>
+        </motion.div>
 
         {/* Booking Widget Component Container */}
         <div className="w-full mt-12">
