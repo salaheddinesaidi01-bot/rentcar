@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ShieldCheck, Gauge, Zap, Sparkles } from 'lucide-react';
 import BookingWidget from './BookingWidget';
 
 interface HeroSectionProps {
@@ -140,8 +141,40 @@ export default function HeroSection({
           </p>
         </motion.div>
 
+        {/* Eye-catching Commercial Hook Banner ("Bandeau Avantages Choc") */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 max-w-4xl"
+        >
+          {/* 1. Tarif d'appel choc */}
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-orange-500/40 border border-orange-300/40 hover:scale-105 transition-transform duration-200">
+            <Sparkles className="w-4 h-4 fill-white text-white animate-pulse" />
+            <span>À partir de <span className="underline decoration-white/70 decoration-2 font-black text-sm sm:text-base">7 000 DA</span> / jour</span>
+          </div>
+
+          {/* 2. Zéro frais cachés */}
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-emerald-400 border border-emerald-500/40 font-bold text-xs sm:text-sm shadow-md">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <span className="text-white">0 Frais Cachés</span>
+          </div>
+
+          {/* 3. Kilométrage illimité */}
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-white border border-white/25 font-bold text-xs sm:text-sm shadow-md">
+            <Gauge className="w-4 h-4 text-brand-orange flex-shrink-0" />
+            <span>Kilométrage Illimité</span>
+          </div>
+
+          {/* 4. Clés en main en 2 min */}
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-amber-300 border border-amber-400/40 font-bold text-xs sm:text-sm shadow-md">
+            <Zap className="w-4 h-4 text-amber-400 fill-amber-400 flex-shrink-0" />
+            <span className="text-white">Clés en 2 min chrono</span>
+          </div>
+        </motion.div>
+
         {/* Booking Widget Component Container */}
-        <div className="w-full mt-12">
+        <div className="w-full mt-10">
           <BookingWidget
             startDate={startDate}
             endDate={endDate}
