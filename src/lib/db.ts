@@ -120,6 +120,37 @@ export const dbService = {
     return null;
   },
 
+  async toggleSingleDateBlock(id: string, dateStr: string): Promise<Vehicle | null> {
+    const veh = inMemoryStore.vehicles.find((v) => v.id === id);
+    if (!veh) return null;
+    if (!veh.blockedDates) veh.blockedDates = [];
+
+    // Check if dateStr is already blocked
+    const existingIndex = veh.blockedDates.findIndex(
+      (b) => dateStr >= b.startDate && dateStr <= b.endDate
+    );
+
+    if (existingIndex !== -1) {
+      const existing = veh.blockedDates[existingIndex];
+      veh.blockedDates.splice(existingIndex, 1);
+
+      // If it was a multi-day range, keep the remaining split ranges
+      if (existing.startDate < dateStr) {
+        const prevDay = new Date(new Date(dateStr).getTime() - 86400000).toISOString().split('T')[0];
+        veh.blockedDates.push({ startDate: existing.startDate, endDate: prevDay });
+      }
+      if (existing.endDate > dateStr) {
+        const nextDay = new Date(new Date(dateStr).getTime() + 86400000).toISOString().split('T')[0];
+        veh.blockedDates.push({ startDate: nextDay, endDate: existing.endDate });
+      }
+    } else {
+      // Add single day block
+      veh.blockedDates.push({ startDate: dateStr, endDate: dateStr });
+    }
+
+    return veh;
+  },
+
   async getReservations(): Promise<Reservation[]> {
     return inMemoryStore.reservations.map((res) => ({
       ...res,
@@ -150,7 +181,7 @@ export const dbService = {
 
     inMemoryStore.reservations.unshift(newRes);
 
-    // Automatically register the reserved date range as blocked on that vehicle
+    // Automatically register the reserved date range as blocked on that vehicle (turns red in calendar)
     const veh = inMemoryStore.vehicles.find((v) => v.id === data.vehicleId);
     if (veh) {
       if (!veh.blockedDates) veh.blockedDates = [];
@@ -163,7 +194,22 @@ export const dbService = {
   async updateReservationStatus(id: string, status: ReservationStatus): Promise<Reservation | null> {
     const res = inMemoryStore.reservations.find((r) => r.id === id);
     if (res) {
+      const oldStatus = res.status;
       res.status = status;
+
+      const veh = inMemoryStore.vehicles.find((v) => v.id === res.vehicleId);
+      if (veh && veh.blockedDates) {
+        if (status === 'CANCELLED') {
+          // Free up the dates (turn back to green in calendar)
+          veh.blockedDates = veh.blockedDates.filter(
+            (b) => !(b.startDate === res.startDate && b.endDate === res.endDate)
+          );
+        } else if (oldStatus === 'CANCELLED' && (status === 'CONFIRMED' || status === 'PENDING')) {
+          // Re-block dates if reactivated
+          veh.blockedDates.push({ startDate: res.startDate, endDate: res.endDate });
+        }
+      }
+
       return res;
     }
     return null;

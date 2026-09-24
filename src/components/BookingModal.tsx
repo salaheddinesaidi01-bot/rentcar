@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { X, Calendar, CheckCircle, MessageSquare, ShieldCheck, AlertCircle, Phone, Building2 } from 'lucide-react';
 import { Vehicle } from '@/types';
 import { formatDA, calculateRentalDays, buildWhatsAppLink, formatDateFR } from '@/lib/utils';
+import VehicleAvailabilityCalendar from './VehicleAvailabilityCalendar';
 
 interface BookingModalProps {
   vehicle: Vehicle | null;
@@ -84,8 +85,8 @@ export default function BookingModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden my-6">
         
         {/* Modal Top Bar */}
         <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50/80">
@@ -197,7 +198,20 @@ export default function BookingModal({
               </div>
             )}
 
-            {/* Date Pickers (simple date, no hours) */}
+            {/* Visual Availability Calendar (Green = Available, Red = Booked) */}
+            <div className="pt-1">
+              <VehicleAvailabilityCalendar
+                vehicle={vehicle}
+                selectedStartDate={startDate}
+                selectedEndDate={endDate}
+                onSelectDates={(newStart, newEnd) => {
+                  setStartDate(newStart);
+                  setEndDate(newEnd);
+                }}
+              />
+            </div>
+
+            {/* Date Pickers Summary */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-mono uppercase text-slate-600 mb-1 font-semibold">

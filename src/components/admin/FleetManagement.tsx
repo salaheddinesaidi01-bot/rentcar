@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Vehicle, DateRange } from '@/types';
 import { formatDA, formatDateFR } from '@/lib/utils';
+import VehicleAvailabilityCalendar from '@/components/VehicleAvailabilityCalendar';
 import {
   Car,
   Plus,
@@ -107,7 +108,7 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
     }
   };
 
-  // Remove blocked date range
+// Remove blocked date range
   const handleRemoveBlockedDate = async (vehId: string, index: number) => {
     setLoadingId(vehId);
     try {
@@ -129,6 +130,34 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
         if (blockingVehicle?.id === vehId) {
           setBlockingVehicle(updated);
         }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Toggle single date from calendar click (admin mode: click day -> turn Red or Green)
+  const handleToggleSingleDateBlock = async (dateStr: string) => {
+    if (!blockingVehicle) return;
+    setLoadingId(blockingVehicle.id);
+    try {
+      const res = await fetch('/api/vehicles', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: blockingVehicle.id,
+          action: 'toggle-date',
+          dateStr,
+        }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setVehicles((prev) =>
+          prev.map((v) => (v.id === blockingVehicle.id ? updated : v))
+        );
+        setBlockingVehicle(updated);
       }
     } catch (e) {
       console.error(e);
@@ -367,54 +396,64 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
         </div>
       </div>
 
-      {/* MODAL 1: Gérer les dates de disponibilité pour une voiture */}
+      {/* MODAL 1: Gérer et planifier les dates de disponibilité pour une voiture */}
       {blockingVehicle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="w-full max-w-lg bg-midnight-900 border border-white/10 rounded-2xl p-6 space-y-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+          <div className="w-full max-w-3xl bg-midnight-900 border border-white/10 rounded-2xl p-6 space-y-5 shadow-2xl my-6 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-brand-orange" />
-                  <span>Disponibilité par Dates : {blockingVehicle.name}</span>
+                  <span>Planification Calendrier : {blockingVehicle.name}</span>
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Bloquez des dates de réservation pour que les clients ne puissent pas la louer durant cette période.
+                  Planifiez les disponibilités selon les réservations. Cliquez directement sur un jour du calendrier pour basculer (Vert = Libre / Rouge = Réservé).
                 </p>
               </div>
               <button
                 onClick={() => setBlockingVehicle(null)}
-                className="text-slate-400 hover:text-white p-1"
+                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
+            {/* Interactive Admin Availability Calendar */}
+            <div className="bg-white rounded-2xl p-1 text-slate-900">
+              <VehicleAvailabilityCalendar
+                vehicle={blockingVehicle}
+                adminMode={true}
+                onToggleDateBlock={handleToggleSingleDateBlock}
+              />
+            </div>
+
             {/* List of current blocked ranges */}
-            <div className="space-y-2">
-              <label className="block text-xs font-mono uppercase text-slate-400">
-                Périodes actuellement indisponibles :
+            <div className="space-y-2 pt-2">
+              <label className="block text-xs font-mono uppercase text-slate-300">
+                Périodes de réservation ou blocages enregistrés :
               </label>
 
               {(!blockingVehicle.blockedDates || blockingVehicle.blockedDates.length === 0) ? (
                 <div className="text-xs text-emerald-400 p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/20">
-                  ✓ Ce véhicule est actuellement disponible sur toutes les dates.
+                  ✓ Aucun blocage manuel ou réservation en cours : le véhicule est 100% libre (vert) sur toutes les dates.
                 </div>
               ) : (
-                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
                   {blockingVehicle.blockedDates.map((range, idx) => (
                     <div
                       key={idx}
                       className="flex items-center justify-between p-2.5 rounded-lg bg-midnight-950 border border-white/5 text-xs font-mono"
                     >
-                      <span className="text-rose-400">
-                        Du {formatDateFR(range.startDate)} au {formatDateFR(range.endDate)}
+                      <span className="text-rose-400 font-bold">
+                        Période indisponible : Du {formatDateFR(range.startDate)} au {formatDateFR(range.endDate)}
                       </span>
                       <button
                         onClick={() => handleRemoveBlockedDate(blockingVehicle.id, idx)}
-                        className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 transition-colors"
-                        title="Débloquer cette période"
+                        className="px-2.5 py-1 rounded bg-rose-950/60 text-rose-300 hover:bg-rose-900 hover:text-white text-xs flex items-center gap-1.5 transition-colors border border-rose-800/40"
+                        title="Libérer cette période"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
+                        <span>Libérer (Passer en Vert)</span>
                       </button>
                     </div>
                   ))}
@@ -425,12 +464,12 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
             {/* Form to add a new blocked period */}
             <form onSubmit={handleAddBlockedDate} className="pt-4 border-t border-white/10 space-y-3">
               <label className="block text-xs font-mono uppercase text-slate-300">
-                Bloquer une nouvelle période (Réservation / Entretien) :
+                Bloquer une nouvelle plage de dates selon une réservation :
               </label>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Du</label>
+                  <label className="block text-[11px] text-slate-400 mb-1">Date de début</label>
                   <input
                     type="date"
                     required
@@ -440,7 +479,7 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Au</label>
+                  <label className="block text-[11px] text-slate-400 mb-1">Date de fin</label>
                   <input
                     type="date"
                     required
@@ -456,9 +495,10 @@ export default function FleetManagement({ initialVehicles }: FleetManagementProp
                 <button
                   type="submit"
                   disabled={loadingId === blockingVehicle.id}
-                  className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase transition-all"
+                  className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase transition-all flex items-center gap-2 shadow-md"
                 >
-                  Bloquer cette période
+                  <Calendar className="w-4 h-4" />
+                  <span>Enregistrer l&apos;indisponibilité (Rouge)</span>
                 </button>
               </div>
             </form>

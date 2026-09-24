@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Users, Fuel, Gauge, Snowflake, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { Users, Fuel, Gauge, Snowflake, ArrowUpRight, CheckCircle2, Calendar } from 'lucide-react';
 import { Vehicle } from '@/types';
 import { formatDA } from '@/lib/utils';
 
@@ -126,15 +126,15 @@ export default function VehicleCard({ vehicle, isAvailable, onSelect }: VehicleC
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => onSelect(vehicle)}
-            disabled={!isAvailable}
             className={`px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 ${
               isAvailable
                 ? 'bg-brand-orange hover:bg-brand-amber text-white shadow-md hover:shadow-orange-500/30 hover:scale-105'
-                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                : 'bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 shadow-sm hover:border-brand-orange'
             }`}
           >
-            <span>{isAvailable ? 'Réserver' : 'Indisponible'}</span>
-            <ArrowUpRight className="w-4 h-4" />
+            <Calendar className="w-3.5 h-3.5 text-brand-orange" />
+            <span>{isAvailable ? 'Réserver' : 'Voir calendrier'}</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </motion.button>
         </div>
       </div>

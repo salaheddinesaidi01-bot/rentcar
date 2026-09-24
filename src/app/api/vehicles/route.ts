@@ -96,6 +96,12 @@ export async function PATCH(request: Request) {
       return NextResponse.json(updated);
     }
 
+    // 2b. Basculer un jour précis sur le calendrier (clic calendrier admin : vert <-> rouge)
+    if (action === 'toggle-date' && body.dateStr) {
+      const updated = await dbService.toggleSingleDateBlock(id, body.dateStr);
+      return NextResponse.json(updated);
+    }
+
     // 3. Débloquer des dates
     if (action === 'unblock-dates' && typeof index === 'number') {
       const updated = await dbService.removeBlockedDateRange(id, index);
