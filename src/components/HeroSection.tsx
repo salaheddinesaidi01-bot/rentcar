@@ -8,67 +8,94 @@ interface HeroSectionProps {
   startDate: string;
   endDate: string;
   onDatesChange: (start: string, end: string) => void;
-  availableCount?: number;
+  availableCount: number;
 }
 
 export default function HeroSection({
   startDate,
   endDate,
   onDatesChange,
-  availableCount,
+  availableCount = 0,
 }: HeroSectionProps) {
   return (
-    <section className="relative min-h-[92vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden">
+    <section className="relative min-h-[96vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden bg-slate-50">
       
-      {/* Background Dark Luxury Automotive Atmosphere */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-midnight-950 via-midnight-900 to-midnight-950" />
+      {/* Background Sharp Driving Car with Shadow - NOT BLURRY */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         
-        {/* Glow orb behind the title */}
+        {/* Crisp, Sharp Image of Car Rolling on Road with its Shadow */}
         <motion.div
-          animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.22, 0.15] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-brand-orange/20 rounded-full blur-[140px]"
-        />
-        
-        {/* Subtle automotive silhouette watermark overlay */}
-        <div 
-          className="absolute inset-0 opacity-25 bg-center bg-cover bg-no-repeat mix-blend-luminosity"
+          initial={{ opacity: 0, scale: 1 }}
+          animate={{
+            opacity: 1,
+            scale: [1, 1.025, 1],
+            x: [-15, 15, -15],
+            y: [-2, 3, -2],
+          }}
+          transition={{
+            opacity: { duration: 1 },
+            scale: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
+            x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+            y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' },
+          }}
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=80')`,
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%)',
+            backgroundImage: `url('/images/hero-driving-car.jpg')`,
           }}
         />
 
-        {/* Technical grid backdrop */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)]" />
+        {/* Subtle, elegant light gradient overlay to keep text 100% crisp while keeping car perfectly visible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/45 to-slate-50/95" />
+
+        {/* Ambient warm light accent */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-brand-orange/15 rounded-full blur-[140px]" />
+
+        {/* Animated road speed light streaks */}
+        <div className="absolute inset-x-0 bottom-1/3 h-20 overflow-hidden opacity-40">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ x: '120%', opacity: 0 }}
+              animate={{ x: '-150%', opacity: [0, 0.9, 0] }}
+              transition={{
+                duration: 2 + i * 0.4,
+                repeat: Infinity,
+                ease: 'linear',
+                delay: i * 0.45,
+              }}
+              className="absolute h-0.5 bg-gradient-to-r from-transparent via-brand-orange to-transparent"
+              style={{
+                top: `${i * 16}px`,
+                width: `${140 + i * 50}px`,
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center text-center">
         
-
-        {/* Massive Bold Heading: LOUEZ. ROULEZ. with animations */}
+        {/* Massive Bold Heading: LOUEZ. ROULEZ. */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] select-none"
         >
-          <span className="block text-white drop-shadow-md">
+          <span className="block text-slate-900 drop-shadow-[0_4px_20px_rgba(255,255,255,0.9)]">
             LOUEZ.
           </span>
-          <span className="block bg-gradient-to-r from-brand-orange via-brand-amber to-brand-light bg-clip-text text-transparent filter drop-shadow-[0_4px_30px_rgba(255,107,0,0.4)]">
+          <span className="block bg-gradient-to-r from-brand-orange via-brand-amber to-brand-dark bg-clip-text text-transparent filter drop-shadow-[0_6px_30px_rgba(255,107,0,0.45)]">
             ROULEZ.
           </span>
         </motion.h1>
 
-        {/* Subtitle strictly focused on agency pickup */}
+        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-8 max-w-2xl text-base sm:text-lg text-slate-300 font-normal leading-relaxed text-balance"
+          className="mt-8 max-w-2xl text-base sm:text-lg text-slate-700 font-medium leading-relaxed text-balance drop-shadow-sm"
         >
           La liberté de la route à Tlemcen. Citadines et berlines récentes et entretenues, retrait rapide des clés directement à notre agence sans démarche superflue.
         </motion.p>
