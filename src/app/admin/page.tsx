@@ -20,7 +20,7 @@ export default async function AdminPage() {
   const availableVehicles = vehicles.filter((v) => v.available).length;
 
   return (
-    <div className="min-h-screen bg-midnight-950 text-slate-100">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <AdminAuthGate>
         <AdminHeader />
 
@@ -29,50 +29,50 @@ export default async function AdminPage() {
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
             
-            <div className="p-5 rounded-2xl glass-panel border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-mono uppercase">En attente</span>
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+            <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-slate-500">
+                <span className="text-xs font-mono uppercase font-bold">En attente</span>
+                <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
                   <Clock className="w-4 h-4" />
                 </div>
               </div>
-              <div className="text-3xl font-black text-amber-400">{pendingReservations}</div>
-              <p className="text-[11px] text-slate-400">À confirmer en priorité</p>
+              <div className="text-3xl font-black text-amber-600">{pendingReservations}</div>
+              <p className="text-[11px] text-slate-500">À confirmer en priorité</p>
             </div>
 
-            <div className="p-5 rounded-2xl glass-panel border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-mono uppercase">Confirmées</span>
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+            <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-slate-500">
+                <span className="text-xs font-mono uppercase font-bold">Confirmées</span>
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
               </div>
-              <div className="text-3xl font-black text-emerald-400">{confirmedReservations}</div>
-              <p className="text-[11px] text-slate-400">Réservations validées</p>
+              <div className="text-3xl font-black text-emerald-600">{confirmedReservations}</div>
+              <p className="text-[11px] text-slate-500">Réservations validées</p>
             </div>
 
-            <div className="p-5 rounded-2xl glass-panel border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-mono uppercase">Chiffre d&apos;affaires</span>
-                <div className="w-8 h-8 rounded-lg bg-brand-orange/10 text-brand-orange flex items-center justify-center">
+            <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-slate-500">
+                <span className="text-xs font-mono uppercase font-bold">Chiffre d&apos;affaires</span>
+                <div className="w-8 h-8 rounded-lg bg-orange-50 text-brand-orange border border-orange-200 flex items-center justify-center">
                   <DollarSign className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-2xl font-black text-brand-orange">{formatDA(totalRevenue)}</div>
-              <p className="text-[11px] text-slate-400">Total cumulé estimé</p>
+              <p className="text-[11px] text-slate-500">Total cumulé estimé</p>
             </div>
 
-            <div className="p-5 rounded-2xl glass-panel border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-mono uppercase">Flotte Active</span>
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center">
+            <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-slate-500">
+                <span className="text-xs font-mono uppercase font-bold">Flotte Active</span>
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center">
                   <Car className="w-4 h-4" />
                 </div>
               </div>
-              <div className="text-3xl font-black text-white">
-                {availableVehicles} <span className="text-sm font-normal text-slate-400">/ {vehicles.length}</span>
+              <div className="text-3xl font-black text-slate-900">
+                {availableVehicles} <span className="text-sm font-normal text-slate-500">/ {vehicles.length}</span>
               </div>
-              <p className="text-[11px] text-slate-400">Véhicules prêts à rouler</p>
+              <p className="text-[11px] text-slate-500">Véhicules prêts à rouler</p>
             </div>
 
           </div>
@@ -81,7 +81,7 @@ export default async function AdminPage() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <CalendarCheck className="w-5 h-5 text-brand-orange" />
-              <h2 className="text-xl font-black uppercase tracking-wider text-white">
+              <h2 className="text-xl font-black uppercase tracking-wider text-slate-900">
                 Gestion des Demandes de Réservation
               </h2>
             </div>

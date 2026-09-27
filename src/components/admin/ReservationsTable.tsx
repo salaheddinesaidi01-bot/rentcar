@@ -47,28 +47,28 @@ export default function ReservationsTable({
     switch (status) {
       case 'PENDING':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">
             <Clock className="w-3 h-3 animate-pulse" />
             <span>En attente</span>
           </span>
         );
       case 'CONFIRMED':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
             <Check className="w-3 h-3" />
             <span>Confirmée</span>
           </span>
         );
       case 'COMPLETED':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">
             <CheckCheck className="w-3 h-3" />
             <span>Terminée</span>
           </span>
         );
       case 'CANCELLED':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">
             <X className="w-3 h-3" />
             <span>Annulée</span>
           </span>
@@ -80,7 +80,7 @@ export default function ReservationsTable({
     <div className="space-y-6">
       {/* Filter Tabs */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2 bg-midnight-950/80 p-1 rounded-xl border border-white/5">
+        <div className="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
           {[
             { id: 'ALL', label: 'Toutes' },
             { id: 'PENDING', label: 'En attente' },
@@ -93,8 +93,8 @@ export default function ReservationsTable({
               onClick={() => setFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold uppercase transition-all ${
                 filter === tab.id
-                  ? 'bg-brand-orange text-white shadow-glow-orange'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-brand-orange text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white'
               }`}
             >
               {tab.label}
@@ -102,46 +102,46 @@ export default function ReservationsTable({
           ))}
         </div>
 
-        <div className="text-xs font-mono text-slate-400">
-          Total : <span className="text-white font-bold">{filtered.length}</span> réservation(s)
+        <div className="text-xs font-mono text-slate-500">
+          Total : <span className="text-slate-900 font-bold">{filtered.length}</span> réservation(s)
         </div>
       </div>
 
       {/* Table Container */}
-      <div className="rounded-2xl glass-panel border border-white/10 overflow-hidden">
+      <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-midnight-950 text-slate-400 uppercase font-mono text-[11px] border-b border-white/10">
+          <table className="w-full text-left text-xs text-slate-600">
+            <thead className="bg-slate-100/80 text-slate-700 uppercase font-mono text-[11px] border-b border-slate-200">
               <tr>
-                <th className="px-6 py-4">Client</th>
-                <th className="px-6 py-4">Véhicule</th>
-                <th className="px-6 py-4">Période & Durée</th>
-                <th className="px-6 py-4">Prise en charge</th>
-                <th className="px-6 py-4">Montant</th>
-                <th className="px-6 py-4">Statut</th>
-                <th className="px-6 py-4 text-right">Actions</th>
+                <th className="px-6 py-4 font-bold">Client</th>
+                <th className="px-6 py-4 font-bold">Véhicule</th>
+                <th className="px-6 py-4 font-bold">Période & Durée</th>
+                <th className="px-6 py-4 font-bold">Prise en charge</th>
+                <th className="px-6 py-4 font-bold">Montant</th>
+                <th className="px-6 py-4 font-bold">Statut</th>
+                <th className="px-6 py-4 text-right font-bold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200">
               {filtered.map((res) => (
-                <tr key={res.id} className="hover:bg-white/[0.02] transition-colors">
+                <tr key={res.id} className="hover:bg-slate-50/80 transition-colors">
                   
                   {/* Client info */}
                   <td className="px-6 py-4">
-                    <div className="font-bold text-white text-sm">{res.customerName}</div>
+                    <div className="font-bold text-slate-900 text-sm">{res.customerName}</div>
                     <div className="flex items-center gap-2 mt-1">
                       <a
                         href={`https://wa.me/${res.customerPhone.replace(/[^0-9]/g, '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-emerald-400 hover:underline font-mono"
+                        className="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-700 hover:underline font-mono font-medium"
                       >
-                        <MessageSquare className="w-3 h-3 fill-emerald-400" />
+                        <MessageSquare className="w-3 h-3 fill-emerald-600" />
                         <span>{res.customerPhone}</span>
                       </a>
                     </div>
                     {res.notes && (
-                      <div className="text-[11px] text-slate-400 mt-1 italic">
+                      <div className="text-[11px] text-slate-500 mt-1 italic">
                         Note: {res.notes}
                       </div>
                     )}
@@ -149,16 +149,16 @@ export default function ReservationsTable({
 
                   {/* Vehicle */}
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-white">
+                    <div className="font-bold text-slate-900">
                       {res.vehicle?.name || 'Véhicule'}
                     </div>
-                    <div className="text-[11px] text-slate-400 font-mono">
+                    <div className="text-[11px] text-slate-500 font-mono">
                       {res.vehicle?.category}
                     </div>
                   </td>
 
                   {/* Dates */}
-                  <td className="px-6 py-4 space-y-0.5">
+                  <td className="px-6 py-4 space-y-0.5 text-slate-700">
                     <div>Du {formatDateTimeFR(res.startDate)}</div>
                     <div>Au {formatDateTimeFR(res.endDate)}</div>
                     <div className="text-brand-orange font-mono font-bold text-[11px]">
@@ -168,7 +168,7 @@ export default function ReservationsTable({
 
                   {/* Pickup location */}
                   <td className="px-6 py-4">
-                    <span className="font-medium text-slate-200">{res.pickupLocation}</span>
+                    <span className="font-medium text-slate-800">{res.pickupLocation}</span>
                   </td>
 
                   {/* Total price */}
@@ -176,7 +176,7 @@ export default function ReservationsTable({
                     <div className="text-sm font-black text-brand-orange">
                       {formatDA(res.totalPrice)}
                     </div>
-                    <div className="text-[10px] text-slate-400 font-mono">
+                    <div className="text-[10px] text-slate-500 font-mono">
                       Sur place
                     </div>
                   </td>
@@ -191,8 +191,8 @@ export default function ReservationsTable({
                         <button
                           onClick={() => handleStatusChange(res.id, 'CONFIRMED')}
                           disabled={loadingId === res.id}
-                          className="px-2.5 py-1.5 rounded-lg bg-emerald-600/80 hover:bg-emerald-500 text-white font-semibold text-[11px] transition-all flex items-center gap-1"
-                          title="Confirmer la réservation"
+                          className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] transition-all flex items-center gap-1 shadow-sm cursor-pointer"
+                          title="Confirmer la réservation (bloque automatiquement la période)"
                         >
                           {loadingId === res.id ? (
                             <RefreshCw className="w-3 h-3 animate-spin" />
@@ -207,7 +207,7 @@ export default function ReservationsTable({
                         <button
                           onClick={() => handleStatusChange(res.id, 'COMPLETED')}
                           disabled={loadingId === res.id}
-                          className="px-2.5 py-1.5 rounded-lg bg-blue-600/80 hover:bg-blue-500 text-white font-semibold text-[11px] transition-all flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] transition-all flex items-center gap-1 shadow-sm cursor-pointer"
                           title="Marquer comme terminée"
                         >
                           <CheckCheck className="w-3 h-3" />
@@ -219,8 +219,8 @@ export default function ReservationsTable({
                         <button
                           onClick={() => handleStatusChange(res.id, 'CANCELLED')}
                           disabled={loadingId === res.id}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/30 transition-colors"
-                          title="Annuler la réservation"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition-colors cursor-pointer"
+                          title="Annuler la réservation (libère automatiquement la période)"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -233,7 +233,7 @@ export default function ReservationsTable({
 
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center text-slate-400">
+                  <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
                     Aucune réservation trouvée dans cette catégorie.
                   </td>
                 </tr>

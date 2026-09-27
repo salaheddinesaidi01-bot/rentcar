@@ -180,33 +180,32 @@ export const dbService = {
     };
 
     inMemoryStore.reservations.unshift(newRes);
-
-    // Automatically register the reserved date range as blocked on that vehicle (turns red in calendar)
-    const veh = inMemoryStore.vehicles.find((v) => v.id === data.vehicleId);
-    if (veh) {
-      if (!veh.blockedDates) veh.blockedDates = [];
-      veh.blockedDates.push({ startDate: data.startDate, endDate: data.endDate });
-    }
-
     return newRes;
   },
 
   async updateReservationStatus(id: string, status: ReservationStatus): Promise<Reservation | null> {
     const res = inMemoryStore.reservations.find((r) => r.id === id);
     if (res) {
-      const oldStatus = res.status;
       res.status = status;
 
+      // Automatically sync vehicle blockedDates on admin validation
       const veh = inMemoryStore.vehicles.find((v) => v.id === res.vehicleId);
-      if (veh && veh.blockedDates) {
-        if (status === 'CANCELLED') {
-          // Free up the dates (turn back to green in calendar)
+      if (veh) {
+        if (!veh.blockedDates) veh.blockedDates = [];
+
+        if (status === 'CONFIRMED') {
+          // Dès que l'admin valide, la période est automatiquement bloquée dans la disponibilité de la voiture
+          const alreadyBlocked = veh.blockedDates.some(
+            (b) => b.startDate === res.startDate && b.endDate === res.endDate
+          );
+          if (!alreadyBlocked) {
+            veh.blockedDates.push({ startDate: res.startDate, endDate: res.endDate });
+          }
+        } else if (status === 'CANCELLED') {
+          // Libération automatique de la période en cas d'annulation
           veh.blockedDates = veh.blockedDates.filter(
             (b) => !(b.startDate === res.startDate && b.endDate === res.endDate)
           );
-        } else if (oldStatus === 'CANCELLED' && (status === 'CONFIRMED' || status === 'PENDING')) {
-          // Re-block dates if reactivated
-          veh.blockedDates.push({ startDate: res.startDate, endDate: res.endDate });
         }
       }
 
