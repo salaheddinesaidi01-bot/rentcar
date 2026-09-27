@@ -25,6 +25,7 @@ export default function FleetSection({
 }: FleetSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState('Tous');
   const [onlyAvailable, setOnlyAvailable] = useState(true);
+  const [currency, setCurrency] = useState<'DZD' | 'EUR'>('DZD');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -56,7 +57,7 @@ export default function FleetSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header with Frosted Glass Container */}
-        <div className="bg-white/85 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-md flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
@@ -72,7 +73,7 @@ export default function FleetSection({
             </h2>
 
             {/* Date period reminder banner */}
-            <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-white/90 border border-slate-200 shadow-sm text-xs font-mono text-slate-700">
+            <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-xs font-mono text-slate-700">
               <Calendar className="w-4 h-4 text-brand-orange" />
               <span>
                 Disponibilités du <strong className="text-slate-900">{formatDateFR(startDate)}</strong> au <strong className="text-slate-900">{formatDateFR(endDate)}</strong>
@@ -83,16 +84,42 @@ export default function FleetSection({
             </div>
           </div>
 
-          {/* Filter Pills and Availability toggle */}
+          {/* Filter Controls & Currency Switcher */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             
+            {/* Currency toggle DZD / EUR (Inspired by Drivly) */}
+            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-xs">
+              <button
+                onClick={() => setCurrency('DZD')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                  currency === 'DZD'
+                    ? 'bg-brand-orange text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Afficher en Dinars Algériens"
+              >
+                DZD (DA)
+              </button>
+              <button
+                onClick={() => setCurrency('EUR')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                  currency === 'EUR'
+                    ? 'bg-brand-orange text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Afficher en Euros"
+              >
+                EUR (€)
+              </button>
+            </div>
+
             {/* Category pills */}
             <div className="flex flex-wrap items-center gap-1.5 bg-slate-50/90 p-1.5 rounded-xl border border-slate-200 shadow-inner">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                     selectedCategory === cat
                       ? 'bg-brand-orange text-white shadow-md'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-white'
@@ -106,7 +133,7 @@ export default function FleetSection({
             {/* Only available toggle */}
             <button
               onClick={() => setOnlyAvailable(!onlyAvailable)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 border transition-all shadow-sm ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 border transition-all shadow-sm cursor-pointer ${
                 onlyAvailable
                   ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                   : 'bg-white border-slate-200 text-slate-500'
@@ -125,6 +152,7 @@ export default function FleetSection({
               key={vehicle.id}
               vehicle={vehicle}
               isAvailable={vehicle.isAvailableForSelectedDates}
+              currency={currency}
               onSelect={handleSelectVehicle}
             />
           ))}

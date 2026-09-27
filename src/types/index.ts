@@ -30,6 +30,9 @@ export interface Vehicle {
   blockedDates?: DateRange[];
   plateNumber?: string;
   year: number;
+  rating?: number;
+  reviewCount?: number;
+  badge?: string;
   maintenance?: VehicleMaintenance;
   createdAt?: string;
   updatedAt?: string;

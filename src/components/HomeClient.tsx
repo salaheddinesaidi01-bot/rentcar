@@ -6,6 +6,8 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import FleetSection from '@/components/FleetSection';
 import AboutSection from '@/components/AboutSection';
+import ReviewsSection from '@/components/ReviewsSection';
+import FaqSection from '@/components/FaqSection';
 import MapSection from '@/components/MapSection';
 import Footer from '@/components/Footer';
 import { Vehicle } from '@/types';
@@ -89,7 +91,7 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
         availableCount={availableCount}
       />
 
-      {/* 3. Fleet Catalog filtered by date availability & categories */}
+      {/* 3. Fleet Catalog (Notre Flotte) */}
       <FleetSection
         vehicles={initialVehicles}
         startDate={startDate}
@@ -97,13 +99,19 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
         onDatesChange={handleDatesChange}
       />
 
-      {/* 4. Localisation Agence & Google Maps */}
+      {/* 4. Customer Reviews & Ratings (Les Avis) */}
+      <ReviewsSection />
+
+      {/* 5. Agency Location & Map */}
       <MapSection />
 
-      {/* 5. À Propos de Nous (About Us) Section */}
+      {/* 6. FAQ Accordion (Vos Questions) */}
+      <FaqSection />
+
+      {/* 7. À Propos de Nous (About Us) Section */}
       <AboutSection />
 
-      {/* 6. Footer */}
+      {/* 8. Footer */}
       <Footer />
     </div>
   );

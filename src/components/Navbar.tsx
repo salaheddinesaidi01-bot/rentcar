@@ -39,33 +39,47 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             <a
               href="#reservation"
               className="text-sm font-semibold text-slate-700 hover:text-brand-orange transition-colors relative group py-1"
             >
-              Vérifier Disponibilité
+              Disponibilité
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-orange transition-all duration-300 group-hover:w-full" />
             </a>
             <a
               href="#flotte"
               className="text-sm font-semibold text-slate-700 hover:text-brand-orange transition-colors relative group py-1"
             >
-              Nos Véhicules
+              Notre Flotte
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-orange transition-all duration-300 group-hover:w-full" />
+            </a>
+            <a
+              href="#avis"
+              className="text-sm font-semibold text-slate-700 hover:text-brand-orange transition-colors relative group py-1"
+            >
+              Avis Clients
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-orange transition-all duration-300 group-hover:w-full" />
+            </a>
+            <a
+              href="#faq"
+              className="text-sm font-semibold text-slate-700 hover:text-brand-orange transition-colors relative group py-1"
+            >
+              Vos Questions
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-orange transition-all duration-300 group-hover:w-full" />
             </a>
             <a
               href="#agence"
               className="text-sm font-semibold text-slate-700 hover:text-brand-orange transition-colors relative group py-1"
             >
-              Localisation Agence
+              Localisation
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-orange transition-all duration-300 group-hover:w-full" />
             </a>
             <a
               href="#a-propos"
               className="text-sm font-semibold text-slate-700 hover:text-brand-orange transition-colors relative group py-1"
             >
-              À Propos de Nous
+              À Propos
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-orange transition-all duration-300 group-hover:w-full" />
             </a>
           </div>
@@ -89,7 +103,7 @@ export default function Navbar() {
           {/* Mobile menu trigger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            className="lg:hidden p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             aria-label="Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -105,7 +119,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white/95 border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 shadow-xl"
+            className="lg:hidden bg-white/95 border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 shadow-xl"
           >
             <a
               href="#reservation"
@@ -119,7 +133,21 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-semibold text-slate-800 hover:text-brand-orange hover:bg-slate-50"
             >
-              Nos Véhicules
+              Notre Flotte
+            </a>
+            <a
+              href="#avis"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-md text-base font-semibold text-slate-800 hover:text-brand-orange hover:bg-slate-50"
+            >
+              Avis Clients (4.9/5)
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-md text-base font-semibold text-slate-800 hover:text-brand-orange hover:bg-slate-50"
+            >
+              Vos Questions (FAQ)
             </a>
             <a
               href="#agence"

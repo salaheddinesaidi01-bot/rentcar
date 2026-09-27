@@ -28,6 +28,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-12456-123',
+    rating: 4.8,
+    reviewCount: 142,
+    badge: 'Idéal Ville & Éco',
     blockedDates: [
       { startDate: '2026-09-24', endDate: '2026-09-27' },
       { startDate: '2026-10-10', endDate: '2026-10-14' },
@@ -58,6 +61,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2024,
     plateNumber: '13-25890-124',
+    rating: 4.9,
+    reviewCount: 118,
+    badge: 'Top Populaire',
     blockedDates: [
       { startDate: '2026-09-28', endDate: '2026-09-30' },
       { startDate: '2026-10-18', endDate: '2026-10-22' },
@@ -88,6 +94,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-33412-123',
+    rating: 4.7,
+    reviewCount: 94,
+    badge: 'Grand Coffre',
     blockedDates: [
       { startDate: '2026-10-01', endDate: '2026-10-05' }
     ],
@@ -117,6 +126,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-44109-123',
+    rating: 4.9,
+    reviewCount: 76,
+    badge: 'Prestige & Sport',
     blockedDates: [
       { startDate: '2026-09-25', endDate: '2026-09-26' },
       { startDate: '2026-10-05', endDate: '2026-10-08' },
@@ -147,6 +159,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2023,
     plateNumber: '13-55912-123',
+    rating: 4.8,
+    reviewCount: 65,
+    badge: 'Coup de Cœur',
     blockedDates: [
       { startDate: '2026-10-12', endDate: '2026-10-16' },
     ],
@@ -176,6 +191,9 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     available: true,
     year: 2024,
     plateNumber: '13-67891-124',
+    rating: 5.0,
+    reviewCount: 88,
+    badge: 'Grand Espace & 4x4',
     blockedDates: [
       { startDate: '2026-09-29', endDate: '2026-10-02' },
     ],

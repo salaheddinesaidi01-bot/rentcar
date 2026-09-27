@@ -44,7 +44,17 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#flotte" className="hover:text-brand-orange transition-colors">
-                  Catalogue de nos véhicules
+                  Notre Flotte & Tarifs DZD / EUR
+                </a>
+              </li>
+              <li>
+                <a href="#avis" className="hover:text-brand-orange transition-colors">
+                  Avis Clients & Témoignages (4.9/5)
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-brand-orange transition-colors">
+                  Vos Questions Fréquentes (FAQ)
                 </a>
               </li>
               <li>
