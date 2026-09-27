@@ -37,54 +37,27 @@ const STATS = [
 
 export default function AboutSection() {
   return (
-    <section id="a-propos" className="relative py-28 bg-white border-t border-slate-200/80 overflow-hidden">
+    <section id="a-propos" className="relative py-28 bg-transparent overflow-hidden z-10">
       
-      {/* Background Sharp Driving Car in Mountains with Road Shadow - ZERO BLUR, 100% CRISP */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0, scale: 1 }}
-          whileInView={{ opacity: 1, scale: [1, 1.025, 1] }}
-          viewport={{ once: true }}
-          transition={{
-            opacity: { duration: 0.8 },
-            scale: { duration: 16, repeat: Infinity, ease: 'easeInOut' },
-          }}
-          className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-[center_top] bg-no-repeat"
-          style={{
-            backgroundImage: `url('/images/about-driving-car.jpg')`,
-          }}
-        />
-
-        {/* Soft elegant light wash keeping car, road, and mountains clearly visible behind content */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/75 to-slate-100/95" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Badge */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2 mb-3"
-        >
-          <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
-            ( 04 )
-          </span>
-          <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500">
-            NOTRE HISTOIRE & ENGAGEMENT
-          </span>
-        </motion.div>
-
-        {/* Section Heading */}
+        {/* Section Heading in Frosted Glass Container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-3xl mb-14"
+          className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl max-w-3xl mb-14"
         >
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
+              ( 04 )
+            </span>
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
+              NOTRE HISTOIRE & ENGAGEMENT
+            </span>
+          </div>
+
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
             À PROPOS DE <span className="text-brand-orange">AGENCE TOUR</span>.
           </h2>

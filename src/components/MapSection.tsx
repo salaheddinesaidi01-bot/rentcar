@@ -11,15 +11,12 @@ export default function MapSection() {
   )}`;
 
   return (
-    <section id="agence" className="py-24 bg-slate-50 border-t border-slate-200/80 relative overflow-hidden">
+    <section id="agence" className="py-24 bg-transparent relative overflow-hidden z-10">
       
-      {/* Background radial glow */}
-      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[400px] bg-brand-orange/5 blur-[160px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        {/* Section Header in Frosted Glass Container */}
+        <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl text-center max-w-3xl mx-auto mb-14 space-y-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -29,7 +26,7 @@ export default function MapSection() {
             <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
               ( 03 )
             </span>
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
               LOCALISATION & RETRAIT DES CLÉS
             </span>
           </motion.div>

@@ -12,110 +12,38 @@ interface HeroSectionProps {
   availableCount: number;
 }
 
-const HERO_PHOTOS = [
-  {
-    id: 'photo-1',
-    label: 'Berline S-Klasse',
-    sublabel: 'Routière de Prestige',
-    src: '/images/hero-driving-car.jpg',
-  },
-  {
-    id: 'photo-2',
-    label: 'SUV Range Rover',
-    sublabel: 'Aventure & Grand Confort',
-    src: '/images/fleet-driving-car.jpg',
-  },
-];
-
 export default function HeroSection({
   startDate,
   endDate,
   onDatesChange,
   availableCount = 0,
 }: HeroSectionProps) {
-  const [activePhoto, setActivePhoto] = useState(0);
-
-  // Auto-switch between photo 1 and photo 2 every 6 seconds with smooth animation
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActivePhoto((prev) => (prev + 1) % HERO_PHOTOS.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
-    <section className="relative min-h-[96vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden bg-slate-50">
-      
-      {/* Background Animated Switching Driving Cars - ZERO BLUR, 100% CRISP */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        
-        {/* Animated Smooth Crossfade & Scale Switch between Photo 1 and Photo 2 */}
-        <AnimatePresence mode="wait">
+    <section className="relative min-h-[92vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden bg-transparent z-10">
+      {/* Crisp road speed dynamic streaks overlay */}
+      <div className="absolute inset-x-0 bottom-1/4 h-24 overflow-hidden opacity-40 pointer-events-none">
+        {[...Array(4)].map((_, i) => (
           <motion.div
-            key={HERO_PHOTOS[activePhoto].id}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{
-              opacity: 1,
-              scale: [1.02, 1, 1.02],
-            }}
-            exit={{ opacity: 0, scale: 0.98 }}
+            key={i}
+            initial={{ x: '120%', opacity: 0 }}
+            animate={{ x: '-150%', opacity: [0, 0.95, 0] }}
             transition={{
-              opacity: { duration: 1.1, ease: 'easeInOut' },
-              scale: { duration: 12, repeat: Infinity, ease: 'easeInOut' },
+              duration: 2.2 + i * 0.4,
+              repeat: Infinity,
+              ease: 'linear',
+              delay: i * 0.5,
             }}
-            className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-[center_35%] bg-no-repeat"
+            className="absolute h-0.5 bg-gradient-to-r from-transparent via-brand-orange to-transparent"
             style={{
-              backgroundImage: `url('${HERO_PHOTOS[activePhoto].src}')`,
+              top: `${i * 20}px`,
+              width: `${160 + i * 60}px`,
             }}
           />
-        </AnimatePresence>
-
-        {/* Dark cinematic contrast overlay for 100% text legibility over both bright and dark photos */}
-        <div className="absolute inset-0 bg-slate-950/40" />
-        <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-slate-950/85 via-slate-950/50 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-100 via-slate-100/60 to-transparent" />
-
-        {/* Crisp road speed dynamic streaks */}
-        <div className="absolute inset-x-0 bottom-1/4 h-24 overflow-hidden opacity-50">
-          {[...Array(4)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ x: '120%', opacity: 0 }}
-              animate={{ x: '-150%', opacity: [0, 0.95, 0] }}
-              transition={{
-                duration: 2.2 + i * 0.4,
-                repeat: Infinity,
-                ease: 'linear',
-                delay: i * 0.5,
-              }}
-              className="absolute h-0.5 bg-gradient-to-r from-transparent via-brand-orange to-transparent"
-              style={{
-                top: `${i * 20}px`,
-                width: `${160 + i * 60}px`,
-              }}
-            />
-          ))}
-        </div>
+        ))}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center text-center">
-
-        {/* Photo Switcher Indicator Badges */}
-        <div className="mb-4 flex items-center gap-2 p-1 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20">
-          {HERO_PHOTOS.map((photo, index) => (
-            <button
-              key={photo.id}
-              onClick={() => setActivePhoto(index)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300 ${
-                activePhoto === index
-                  ? 'bg-brand-orange text-white shadow-md'
-                  : 'text-slate-300 hover:text-white'
-              }`}
-            >
-              {photo.label}
-            </button>
-          ))}
-        </div>
         
         {/* Massive Bold Heading: LOUEZ. ROULEZ. with Ultra-Crisp Contrast */}
         <motion.h1

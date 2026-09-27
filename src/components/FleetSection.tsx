@@ -52,28 +52,7 @@ export default function FleetSection({
   };
 
   return (
-    <section id="flotte" className="relative py-28 border-t border-slate-200/80 overflow-hidden bg-slate-100">
-      
-      {/* Background Sharp Driving SUV with Road Shadow - ZERO BLUR, 100% CRISP */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0, scale: 1 }}
-          whileInView={{ opacity: 1, scale: [1, 1.025, 1] }}
-          viewport={{ once: true }}
-          transition={{
-            opacity: { duration: 0.8 },
-            scale: { duration: 16, repeat: Infinity, ease: 'easeInOut' },
-          }}
-          className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-[center_top] bg-no-repeat"
-          style={{
-            backgroundImage: `url('/images/fleet-driving-car.jpg')`,
-          }}
-        />
-
-        {/* Soft elegant light wash keeping car and coastal road clearly visible behind cards */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-100/90 via-white/70 to-slate-100/90" />
-      </div>
-
+    <section id="flotte" className="relative py-28 overflow-hidden bg-transparent z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header with Frosted Glass Container */}
