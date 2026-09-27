@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { INITIAL_VEHICLES, INITIAL_RESERVATIONS, AGENCY_INFO } from './seed-data';
-import { Vehicle, Reservation, ReservationStatus, DateRange } from '../types';
+import { Vehicle, Reservation, ReservationStatus, DateRange, VehicleMaintenance } from '../types';
 import { isVehicleAvailableForDates } from './utils';
 
 declare global {
@@ -173,7 +173,7 @@ export const dbService = {
     const newRes: Reservation = {
       id: `res-${Date.now()}`,
       ...data,
-      pickupLocation: data.pickupLocation || 'Agence Salah Tour Tlemcen (Centre-Ville)',
+      pickupLocation: data.pickupLocation || 'Agence Tour Tlemcen (Centre-Ville)',
       status: 'PENDING',
       createdAt: new Date().toISOString(),
       vehicle: inMemoryStore.vehicles.find((v) => v.id === data.vehicleId),
@@ -181,6 +181,14 @@ export const dbService = {
 
     inMemoryStore.reservations.unshift(newRes);
     return newRes;
+  },
+
+  async updateVehicleMaintenance(id: string, maintenance: VehicleMaintenance): Promise<Vehicle | null> {
+    const veh = inMemoryStore.vehicles.find((v) => v.id === id);
+    if (!veh) return null;
+    veh.maintenance = { ...maintenance };
+    veh.updatedAt = new Date().toISOString();
+    return veh;
   },
 
   async updateReservationStatus(id: string, status: ReservationStatus): Promise<Reservation | null> {

@@ -3,6 +3,17 @@ export interface DateRange {
   endDate: string;   // YYYY-MM-DD
 }
 
+export interface VehicleMaintenance {
+  currentMileage: number;             // Kilométrage actuel (km)
+  lastOilChangeKm: number;           // Kilométrage du dernier vidange (km)
+  nextOilChangeKm: number;           // Kilométrage du prochain vidange (km)
+  lastOilChangeDate?: string;        // Date du dernier vidange (YYYY-MM-DD)
+  insuranceExpiry: string;           // Date d'expiration assurance (YYYY-MM-DD)
+  insuranceCompany: string;          // Compagnie d'assurance (ex: CAAT, SAA, CIAR)
+  technicalInspectionExpiry: string; // Date d'expiration contrôle technique (YYYY-MM-DD)
+  notes?: string;                    // Remarques
+}
+
 export interface Vehicle {
   id: string;
   name: string;
@@ -19,6 +30,7 @@ export interface Vehicle {
   blockedDates?: DateRange[];
   plateNumber?: string;
   year: number;
+  maintenance?: VehicleMaintenance;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -82,7 +82,7 @@ export default function BookingWidget({
         <div className="flex items-center gap-2">
           <Building2 className="w-4 h-4 text-brand-orange flex-shrink-0" />
           <span>
-            Retrait & Restitution à l&apos;<strong>Agence Salah Tour</strong> (Centre-Ville Tlemcen)
+            Retrait & Restitution à l&apos;<strong>Agence Tour</strong> (Centre-Ville Tlemcen)
           </span>
         </div>
         <span className="hidden sm:inline font-mono text-[11px] text-emerald-600 font-bold">

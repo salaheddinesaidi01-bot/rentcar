@@ -15,7 +15,7 @@ export default function AdminAuthGate({ children }: AdminAuthGateProps) {
 
   useEffect(() => {
     setMounted(true);
-    const session = sessionStorage.getItem('salah_tour_admin_auth');
+    const session = sessionStorage.getItem('agence_tour_admin_auth') || sessionStorage.getItem('salah_tour_admin_auth');
     if (session === 'true') {
       setIsAuthenticated(true);
     }
@@ -26,7 +26,7 @@ export default function AdminAuthGate({ children }: AdminAuthGateProps) {
     // Default PIN: 13000 (Postal code of Tlemcen) or 'admin'
     if (pin === '13000' || pin === 'admin' || pin === '1234') {
       setIsAuthenticated(true);
-      sessionStorage.setItem('salah_tour_admin_auth', 'true');
+      sessionStorage.setItem('agence_tour_admin_auth', 'true');
       setError(false);
     } else {
       setError(true);

@@ -1,7 +1,7 @@
 import { Vehicle, Reservation } from '../types';
 
 export const AGENCY_INFO = {
-  name: 'Salah Tour Tlemcen',
+  name: 'Agence Tour Tlemcen',
   address: 'Boulevard Pasteur, Centre-Ville, Tlemcen 13000',
   city: 'Tlemcen',
   coordinates: "34°52'58.0\"N 1°19'00.0\"W",
@@ -32,6 +32,16 @@ export const INITIAL_VEHICLES: Vehicle[] = [
       { startDate: '2026-09-24', endDate: '2026-09-27' },
       { startDate: '2026-10-10', endDate: '2026-10-14' },
     ],
+    maintenance: {
+      currentMileage: 28400,
+      lastOilChangeKm: 20000,
+      nextOilChangeKm: 30000,
+      lastOilChangeDate: '2026-04-10',
+      insuranceExpiry: '2027-02-15',
+      insuranceCompany: 'CAAT Assurances',
+      technicalInspectionExpiry: '2027-03-20',
+      notes: 'Filtre à air et huile remplacés en avril.',
+    },
   },
   {
     id: 'veh-stepway',
@@ -52,6 +62,16 @@ export const INITIAL_VEHICLES: Vehicle[] = [
       { startDate: '2026-09-28', endDate: '2026-09-30' },
       { startDate: '2026-10-18', endDate: '2026-10-22' },
     ],
+    maintenance: {
+      currentMileage: 19500,
+      lastOilChangeKm: 10000,
+      nextOilChangeKm: 20000,
+      lastOilChangeDate: '2026-05-18',
+      insuranceExpiry: '2026-10-25',
+      insuranceCompany: 'SAA Assurances',
+      technicalInspectionExpiry: '2027-04-10',
+      notes: 'Vidange à prévoir sous 500 km ! Assurance expire sous 30 jours.',
+    },
   },
   {
     id: 'veh-accent',
@@ -71,6 +91,16 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     blockedDates: [
       { startDate: '2026-10-01', endDate: '2026-10-05' }
     ],
+    maintenance: {
+      currentMileage: 35100,
+      lastOilChangeKm: 30000,
+      nextOilChangeKm: 40000,
+      lastOilChangeDate: '2026-06-01',
+      insuranceExpiry: '2027-01-30',
+      insuranceCompany: 'CIAR Assurances',
+      technicalInspectionExpiry: '2026-11-15',
+      notes: 'Contrôle technique à renouveler en novembre.',
+    },
   },
   {
     id: 'veh-golf-8',
@@ -91,6 +121,16 @@ export const INITIAL_VEHICLES: Vehicle[] = [
       { startDate: '2026-09-25', endDate: '2026-09-26' },
       { startDate: '2026-10-05', endDate: '2026-10-08' },
     ],
+    maintenance: {
+      currentMileage: 21800,
+      lastOilChangeKm: 15000,
+      nextOilChangeKm: 30000,
+      lastOilChangeDate: '2026-03-20',
+      insuranceExpiry: '2027-05-10',
+      insuranceCompany: 'Cash Assurances',
+      technicalInspectionExpiry: '2027-06-01',
+      notes: 'Plaquettes de frein avant neuves.',
+    },
   },
   {
     id: 'veh-peugeot-208',
@@ -110,6 +150,16 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     blockedDates: [
       { startDate: '2026-10-12', endDate: '2026-10-16' },
     ],
+    maintenance: {
+      currentMileage: 14200,
+      lastOilChangeKm: 10000,
+      nextOilChangeKm: 20000,
+      lastOilChangeDate: '2026-07-05',
+      insuranceExpiry: '2027-04-18',
+      insuranceCompany: 'CAAT Assurances',
+      technicalInspectionExpiry: '2027-05-22',
+      notes: 'Véhicule en parfait état.',
+    },
   },
   {
     id: 'veh-tucson',
@@ -129,6 +179,16 @@ export const INITIAL_VEHICLES: Vehicle[] = [
     blockedDates: [
       { startDate: '2026-09-29', endDate: '2026-10-02' },
     ],
+    maintenance: {
+      currentMileage: 11500,
+      lastOilChangeKm: 10000,
+      nextOilChangeKm: 20000,
+      lastOilChangeDate: '2026-08-12',
+      insuranceExpiry: '2027-08-30',
+      insuranceCompany: 'Alliance Assurances',
+      technicalInspectionExpiry: '2027-09-01',
+      notes: 'Pneus neufs, révision complète concessionnaire effectuée.',
+    },
   },
 ];
 
@@ -139,7 +199,7 @@ export const INITIAL_RESERVATIONS: Reservation[] = [
     customerName: 'Karim Benali',
     customerPhone: '0555 12 34 56',
     customerEmail: 'karim.benali@example.com',
-    pickupLocation: 'Agence Salah Tour Tlemcen',
+    pickupLocation: 'Agence Tour Tlemcen',
     startDate: '2026-09-24',
     endDate: '2026-09-27',
     totalDays: 3,

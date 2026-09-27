@@ -10,7 +10,7 @@ const VALUES = [
     tag: 'PROXIMITÉ & ACCUEIL',
     title: 'Une Agence 100% Locale',
     description:
-      'Implantée en plein cœur de Tlemcen, Salah Tour est une agence indépendante. Nous privilégions le contact humain direct, le conseil personnalisé et un accueil chaleureux pour tous nos clients locaux et de la diaspora.',
+      'Implantée en plein cœur de Tlemcen, Agence Tour est une agence indépendante. Nous privilégions le contact humain direct, le conseil personnalisé et un accueil chaleureux pour tous nos clients locaux et de la diaspora.',
   },
   {
     icon: Award,
@@ -86,7 +86,7 @@ export default function AboutSection() {
           className="max-w-3xl mb-14"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
-            À PROPOS DE <span className="text-brand-orange">SALAH TOUR</span>.
+            À PROPOS DE <span className="text-brand-orange">AGENCE TOUR</span>.
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">
             Votre partenaire de confiance pour explorer Tlemcen et ses environs en toute liberté. Fondée sur des valeurs de transparence et de convivialité, notre agence met à votre disposition des citadines et berlines de premier choix.
@@ -127,7 +127,7 @@ export default function AboutSection() {
 
                 <div className="pt-6 border-t border-slate-200/70 mt-6 flex items-center gap-2 text-xs font-mono text-slate-500">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Engagement Salah Tour</span>
+                  <span>Engagement Agence Tour</span>
                 </div>
               </motion.div>
             );

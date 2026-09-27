@@ -114,6 +114,12 @@ export async function PATCH(request: Request) {
       return NextResponse.json(updated);
     }
 
+    // 5. Mettre à jour le suivi de maintenance (vidange, assurance, contrôle technique)
+    if (action === 'update-maintenance' && body.maintenance) {
+      const updated = await dbService.updateVehicleMaintenance(id, body.maintenance);
+      return NextResponse.json(updated);
+    }
+
     return NextResponse.json({ error: 'Action non reconnue' }, { status: 400 });
   } catch (error) {
     console.error('Failed to update vehicle:', error);

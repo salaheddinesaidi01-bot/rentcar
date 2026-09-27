@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowLeft, Car, CalendarCheck, Shield, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Car, CalendarCheck, Shield, Wrench } from 'lucide-react';
 
 export default function AdminHeader() {
   const pathname = usePathname();
@@ -29,7 +29,7 @@ export default function AdminHeader() {
               <Shield className="w-5 h-5 text-brand-orange" />
               <div>
                 <h1 className="text-sm font-black uppercase tracking-wider text-slate-900">
-                  Salah Tour Admin
+                  Agence Tour Admin
                 </h1>
                 <p className="text-[10px] font-mono text-slate-500">
                   Gestion Flotte & Réservations • Tlemcen
@@ -64,15 +64,17 @@ export default function AdminHeader() {
               <span>Véhicules</span>
             </Link>
 
-            <a
-              href="https://web.whatsapp.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1 text-xs text-emerald-700 hover:text-emerald-800 px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 ml-2 font-medium"
+            <Link
+              href="/admin/maintenance"
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all ${
+                pathname === '/admin/maintenance'
+                  ? 'bg-brand-orange text-white shadow-md shadow-orange-500/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
             >
-              <span>WhatsApp Web</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
+              <Wrench className="w-4 h-4" />
+              <span>Maintenance</span>
+            </Link>
           </div>
 
         </div>

@@ -17,7 +17,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Salah Tour Tlemcen | Location de Voitures & Véhicules Récente Flotte',
+  title: 'Agence Tour Tlemcen | Location de Voitures & Véhicules Récente Flotte',
   description:
     'La liberté de la route à Tlemcen. Citadines et berlines récentes, remise des clés directe à l\'aéroport Messali Hadj, à la gare ou à domicile sans démarche superflue. À partir de 7 000 DA / jour.',
   keywords: [
@@ -25,12 +25,12 @@ export const metadata: Metadata = {
     'louer voiture tlemcen',
     'rent car tlemcen',
     'location aeroport messali hadj',
-    'salah tour tlemcen',
+    'agence tour tlemcen',
     'location clio 5 tlemcen',
   ],
-  authors: [{ name: 'Salah Tour Tlemcen' }],
+  authors: [{ name: 'Agence Tour Tlemcen' }],
   openGraph: {
-    title: 'Salah Tour Tlemcen — Location de Voitures',
+    title: 'Agence Tour Tlemcen — Location de Voitures',
     description: 'Louez. Roulez. Service express de remise de clés à Tlemcen.',
     type: 'website',
   },

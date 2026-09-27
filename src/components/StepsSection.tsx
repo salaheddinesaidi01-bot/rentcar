@@ -16,7 +16,7 @@ const STEPS = [
     phase: 'ÉTAPE 02 • VALIDATION',
     title: 'CONFIRMATION RAPIDE',
     description:
-      'Salah Tour confirme immédiatement votre réservation par téléphone ou WhatsApp. Vos documents et votre contrat sont préparés à l\'avance.',
+      'Agence Tour confirme immédiatement votre réservation par téléphone ou WhatsApp. Vos documents et votre contrat sont préparés à l\'avance.',
   },
   {
     stepNumber: '03',

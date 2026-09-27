@@ -29,11 +29,11 @@ export default function Navbar() {
             </motion.div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="text-xl font-black tracking-wider text-slate-900">SALAH</span>
+                <span className="text-xl font-black tracking-wider text-slate-900">AGENCE</span>
                 <span className="text-xl font-black tracking-wider text-brand-orange">TOUR</span>
               </div>
               <span className="text-[10px] uppercase font-mono tracking-[0.25em] text-slate-500">
-                Agence Location • Tlemcen
+                Location de Voitures • Tlemcen
               </span>
             </div>
           </Link>

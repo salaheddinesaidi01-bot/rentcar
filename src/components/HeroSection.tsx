@@ -70,8 +70,9 @@ export default function HeroSection({
           />
         </AnimatePresence>
 
-        {/* Minimal gradient strictly at top for navbar readability and bottom for section transition */}
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/80 via-white/40 to-transparent" />
+        {/* Dark cinematic contrast overlay for 100% text legibility over both bright and dark photos */}
+        <div className="absolute inset-0 bg-slate-950/40" />
+        <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-slate-950/85 via-slate-950/50 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-100 via-slate-100/60 to-transparent" />
 
         {/* Crisp road speed dynamic streaks */}
@@ -98,8 +99,25 @@ export default function HeroSection({
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center text-center">
+
+        {/* Photo Switcher Indicator Badges */}
+        <div className="mb-4 flex items-center gap-2 p-1 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20">
+          {HERO_PHOTOS.map((photo, index) => (
+            <button
+              key={photo.id}
+              onClick={() => setActivePhoto(index)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300 ${
+                activePhoto === index
+                  ? 'bg-brand-orange text-white shadow-md'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {photo.label}
+            </button>
+          ))}
+        </div>
         
-        {/* Massive Bold Heading: LOUEZ. ROULEZ. with Deep Contrast Shadows */}
+        {/* Massive Bold Heading: LOUEZ. ROULEZ. with Ultra-Crisp Contrast */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -109,32 +127,33 @@ export default function HeroSection({
           <span
             className="block text-white"
             style={{
-              filter: 'drop-shadow(0 6px 20px rgba(0, 0, 0, 0.95)) drop-shadow(0 2px 4px rgba(0, 0, 0, 1))',
+              textShadow: '0 4px 20px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 1)',
+              filter: 'drop-shadow(0 10px 30px rgba(0, 0, 0, 0.9))',
             }}
           >
             LOUEZ.
           </span>
           <span
-            className="block bg-gradient-to-r from-brand-orange via-brand-amber to-orange-400 bg-clip-text text-transparent"
+            className="block bg-gradient-to-r from-brand-orange via-amber-400 to-orange-400 bg-clip-text text-transparent"
             style={{
-              filter: 'drop-shadow(0 8px 25px rgba(0, 0, 0, 0.95)) drop-shadow(0 2px 6px rgba(0, 0, 0, 1))',
+              filter: 'drop-shadow(0 6px 20px rgba(0, 0, 0, 0.95)) drop-shadow(0 12px 35px rgba(0, 0, 0, 0.85))',
             }}
           >
             ROULEZ.
           </span>
         </motion.h1>
 
-        {/* Subtitle: La liberté ... with strong shadow & frosted contrast capsule */}
+        {/* Subtitle: High contrast dark glass capsule */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-6 max-w-2xl px-6 py-3.5 rounded-2xl bg-black/45 backdrop-blur-md border border-white/20 shadow-2xl text-balance"
+          className="mt-6 max-w-2xl px-6 py-4 rounded-2xl bg-slate-950/70 backdrop-blur-md border border-white/25 shadow-2xl text-balance"
         >
           <p
-            className="text-base sm:text-lg text-white font-bold leading-relaxed"
+            className="text-base sm:text-lg text-white font-bold leading-relaxed tracking-wide"
             style={{
-              textShadow: '0 2px 8px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 1)',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.95)',
             }}
           >
             La liberté de la route à Tlemcen. Citadines et berlines récentes et entretenues, retrait rapide des clés directement à notre agence sans démarche superflue.

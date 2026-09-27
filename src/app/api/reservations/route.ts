@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       customerName,
       customerPhone,
       customerEmail,
-      pickupLocation: pickupLocation || 'Agence Salah Tour Tlemcen (Centre-Ville)',
+      pickupLocation: pickupLocation || 'Agence Tour Tlemcen (Centre-Ville)',
       startDate,
       endDate,
       totalDays,

@@ -19,7 +19,7 @@ export default function Footer() {
                 <Car className="w-4 h-4 text-white" />
               </div>
               <span className="text-xl font-black text-white">
-                SALAH <span className="text-brand-orange">TOUR</span>
+                AGENCE <span className="text-brand-orange">TOUR</span>
               </span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -54,7 +54,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#a-propos" className="hover:text-brand-orange transition-colors">
-                  À Propos de Nous (Salah Tour)
+                  À Propos de Nous (Agence Tour)
                 </a>
               </li>
             </ul>
@@ -105,7 +105,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Salah Tour Tlemcen. Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} Agence Tour Tlemcen. Tous droits réservés.</p>
           <div className="flex items-center gap-4 font-mono text-[11px]">
             <span className="text-slate-400">FLOTTE RÉCENTE 2023 - 2024</span>
             <span>•</span>

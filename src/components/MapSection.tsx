@@ -66,7 +66,7 @@ export default function MapSection() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-black text-slate-900">Salah Tour Tlemcen</h3>
+                <h3 className="text-2xl font-black text-slate-900">Agence Tour Tlemcen</h3>
                 <p className="text-sm text-slate-600 mt-1 leading-relaxed">
                   {AGENCY_INFO.address}
                 </p>
@@ -140,7 +140,7 @@ export default function MapSection() {
           >
             {/* Interactive Google Map in natural light style */}
             <iframe
-              title="Localisation Agence Salah Tour Tlemcen"
+              title="Localisation Agence Agence Tour Tlemcen"
               src="https://maps.google.com/maps?q=34.8828,-1.3167&hl=fr&z=15&output=embed"
               width="100%"
               height="100%"
@@ -155,7 +155,7 @@ export default function MapSection() {
             <div className="absolute top-4 left-4 pointer-events-none">
               <div className="px-3.5 py-2 rounded-xl bg-white/95 border border-slate-200 text-slate-900 text-xs font-mono font-bold flex items-center gap-2 shadow-lg backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-brand-orange animate-ping" />
-                <span>Salah Tour Agence • Tlemcen Centre</span>
+                <span>Agence Tour • Tlemcen Centre</span>
               </div>
             </div>
           </motion.div>

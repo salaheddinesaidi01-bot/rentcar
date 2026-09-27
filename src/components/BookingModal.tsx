@@ -131,7 +131,7 @@ export default function BookingModal({
                 Réservation • {vehicle.name}
               </h3>
               <p className="text-[11px] font-mono text-slate-500">
-                Salah Tour Tlemcen • Retrait en agence
+                Agence Tour Tlemcen • Retrait en agence
               </p>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function BookingModal({
             <div className="space-y-2">
               <h4 className="text-2xl font-black text-slate-900">Réservation Confirmée !</h4>
               <p className="text-sm text-slate-600 max-w-md mx-auto">
-                Merci <span className="text-brand-orange font-bold">{customerName}</span>. Salah Tour prépare votre contrat pour votre <span className="font-bold text-slate-900">{vehicle.name}</span>. Retrait prévu à l&apos;agence de Tlemcen.
+                Merci <span className="text-brand-orange font-bold">{customerName}</span>. Agence Tour prépare votre contrat pour votre <span className="font-bold text-slate-900">{vehicle.name}</span>. Retrait prévu à l&apos;agence de Tlemcen.
               </p>
             </div>
 
@@ -232,7 +232,7 @@ export default function BookingModal({
             {/* Retrait à l'agence rappel */}
             <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-orange-50/60 border border-orange-200/60 text-xs text-slate-700">
               <Building2 className="w-4 h-4 text-brand-orange flex-shrink-0" />
-              <span>Retrait & Paiement sur place à l&apos;Agence Salah Tour (Tlemcen Centre)</span>
+              <span>Retrait & Paiement sur place à l&apos;Agence Tour (Tlemcen Centre)</span>
             </div>
 
             {error && (

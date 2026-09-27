@@ -158,7 +158,7 @@ export default function FleetSection({
               Aucun véhicule disponible pour les dates sélectionnées ({formatDateFR(startDate)} au {formatDateFR(endDate)}).
             </p>
             <p className="text-xs text-slate-500">
-              Essayez de décaler vos dates ou contactez directement Salah Tour au 0550 50 50 50.
+              Essayez de décaler vos dates ou contactez directement Agence Tour au 0550 50 50 50.
             </p>
             <button
               onClick={() => setOnlyAvailable(false)}

@@ -100,10 +100,10 @@ export function buildWhatsAppLink(params: {
   const targetPhone = params.phone || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '213550505050';
 
   const lines = [
-    `🚗 *DEMANDE DE RÉSERVATION — SALAH TOUR TLEMCEN*`,
+    `🚗 *DEMANDE DE RÉSERVATION — AGENCE TOUR TLEMCEN*`,
     `----------------------------------------`,
     params.vehicleName ? `🚘 *Véhicule :* ${params.vehicleName}` : `🚘 *Véhicule :* À définir selon disponibilité`,
-    `📍 *Retrait & Retour :* À l'Agence Salah Tour (Tlemcen Centre)`,
+    `📍 *Retrait & Retour :* À l'Agence Tour (Tlemcen Centre)`,
     `📅 *Date de début :* ${formatDateFR(params.startDate)}`,
     `🏁 *Date de fin :* ${formatDateFR(params.endDate)}`,
     `⏱️ *Durée :* ${params.days} jour(s)`,
