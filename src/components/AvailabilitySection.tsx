@@ -33,16 +33,16 @@ export default function AvailabilitySection({
             <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
               ( 01 )
             </span>
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-300 font-semibold">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-950 dark:text-slate-300 font-bold">
               RÉSERVATION EXPRESS
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950 dark:text-white drop-shadow-md transition-colors">
             VÉRIFIEZ LA <span className="text-brand-orange">DISPONIBILITÉ</span>.
           </h2>
 
-          <p className="mt-2 text-sm sm:text-base text-slate-200 max-w-2xl mx-auto drop-shadow-sm">
+          <p className="mt-2 text-sm sm:text-base text-slate-900 dark:text-slate-200 max-w-2xl mx-auto drop-shadow-sm transition-colors font-medium">
             Indiquez vos dates de séjour pour afficher en direct les véhicules prêts à prendre la route à Tlemcen.
           </p>
         </motion.div>

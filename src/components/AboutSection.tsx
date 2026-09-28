@@ -47,21 +47,21 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl max-w-3xl mb-14"
+          className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800/90 rounded-2xl p-6 sm:p-8 shadow-xl max-w-3xl mb-14"
         >
           <div className="flex items-center gap-2 mb-3">
             <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
               ( 04 )
             </span>
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-950 dark:text-slate-300 font-bold">
               NOTRE HISTOIRE & ENGAGEMENT
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
             À PROPOS DE <span className="text-brand-orange">AGENCE TOUR</span>.
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">
+          <p className="mt-4 text-sm sm:text-base text-slate-900 dark:text-slate-300 leading-relaxed font-medium">
             Votre partenaire de confiance pour explorer Tlemcen et ses environs en toute liberté. Fondée sur des valeurs de transparence et de convivialité, notre agence met à votre disposition des citadines et berlines de premier choix.
           </p>
         </motion.div>
@@ -78,7 +78,7 @@ export default function AboutSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 whileHover={{ y: -6, borderColor: 'rgba(255, 107, 0, 0.4)' }}
-                className="group relative rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 p-8 transition-all duration-300 hover:shadow-xl hud-bracket overflow-hidden flex flex-col justify-between"
+                className="group relative rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 p-8 transition-all duration-300 hover:shadow-xl hud-bracket overflow-hidden flex flex-col justify-between"
               >
                 <div className="space-y-4 relative z-10">
                   <div className="w-12 h-12 rounded-xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -89,17 +89,17 @@ export default function AboutSection() {
                     {val.tag}
                   </span>
 
-                  <h3 className="text-xl font-black uppercase tracking-wide text-slate-900 group-hover:text-brand-orange transition-colors">
+                  <h3 className="text-xl font-black uppercase tracking-wide text-slate-900 dark:text-white group-hover:text-brand-orange transition-colors">
                     {val.title}
                   </h3>
 
-                  <p className="text-sm text-slate-600 leading-relaxed pt-1">
+                  <p className="text-sm text-slate-900 dark:text-slate-300 leading-relaxed pt-1 font-medium">
                     {val.description}
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-slate-200/70 mt-6 flex items-center gap-2 text-xs font-mono text-slate-500">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <div className="pt-6 border-t border-slate-200/70 dark:border-slate-800 mt-6 flex items-center gap-2 text-xs font-mono text-slate-900 dark:text-slate-300 font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Engagement Agence Tour</span>
                 </div>
               </motion.div>
@@ -112,14 +112,14 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 sm:p-8 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 sm:p-8 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 shadow-md"
         >
           {STATS.map((stat, i) => (
             <div key={i} className="text-center space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-brand-orange tracking-tight">
                 {stat.value}
               </div>
-              <div className="text-xs text-slate-600 font-medium">
+              <div className="text-xs text-slate-900 dark:text-slate-300 font-bold">
                 {stat.label}
               </div>
             </div>

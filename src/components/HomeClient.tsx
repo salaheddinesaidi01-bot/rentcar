@@ -7,7 +7,6 @@ import HeroSection from '@/components/HeroSection';
 import AvailabilitySection from '@/components/AvailabilitySection';
 import FleetSection from '@/components/FleetSection';
 import AboutSection from '@/components/AboutSection';
-import TlemcenGuideSection from '@/components/TlemcenGuideSection';
 import ReviewsSection from '@/components/ReviewsSection';
 import FaqSection from '@/components/FaqSection';
 import MapSection from '@/components/MapSection';
@@ -56,7 +55,7 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
   }, [initialVehicles, startDate, endDate]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-900 flex flex-col relative selection:bg-brand-orange selection:text-white">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col relative selection:bg-brand-orange selection:text-white transition-colors duration-300">
       {/* 🚗 Global Animated Driving Car Background across ENTIRE site */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         {GLOBAL_BACKGROUND_CARS.map((car, index) => (
@@ -78,9 +77,9 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
           />
         ))}
 
-        {/* Global Dark Contrast Tint ensuring 100% legibility across all pages */}
-        <div className="absolute inset-0 bg-slate-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/30 to-slate-950/80" />
+        {/* Global Contrast Tint ensuring 100% legibility in both Light & Dark modes */}
+        <div className="absolute inset-0 bg-white/40 dark:bg-slate-950/40 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-slate-100/90 dark:from-slate-950/70 dark:via-slate-950/30 dark:to-slate-950/80 transition-colors duration-500" />
       </div>
 
       {/* 1. Top Navbar */}
@@ -108,10 +107,7 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
       {/* 4. Customer Reviews & Ratings (Les Avis) */}
       <ReviewsSection />
 
-      {/* 5. Spécial Voyageurs & Diaspora (Carnet de route Tlemcen) */}
-      <TlemcenGuideSection />
-
-      {/* 6. Agency Location & Map */}
+      {/* 5. Agency Location & Map */}
       <MapSection />
 
       {/* 7. FAQ Accordion (Vos Questions) */}

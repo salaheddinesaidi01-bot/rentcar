@@ -109,37 +109,37 @@ export default function FleetSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header with Frosted Glass Container */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl mb-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-200">
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl mb-8 transition-colors duration-300">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-200 dark:border-slate-800">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
                   ( 02 )
                 </span>
-                <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-950 dark:text-slate-300 font-bold">
                   CATALOGUE DE NOTRE FLOTTE
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950 dark:text-white transition-colors">
                 CHOISISSEZ VOTRE <span className="text-brand-orange">VÉHICULE</span>.
               </h2>
 
               {/* Date period reminder banner */}
-              <div className="inline-flex items-center gap-2 mt-3 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700">
+              <div className="inline-flex items-center gap-2 mt-3 px-3.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-950 dark:text-slate-200">
                 <Calendar className="w-3.5 h-3.5 text-brand-orange" />
                 <span>
-                  Dates : <strong className="text-slate-900">{formatDateFR(startDate)}</strong> au <strong className="text-slate-900">{formatDateFR(endDate)}</strong>
+                  Dates : <strong className="text-slate-950 dark:text-white">{formatDateFR(startDate)}</strong> au <strong className="text-slate-950 dark:text-white">{formatDateFR(endDate)}</strong>
                 </span>
-                <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-bold ml-1 border border-emerald-200">
+                <span className="text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md font-bold ml-1 border border-emerald-300 dark:border-emerald-800/80">
                   {availableCount} disponible{availableCount > 1 ? 's' : ''}
                 </span>
               </div>
             </div>
 
             {/* Currency toggle DZD / EUR (Inspired by Drivly) */}
-            <div className="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200 self-start md:self-end">
-              <span className="text-[11px] font-mono font-semibold text-slate-500 mr-2 pl-1">
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-300 dark:border-slate-700 self-start md:self-end">
+              <span className="text-[11px] font-mono font-bold text-slate-950 dark:text-slate-300 mr-2 pl-1">
                 Monnaie :
               </span>
               <button
@@ -147,7 +147,7 @@ export default function FleetSection({
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                   currency === 'DZD'
                     ? 'bg-brand-orange text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
                 }`}
                 title="Afficher en Dinars Algériens"
               >
@@ -158,7 +158,7 @@ export default function FleetSection({
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                   currency === 'EUR'
                     ? 'bg-brand-orange text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
                 }`}
                 title="Afficher en Euros"
               >
@@ -173,18 +173,18 @@ export default function FleetSection({
               
               {/* 1. Category Selector */}
               <div>
-                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-slate-300 mb-1.5">
                   Type de véhicule
                 </label>
-                <div className="flex flex-wrap gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                <div className="flex flex-wrap gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-700">
                   {CATEGORIES.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
                       className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
                         selectedCategory === cat
-                          ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80 font-black'
-                          : 'text-slate-600 hover:text-slate-900'
+                          ? 'bg-white dark:bg-slate-700 text-slate-950 dark:text-white shadow-sm border border-slate-300 dark:border-slate-600 font-black'
+                          : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
                       }`}
                     >
                       {cat}
@@ -195,10 +195,10 @@ export default function FleetSection({
 
               {/* 2. Transmission Selector (Boîte de vitesse) */}
               <div>
-                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-slate-300 mb-1.5">
                   Boîte de vitesse
                 </label>
-                <div className="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-700">
                   {[
                     { id: 'All', label: 'Toutes' },
                     { id: 'Automatique', label: 'Auto' },
@@ -209,8 +209,8 @@ export default function FleetSection({
                       onClick={() => setSelectedTransmission(t.id as any)}
                       className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
                         selectedTransmission === t.id
-                          ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80 font-black'
-                          : 'text-slate-600 hover:text-slate-900'
+                          ? 'bg-white dark:bg-slate-700 text-slate-950 dark:text-white shadow-sm border border-slate-300 dark:border-slate-600 font-black'
+                          : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
                       }`}
                     >
                       {t.label}
@@ -221,13 +221,13 @@ export default function FleetSection({
 
               {/* 3. Tri par Prix */}
               <div>
-                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-slate-300 mb-1.5">
                   Trier par tarif
                 </label>
                 <select
                   value={priceSort}
                   onChange={(e) => setPriceSort(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 >
                   <option value="none">Ordre par défaut</option>
                   <option value="asc">Prix croissant (Moins cher)</option>
@@ -242,8 +242,8 @@ export default function FleetSection({
                     onClick={() => setAcOnly(!acOnly)}
                     className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       acOnly
-                        ? 'bg-blue-50 border-blue-300 text-blue-700 shadow-xs'
-                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white'
+                        ? 'bg-blue-100 dark:bg-blue-950/60 border-blue-400 dark:border-blue-800 text-blue-950 dark:text-blue-300 shadow-xs'
+                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
                     }`}
                   >
                     <span>❄️ Climatisation</span>
@@ -253,11 +253,11 @@ export default function FleetSection({
                     onClick={() => setOnlyAvailable(!onlyAvailable)}
                     className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       onlyAvailable
-                        ? 'bg-emerald-50 border-emerald-300 text-emerald-700 shadow-xs'
-                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white'
+                        ? 'bg-emerald-100 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-800 text-emerald-950 dark:text-emerald-300 shadow-xs'
+                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
                     }`}
                   >
-                    <CheckCircle className={`w-3.5 h-3.5 ${onlyAvailable ? 'text-emerald-600' : 'text-slate-400'}`} />
+                    <CheckCircle className={`w-3.5 h-3.5 ${onlyAvailable ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-400'}`} />
                     <span>Dispo</span>
                   </button>
                 </div>
@@ -266,10 +266,10 @@ export default function FleetSection({
             </div>
 
             {/* Filter Status & Reset Action */}
-            <div className="flex items-center justify-between pt-2 text-xs font-mono text-slate-500">
+            <div className="flex items-center justify-between pt-2 text-xs font-mono text-slate-950 dark:text-slate-300 font-semibold border-t border-slate-200 dark:border-slate-800">
               <div>
                 <span>Affichage de </span>
-                <strong className="text-slate-900">{filteredVehicles.length}</strong>
+                <strong className="text-slate-900 dark:text-white">{filteredVehicles.length}</strong>
                 <span> véhicule{filteredVehicles.length > 1 ? 's' : ''}</span>
               </div>
 
@@ -300,16 +300,16 @@ export default function FleetSection({
 
         {/* Empty state if filtered */}
         {filteredVehicles.length === 0 && (
-          <div className="text-center py-16 text-slate-600 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-3">
-            <p className="text-base text-slate-900 font-bold">
+          <div className="text-center py-16 text-slate-900 bg-white/95 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm space-y-3">
+            <p className="text-base text-slate-950 dark:text-white font-bold">
               Aucun véhicule disponible pour les dates sélectionnées ({formatDateFR(startDate)} au {formatDateFR(endDate)}).
             </p>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-900 dark:text-slate-300 font-medium">
               Essayez de décaler vos dates ou contactez directement Agence Tour au 0550 50 50 50.
             </p>
             <button
               onClick={() => setOnlyAvailable(false)}
-              className="text-xs text-brand-orange hover:underline font-mono font-semibold"
+              className="text-xs text-brand-orange hover:underline font-mono font-bold"
             >
               Afficher tous les véhicules de la flotte
             </button>

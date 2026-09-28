@@ -43,7 +43,7 @@ export default function FloatingContactButton() {
 
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                className="p-1 rounded-full text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-colors"
                 aria-label="Fermer"
               >
                 <X className="w-4 h-4" />
@@ -51,7 +51,7 @@ export default function FloatingContactButton() {
             </div>
 
             {/* Message Body */}
-            <p className="text-xs text-slate-600 my-3 leading-relaxed">
+            <p className="text-xs text-slate-900 my-3 leading-relaxed font-medium">
               Une question sur un modèle, les tarifs ou votre arrivée à l&apos;Aéroport de Tlemcen ? Contactez-nous directement :
             </p>
 
@@ -85,7 +85,7 @@ export default function FloatingContactButton() {
                   </div>
                   <div>
                     <div className="text-xs font-bold">Appel Téléphonique Direct</div>
-                    <div className="text-[10px] text-slate-500 font-mono">{AGENCY_INFO.phone}</div>
+                    <div className="text-[10px] text-slate-900 font-mono font-bold">{AGENCY_INFO.phone}</div>
                   </div>
                 </div>
                 <span className="text-xs font-mono font-bold text-brand-orange">➔</span>
@@ -93,7 +93,7 @@ export default function FloatingContactButton() {
             </div>
 
             {/* Hours footer */}
-            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[10px] text-slate-400 font-mono">
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[10px] text-slate-900 font-mono font-semibold">
               <Clock className="w-3 h-3 text-brand-orange" />
               <span>{AGENCY_INFO.openingHours}</span>
             </div>

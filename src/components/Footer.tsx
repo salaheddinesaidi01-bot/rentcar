@@ -22,7 +22,7 @@ export default function Footer() {
                 AGENCE <span className="text-brand-orange">TOUR</span>
               </span>
             </div>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-slate-200 leading-relaxed font-medium">
               Votre agence de location de véhicules récents à Tlemcen. Retrait rapide des clés directement dans nos locaux avec un contrat clair et sans surprise.
             </p>
             <div className="flex items-center gap-2 text-xs font-mono text-brand-amber">
@@ -36,7 +36,7 @@ export default function Footer() {
             <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
               Navigation Rapide
             </h4>
-            <ul className="space-y-2.5 text-sm text-slate-400">
+            <ul className="space-y-2.5 text-sm text-slate-200 font-medium">
               <li>
                 <a href="#reservation" className="hover:text-brand-orange transition-colors">
                   Vérification de disponibilité par date
@@ -86,7 +86,7 @@ export default function Footer() {
                   <MessageSquare className="w-4 h-4 fill-emerald-400" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">WhatsApp & Réservations</div>
+                  <div className="text-xs text-slate-300 font-medium">WhatsApp & Réservations</div>
                   <div className="font-bold text-emerald-400">{AGENCY_INFO.phone}</div>
                 </div>
               </a>
@@ -99,12 +99,12 @@ export default function Footer() {
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">Standard Téléphonique</div>
+                  <div className="text-xs text-slate-300 font-medium">Standard Téléphonique</div>
                   <div className="font-bold text-white">{AGENCY_INFO.phone}</div>
                 </div>
               </a>
 
-              <div className="flex items-center gap-2.5 text-xs text-slate-400 pt-1">
+              <div className="flex items-center gap-2.5 text-xs text-slate-200 font-medium pt-1">
                 <Clock className="w-4 h-4 text-brand-orange flex-shrink-0" />
                 <span>{AGENCY_INFO.openingHours}</span>
               </div>
@@ -114,10 +114,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-medium">
           <p>© {new Date().getFullYear()} Agence Tour Tlemcen. Tous droits réservés.</p>
           <div className="flex items-center gap-4 font-mono text-[11px]">
-            <span className="text-slate-400">FLOTTE RÉCENTE 2023 - 2024</span>
+            <span className="text-slate-300 font-medium">FLOTTE RÉCENTE 2023 - 2024</span>
             <span>•</span>
             <span className="text-brand-orange font-bold">SERVICE CLIENT RÉACTIF &amp; ACCUEIL DIRECT</span>
           </div>

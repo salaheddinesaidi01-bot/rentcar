@@ -47,7 +47,7 @@ export default function StepsSection() {
           <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
             ( 01 )
           </span>
-          <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-400">
+          <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-800 dark:text-slate-300 font-bold">
             PROCESSUS SIMPLE & RETRAIT DIRECT EN AGENCE
           </span>
         </motion.div>
@@ -90,7 +90,7 @@ export default function StepsSection() {
                   {step.title}
                 </h3>
 
-                <p className="text-sm text-slate-400 leading-relaxed pt-1">
+                <p className="text-sm text-slate-900 dark:text-slate-300 leading-relaxed pt-1 font-medium">
                   {step.description}
                 </p>
               </div>

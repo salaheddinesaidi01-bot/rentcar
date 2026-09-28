@@ -6,8 +6,6 @@ import {
   Star,
   CheckCircle,
   ShieldCheck,
-  Sparkles,
-  ThumbsUp,
   ChevronDown,
   ChevronUp,
   PenLine,
@@ -190,22 +188,22 @@ export default function ReviewsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header with Overall Rating Score Badge & "Écrire un avis" CTA */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 transition-colors duration-300">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
                 ( 03 )
               </span>
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-950 dark:text-slate-300 font-bold">
                 TÉMOIGNAGES & SATISFACTION CLIENT
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950 dark:text-white transition-colors">
               LES AVIS DE <span className="text-brand-orange">NOS CLIENTS</span>.
             </h2>
 
-            <p className="mt-2 text-sm text-slate-600 max-w-xl">
+            <p className="mt-2 text-sm text-slate-900 dark:text-slate-200 max-w-xl transition-colors font-medium">
               Découvrez les retours authentiques de voyageurs, résidents et membres de la diaspora ayant loué leur véhicule chez Agence Tour à Tlemcen.
             </p>
           </div>
@@ -213,10 +211,10 @@ export default function ReviewsSection() {
           {/* Right Header Actions: Rating Card + Write Review CTA */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-shrink-0">
             {/* Rating Summary Card (Inspired by Drivly Google Trust Score) */}
-            <div className="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
-              <div className="text-center border-r border-slate-200 pr-4">
-                <div className="text-3xl font-black text-slate-900 leading-none">
-                  4.9<span className="text-base text-slate-400 font-normal">/5</span>
+            <div className="flex items-center gap-4 bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-slate-300 dark:border-slate-700 shadow-sm">
+              <div className="text-center border-r border-slate-300 dark:border-slate-700 pr-4">
+                <div className="text-3xl font-black text-slate-950 dark:text-white leading-none">
+                  4.9<span className="text-base text-slate-600 dark:text-slate-400 font-bold">/5</span>
                 </div>
                 <div className="flex items-center gap-0.5 text-amber-500 mt-1 justify-center">
                   {[...Array(5)].map((_, i) => (
@@ -226,11 +224,11 @@ export default function ReviewsSection() {
               </div>
 
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-                  <CheckCircle className="w-4 h-4 text-emerald-600" />
+                <div className="flex items-center gap-1.5 text-xs font-black text-slate-950 dark:text-slate-100">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>+{reviewsList.length * 30} Avis Vérifiés</span>
                 </div>
-                <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                <div className="text-[11px] text-slate-800 dark:text-slate-300 font-mono font-medium mt-0.5">
                   98% de clients satisfaits
                 </div>
               </div>
@@ -241,7 +239,7 @@ export default function ReviewsSection() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center gap-2.5 px-5 py-4 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-xl transition-all"
+              className="flex items-center justify-center gap-2.5 px-5 py-4 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-xs uppercase tracking-wider shadow-md hover:shadow-xl transition-all cursor-pointer"
             >
               <PenLine className="w-4 h-4" />
               <span>Écrire un avis</span>
@@ -260,7 +258,7 @@ export default function ReviewsSection() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35, delay: idx * 0.05 }}
                 whileHover={{ y: -5 }}
-                className="bg-white/95 backdrop-blur-md rounded-2xl p-6 border border-slate-200 shadow-lg hover:shadow-2xl transition-all flex flex-col justify-between"
+                className="bg-white dark:bg-slate-900/95 backdrop-blur-md rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   {/* Header: Stars + Date */}
@@ -270,36 +268,36 @@ export default function ReviewsSection() {
                         <Star key={i} className="w-4 h-4 fill-amber-400" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-mono text-slate-400">
+                    <span className="text-[11px] font-mono text-slate-700 dark:text-slate-400 font-semibold">
                       {review.date}
                     </span>
                   </div>
 
                   {/* Comment Quote */}
-                  <p className="text-sm text-slate-700 leading-relaxed italic">
+                  <p className="text-sm text-slate-950 dark:text-slate-100 leading-relaxed italic font-medium">
                     &ldquo;{review.comment}&rdquo;
                   </p>
                 </div>
 
                 {/* Author & Car info */}
-                <div className="pt-4 border-t border-slate-100 mt-5 flex items-center justify-between text-xs">
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 mt-5 flex items-center justify-between text-xs">
                   <div>
-                    <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                    <div className="font-black text-slate-950 dark:text-white flex items-center gap-1.5">
                       <span>{review.name}</span>
                       {review.verified && (
-                        <span className="inline-flex items-center gap-0.5 text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-mono font-semibold">
-                          <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                        <span className="inline-flex items-center gap-0.5 text-[10px] text-emerald-800 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded font-mono font-bold">
+                          <ShieldCheck className="w-3 h-3 text-emerald-700 dark:text-emerald-400" />
                           Vérifié
                         </span>
                       )}
                     </div>
-                    <div className="text-[11px] text-slate-500">
+                    <div className="text-[11px] text-slate-800 dark:text-slate-300 font-medium">
                       {review.location}
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <span className="text-[11px] font-mono font-semibold text-brand-orange bg-orange-50 px-2 py-0.5 rounded border border-orange-100">
+                    <span className="text-[11px] font-mono font-bold text-brand-orange bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded border border-orange-200 dark:border-orange-900/40">
                       {review.car}
                     </span>
                   </div>
@@ -316,7 +314,7 @@ export default function ReviewsSection() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md hover:shadow-lg text-slate-900 font-bold text-sm transition-all hover:border-brand-orange group"
+              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white dark:bg-slate-900/95 backdrop-blur-md border border-slate-300 dark:border-slate-800 shadow-md hover:shadow-lg text-slate-950 dark:text-white font-bold text-sm transition-all hover:border-brand-orange group cursor-pointer"
             >
               <span>
                 {showAll
@@ -331,44 +329,6 @@ export default function ReviewsSection() {
             </motion.button>
           </div>
         )}
-
-        {/* Trust Badges Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 p-6 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md grid grid-cols-1 sm:grid-cols-3 gap-4 text-center"
-        >
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-orange-100 text-brand-orange flex items-center justify-center font-bold">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div className="text-left">
-              <div className="text-xs font-black text-slate-900 uppercase">Véhicules Révisés</div>
-              <div className="text-[11px] text-slate-500 font-mono">Contrôle strict avant remise</div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div className="text-left">
-              <div className="text-xs font-black text-slate-900 uppercase">Réservation Simple</div>
-              <div className="text-[11px] text-slate-500 font-mono">Règlement sur place à l&apos;arrivée</div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
-              <ThumbsUp className="w-5 h-5" />
-            </div>
-            <div className="text-left">
-              <div className="text-xs font-black text-slate-900 uppercase">Accueil Direct</div>
-              <div className="text-[11px] text-slate-500 font-mono">Clés en main en 2 min à l&apos;agence</div>
-            </div>
-          </div>
-        </motion.div>
 
       </div>
 
@@ -391,12 +351,12 @@ export default function ReviewsSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 z-10 overflow-hidden"
+              className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-800 z-10 overflow-hidden text-slate-950 dark:text-white"
             >
               {/* Close Button */}
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                className="absolute top-5 right-5 p-2 rounded-full text-slate-700 hover:text-slate-950 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 aria-label="Fermer"
               >
                 <X className="w-5 h-5" />
@@ -409,13 +369,13 @@ export default function ReviewsSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="py-10 text-center space-y-4"
                 >
-                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                  <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto shadow-inner">
                     <Check className="w-8 h-8 stroke-[3]" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900">
+                  <h3 className="text-2xl font-black text-slate-950 dark:text-white">
                     Merci pour votre avis !
                   </h3>
-                  <p className="text-sm text-slate-600 max-w-xs mx-auto">
+                  <p className="text-sm text-slate-900 dark:text-slate-300 max-w-xs mx-auto font-medium">
                     Votre avis a été publié avec succès et s&apos;affiche désormais parmi les témoignages de l&apos;Agence Tour.
                   </p>
                 </motion.div>
@@ -428,20 +388,20 @@ export default function ReviewsSection() {
                       Partagez votre expérience
                     </span>
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900">
+                  <h3 className="text-2xl font-black text-slate-950 dark:text-white">
                     Laisser un <span className="text-brand-orange">avis</span>
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1 mb-6">
+                  <p className="text-xs text-slate-950 dark:text-slate-400 mt-1 mb-6 font-semibold">
                     Votre avis aide les futurs voyageurs à choisir leur véhicule en toute confiance.
                   </p>
 
                   <form onSubmit={handleSubmitReview} className="space-y-4">
                     {/* Star Rating Picker */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      <label className="block text-xs font-bold text-slate-950 dark:text-slate-200 uppercase tracking-wider mb-2">
                         Votre note globale *
                       </label>
-                      <div className="flex items-center gap-1.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-3 rounded-xl border border-slate-300 dark:border-slate-700">
                         {[1, 2, 3, 4, 5].map((star) => {
                           const isFilled = (hoverRating || formData.rating) >= star;
                           return (
@@ -451,19 +411,19 @@ export default function ReviewsSection() {
                               onMouseEnter={() => setHoverRating(star)}
                               onMouseLeave={() => setHoverRating(0)}
                               onClick={() => setFormData({ ...formData, rating: star })}
-                              className="p-1 focus:outline-none transition-transform hover:scale-125"
+                              className="p-1 focus:outline-none transition-transform hover:scale-125 cursor-pointer"
                             >
                               <Star
                                 className={`w-7 h-7 ${
                                   isFilled
                                     ? 'fill-amber-400 text-amber-400'
-                                    : 'text-slate-300'
+                                    : 'text-slate-300 dark:text-slate-600'
                                 } transition-colors`}
                               />
                             </button>
                           );
                         })}
-                        <span className="ml-3 text-sm font-bold text-slate-800 font-mono">
+                        <span className="ml-3 text-sm font-black text-slate-950 dark:text-slate-100 font-mono">
                           {hoverRating || formData.rating} / 5
                         </span>
                       </div>
@@ -472,7 +432,7 @@ export default function ReviewsSection() {
                     {/* Name & Location Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        <label className="block text-xs font-bold text-slate-950 dark:text-slate-200 uppercase tracking-wider mb-1">
                           Nom & Prénom *
                         </label>
                         <input
@@ -481,12 +441,12 @@ export default function ReviewsSection() {
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           placeholder="Ex: Mourad K."
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-slate-50"
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-white dark:bg-slate-800 text-slate-950 dark:text-white font-medium"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        <label className="block text-xs font-bold text-slate-950 dark:text-slate-200 uppercase tracking-wider mb-1">
                           Ville ou Pays
                         </label>
                         <input
@@ -494,23 +454,23 @@ export default function ReviewsSection() {
                           value={formData.location}
                           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                           placeholder="Ex: Tlemcen, Paris..."
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-slate-50"
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-white dark:bg-slate-800 text-slate-950 dark:text-white font-medium"
                         />
                       </div>
                     </div>
 
                     {/* Car Rented Dropdown */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      <label className="block text-xs font-bold text-slate-950 dark:text-slate-200 uppercase tracking-wider mb-1">
                         Véhicule loué *
                       </label>
                       <select
                         value={formData.car}
                         onChange={(e) => setFormData({ ...formData, car: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-slate-50"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-white dark:bg-slate-800 text-slate-950 dark:text-white font-medium"
                       >
                         {CAR_OPTIONS.map((car) => (
-                          <option key={car} value={car}>
+                          <option key={car} value={car} className="dark:bg-slate-800">
                             {car}
                           </option>
                         ))}
@@ -519,7 +479,7 @@ export default function ReviewsSection() {
 
                     {/* Review text */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      <label className="block text-xs font-bold text-slate-950 dark:text-slate-200 uppercase tracking-wider mb-1">
                         Votre commentaire *
                       </label>
                       <textarea
@@ -528,7 +488,7 @@ export default function ReviewsSection() {
                         value={formData.comment}
                         onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                         placeholder="Racontez votre expérience : état du véhicule, accueil de l'agence, ponctualité, facilité de restitution..."
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-slate-50 resize-none"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-white dark:bg-slate-800 text-slate-950 dark:text-white font-medium resize-none"
                       />
                     </div>
 
@@ -538,7 +498,7 @@ export default function ReviewsSection() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         type="submit"
-                        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-bold text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all"
+                        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all cursor-pointer"
                       >
                         Publier mon avis
                       </motion.button>

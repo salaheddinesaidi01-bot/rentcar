@@ -36,15 +36,41 @@ export const metadata: Metadata = {
   },
 };
 
+import { ThemeProvider } from '@/context/ThemeContext';
+import ThemeToggleCorner from '@/components/ThemeToggleCorner';
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${outfit.variable} ${jakarta.variable} scroll-smooth`}>
-      <body className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-brand-orange selection:text-white">
-        {children}
+    <html lang="fr" className={`${outfit.variable} ${jakarta.variable} scroll-smooth dark`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var theme = localStorage.getItem('rentcar_theme');
+                if (theme === 'light') {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.classList.add('light');
+                  document.documentElement.setAttribute('data-theme', 'light');
+                } else {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.classList.remove('light');
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-brand-orange selection:text-white transition-colors duration-300">
+        <ThemeProvider>
+          {children}
+          <ThemeToggleCorner />
+        </ThemeProvider>
       </body>
     </html>
   );
