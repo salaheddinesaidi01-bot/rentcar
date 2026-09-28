@@ -24,7 +24,12 @@ export default function FleetSection({
   onDatesChange,
 }: FleetSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState('Tous');
-  const [onlyAvailable, setOnlyAvailable] = useState(true);
+  const [selectedTransmission, setSelectedTransmission] = useState<'All' | 'Automatique' | 'Manuelle'>('All');
+  const [acOnly, setAcOnly] = useState(false);
+  const [priceSort, setPriceSort] = useState<'none' | 'asc' | 'desc'>('none');
+  const [maxPrice, setMaxPrice] = useState<number>(20000);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [currency, setCurrency] = useState<'DZD' | 'EUR'>('DZD');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,15 +40,62 @@ export default function FleetSection({
     isAvailableForSelectedDates: isVehicleAvailableForDates(v, startDate, endDate),
   }));
 
-  const filteredVehicles = vehiclesWithAvailability.filter((v) => {
-    if (selectedCategory !== 'Tous' && v.category !== selectedCategory) {
-      return false;
-    }
-    if (onlyAvailable && !v.isAvailableForSelectedDates) {
-      return false;
-    }
-    return true;
-  });
+  // Filter and sort logic
+  const filteredVehicles = vehiclesWithAvailability
+    .filter((v) => {
+      // Category filter
+      if (selectedCategory !== 'Tous' && v.category !== selectedCategory) {
+        return false;
+      }
+      // Transmission filter
+      if (selectedTransmission !== 'All' && v.transmission !== selectedTransmission) {
+        return false;
+      }
+      // AC filter
+      if (acOnly && !v.hasAC) {
+        return false;
+      }
+      // Price limit
+      if (v.pricePerDay > maxPrice) {
+        return false;
+      }
+      // Search query
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        const matchesName = v.name.toLowerCase().includes(query);
+        const matchesBrand = v.brand.toLowerCase().includes(query);
+        if (!matchesName && !matchesBrand) return false;
+      }
+      // Only available filter
+      if (onlyAvailable && !v.isAvailableForSelectedDates) {
+        return false;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      if (priceSort === 'asc') return a.pricePerDay - b.pricePerDay;
+      if (priceSort === 'desc') return b.pricePerDay - a.pricePerDay;
+      return 0;
+    });
+
+  const hasActiveFilters =
+    selectedCategory !== 'Tous' ||
+    selectedTransmission !== 'All' ||
+    acOnly ||
+    priceSort !== 'none' ||
+    maxPrice < 20000 ||
+    searchQuery.trim() !== '' ||
+    onlyAvailable;
+
+  const resetFilters = () => {
+    setSelectedCategory('Tous');
+    setSelectedTransmission('All');
+    setAcOnly(false);
+    setPriceSort('none');
+    setMaxPrice(20000);
+    setSearchQuery('');
+    setOnlyAvailable(false);
+  };
 
   const availableCount = vehiclesWithAvailability.filter((v) => v.isAvailableForSelectedDates).length;
 
@@ -57,38 +109,39 @@ export default function FleetSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header with Frosted Glass Container */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
-                ( 02 )
-              </span>
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
-                CATALOGUE DE NOTRE FLOTTE
-              </span>
+        <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xl mb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-200">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
+                  ( 02 )
+                </span>
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-500 font-semibold">
+                  CATALOGUE DE NOTRE FLOTTE
+                </span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
+                CHOISISSEZ VOTRE <span className="text-brand-orange">VÉHICULE</span>.
+              </h2>
+
+              {/* Date period reminder banner */}
+              <div className="inline-flex items-center gap-2 mt-3 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700">
+                <Calendar className="w-3.5 h-3.5 text-brand-orange" />
+                <span>
+                  Dates : <strong className="text-slate-900">{formatDateFR(startDate)}</strong> au <strong className="text-slate-900">{formatDateFR(endDate)}</strong>
+                </span>
+                <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-bold ml-1 border border-emerald-200">
+                  {availableCount} disponible{availableCount > 1 ? 's' : ''}
+                </span>
+              </div>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900">
-              CHOISISSEZ VOTRE <span className="text-brand-orange">VÉHICULE</span>.
-            </h2>
-
-            {/* Date period reminder banner */}
-            <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-xs font-mono text-slate-700">
-              <Calendar className="w-4 h-4 text-brand-orange" />
-              <span>
-                Disponibilités du <strong className="text-slate-900">{formatDateFR(startDate)}</strong> au <strong className="text-slate-900">{formatDateFR(endDate)}</strong>
-              </span>
-              <span className="text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg font-bold ml-1 border border-emerald-200">
-                {availableCount} disponible{availableCount > 1 ? 's' : ''}
-              </span>
-            </div>
-          </div>
-
-          {/* Filter Controls & Currency Switcher */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            
             {/* Currency toggle DZD / EUR (Inspired by Drivly) */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-xs">
+            <div className="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200 self-start md:self-end">
+              <span className="text-[11px] font-mono font-semibold text-slate-500 mr-2 pl-1">
+                Monnaie :
+              </span>
               <button
                 onClick={() => setCurrency('DZD')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
@@ -112,36 +165,123 @@ export default function FleetSection({
                 EUR (€)
               </button>
             </div>
+          </div>
 
-            {/* Category pills */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-slate-50/90 p-1.5 rounded-xl border border-slate-200 shadow-inner">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                    selectedCategory === cat
-                      ? 'bg-brand-orange text-white shadow-md'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                  }`}
+          {/* Multi-Criteria Filters Bar (Catégorie, Boîte, Climatisation, Prix, Tri) */}
+          <div className="pt-6 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              
+              {/* 1. Category Selector */}
+              <div>
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                  Type de véhicule
+                </label>
+                <div className="flex flex-wrap gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                  {CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
+                        selectedCategory === cat
+                          ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80 font-black'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2. Transmission Selector (Boîte de vitesse) */}
+              <div>
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                  Boîte de vitesse
+                </label>
+                <div className="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                  {[
+                    { id: 'All', label: 'Toutes' },
+                    { id: 'Automatique', label: 'Auto' },
+                    { id: 'Manuelle', label: 'Manuelle' },
+                  ].map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTransmission(t.id as any)}
+                      className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
+                        selectedTransmission === t.id
+                          ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80 font-black'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Tri par Prix */}
+              <div>
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                  Trier par tarif
+                </label>
+                <select
+                  value={priceSort}
+                  onChange={(e) => setPriceSort(e.target.value as any)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 >
-                  {cat}
-                </button>
-              ))}
+                  <option value="none">Ordre par défaut</option>
+                  <option value="asc">Prix croissant (Moins cher)</option>
+                  <option value="desc">Prix décroissant (Haut de gamme)</option>
+                </select>
+              </div>
+
+              {/* 4. Climatisation & Disponibilité toggles */}
+              <div className="flex flex-col justify-end gap-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setAcOnly(!acOnly)}
+                    className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      acOnly
+                        ? 'bg-blue-50 border-blue-300 text-blue-700 shadow-xs'
+                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white'
+                    }`}
+                  >
+                    <span>❄️ Climatisation</span>
+                  </button>
+
+                  <button
+                    onClick={() => setOnlyAvailable(!onlyAvailable)}
+                    className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      onlyAvailable
+                        ? 'bg-emerald-50 border-emerald-300 text-emerald-700 shadow-xs'
+                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white'
+                    }`}
+                  >
+                    <CheckCircle className={`w-3.5 h-3.5 ${onlyAvailable ? 'text-emerald-600' : 'text-slate-400'}`} />
+                    <span>Dispo</span>
+                  </button>
+                </div>
+              </div>
+
             </div>
 
-            {/* Only available toggle */}
-            <button
-              onClick={() => setOnlyAvailable(!onlyAvailable)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 border transition-all shadow-sm cursor-pointer ${
-                onlyAvailable
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                  : 'bg-white border-slate-200 text-slate-500'
-              }`}
-            >
-              <CheckCircle className={`w-3.5 h-3.5 ${onlyAvailable ? 'text-emerald-600' : 'text-slate-400'}`} />
-              <span>Disponibles uniquement</span>
-            </button>
+            {/* Filter Status & Reset Action */}
+            <div className="flex items-center justify-between pt-2 text-xs font-mono text-slate-500">
+              <div>
+                <span>Affichage de </span>
+                <strong className="text-slate-900">{filteredVehicles.length}</strong>
+                <span> véhicule{filteredVehicles.length > 1 ? 's' : ''}</span>
+              </div>
+
+              {hasActiveFilters && (
+                <button
+                  onClick={resetFilters}
+                  className="text-xs text-brand-orange hover:underline font-bold flex items-center gap-1 cursor-pointer"
+                >
+                  <span>✕ Réinitialiser les filtres</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

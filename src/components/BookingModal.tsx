@@ -26,7 +26,10 @@ export default function BookingModal({
   const [endDate, setEndDate] = useState(initialEndDate);
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
-  const [notes, setNotes] = useState('');
+  const [babySeat, setBabySeat] = useState(false);
+  const [airportDelivery, setAirportDelivery] = useState(false);
+  const [secondDriver, setSecondDriver] = useState(false);
+  const [customWishes, setCustomWishes] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -60,6 +63,15 @@ export default function BookingModal({
   const rentalDays = calculateRentalDays(startDate, endDate);
   const totalPrice = rentalDays * vehicle.pricePerDay;
 
+  // Format combined options and wishes
+  const selectedOptionsList: string[] = [];
+  if (babySeat) selectedOptionsList.push('Siège bébé / enfant');
+  if (airportDelivery) selectedOptionsList.push('Livraison Aéroport Messali Hadj');
+  if (secondDriver) selectedOptionsList.push('Second conducteur');
+  if (customWishes.trim()) selectedOptionsList.push(customWishes.trim());
+
+  const fullNotes = selectedOptionsList.length > 0 ? selectedOptionsList.join(' • ') : undefined;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerName.trim() || !customerPhone.trim()) {
@@ -82,7 +94,7 @@ export default function BookingModal({
           endDate,
           totalDays: rentalDays,
           totalPrice,
-          notes: notes || undefined,
+          notes: fullNotes,
         }),
       });
 
@@ -105,6 +117,7 @@ export default function BookingModal({
     days: rentalDays,
     totalPrice,
     customerName: customerName || undefined,
+    options: fullNotes,
   });
 
   return (
@@ -327,17 +340,56 @@ export default function BookingModal({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs text-slate-700 mb-1 font-medium">
-                  Remarques particulières (optionnel)
+              {/* Options & Équipements souhaités */}
+              <div className="pt-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Options &amp; Services souhaités
                 </label>
-                <input
-                  type="text"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Ex: Passe à l'agence vers 11h"
-                  className="w-full h-11 bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:border-brand-orange focus:outline-none"
-                />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
+                  <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer text-xs font-medium text-slate-800">
+                    <input
+                      type="checkbox"
+                      checked={babySeat}
+                      onChange={(e) => setBabySeat(e.target.checked)}
+                      className="w-4 h-4 rounded text-brand-orange focus:ring-brand-orange accent-brand-orange"
+                    />
+                    <span>Siège Bébé / Enfant</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer text-xs font-medium text-slate-800">
+                    <input
+                      type="checkbox"
+                      checked={airportDelivery}
+                      onChange={(e) => setAirportDelivery(e.target.checked)}
+                      className="w-4 h-4 rounded text-brand-orange focus:ring-brand-orange accent-brand-orange"
+                    />
+                    <span>Aéroport Messali Hadj</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer text-xs font-medium text-slate-800">
+                    <input
+                      type="checkbox"
+                      checked={secondDriver}
+                      onChange={(e) => setSecondDriver(e.target.checked)}
+                      className="w-4 h-4 rounded text-brand-orange focus:ring-brand-orange accent-brand-orange"
+                    />
+                    <span>Second conducteur</span>
+                  </label>
+                </div>
+
+                {/* Champ écrit par le client selon ce qu'il souhaite */}
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Vos besoins ou options spécifiques <span className="text-slate-400 font-normal">(écrivez ce que vous souhaitez)</span>
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={customWishes}
+                    onChange={(e) => setCustomWishes(e.target.value)}
+                    placeholder="Ex: Siège bébé pour enfant de 2 ans, vol en provenance de Paris arrivant à 18h30, demande de support téléphone GPS, chaîne à neige..."
+                    className="w-full bg-white border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange focus:outline-none resize-none"
+                  />
+                </div>
               </div>
             </div>
 

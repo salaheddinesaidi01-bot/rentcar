@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { Reservation, ReservationStatus } from '@/types';
 import { formatDA, formatDateTimeFR } from '@/lib/utils';
-import { MessageSquare, Check, X, Clock, CheckCheck, RefreshCw } from 'lucide-react';
+import { MessageSquare, Check, X, Clock, CheckCheck, RefreshCw, Printer } from 'lucide-react';
+import RentalContractModal from './RentalContractModal';
 
 interface ReservationsTableProps {
   initialReservations: Reservation[];
@@ -15,6 +16,7 @@ export default function ReservationsTable({
   const [reservations, setReservations] = useState<Reservation[]>(initialReservations);
   const [filter, setFilter] = useState<string>('ALL');
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [selectedContractRes, setSelectedContractRes] = useState<Reservation | null>(null);
 
   const filtered = reservations.filter((r) => {
     if (filter === 'ALL') return true;
@@ -187,6 +189,16 @@ export default function ReservationsTable({
                   {/* Actions */}
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
+                      {/* Print Contract Button */}
+                      <button
+                        onClick={() => setSelectedContractRes(res)}
+                        className="px-2.5 py-1.5 rounded-lg text-slate-700 hover:text-slate-950 hover:bg-slate-100 border border-slate-200 transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                        title="Imprimer le contrat officiel et la fiche d'état des lieux"
+                      >
+                        <Printer className="w-3.5 h-3.5 text-brand-orange" />
+                        <span className="hidden sm:inline">Contrat</span>
+                      </button>
+
                       {res.status === 'PENDING' && (
                         <button
                           onClick={() => handleStatusChange(res.id, 'CONFIRMED')}
@@ -242,6 +254,13 @@ export default function ReservationsTable({
           </table>
         </div>
       </div>
+
+      {/* Printable Rental Contract & Inspection Modal */}
+      <RentalContractModal
+        reservation={selectedContractRes}
+        isOpen={Boolean(selectedContractRes)}
+        onClose={() => setSelectedContractRes(null)}
+      />
     </div>
   );
 }

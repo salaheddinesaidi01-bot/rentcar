@@ -7,9 +7,11 @@ import HeroSection from '@/components/HeroSection';
 import AvailabilitySection from '@/components/AvailabilitySection';
 import FleetSection from '@/components/FleetSection';
 import AboutSection from '@/components/AboutSection';
+import TlemcenGuideSection from '@/components/TlemcenGuideSection';
 import ReviewsSection from '@/components/ReviewsSection';
 import FaqSection from '@/components/FaqSection';
 import MapSection from '@/components/MapSection';
+import FloatingContactButton from '@/components/FloatingContactButton';
 import Footer from '@/components/Footer';
 import { Vehicle } from '@/types';
 import { isVehicleAvailableForDates } from '@/lib/utils';
@@ -106,17 +108,23 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
       {/* 4. Customer Reviews & Ratings (Les Avis) */}
       <ReviewsSection />
 
-      {/* 5. Agency Location & Map */}
+      {/* 5. Spécial Voyageurs & Diaspora (Carnet de route Tlemcen) */}
+      <TlemcenGuideSection />
+
+      {/* 6. Agency Location & Map */}
       <MapSection />
 
-      {/* 6. FAQ Accordion (Vos Questions) */}
+      {/* 7. FAQ Accordion (Vos Questions) */}
       <FaqSection />
 
-      {/* 7. À Propos de Nous (About Us) Section */}
+      {/* 8. À Propos de Nous (About Us) Section */}
       <AboutSection />
 
-      {/* 8. Footer */}
+      {/* 9. Footer */}
       <Footer />
+
+      {/* 10. Floating WhatsApp & Hotline Button */}
+      <FloatingContactButton />
     </div>
   );
 }

@@ -96,6 +96,7 @@ export function buildWhatsAppLink(params: {
   days: number;
   totalPrice: number;
   customerName?: string;
+  options?: string;
 }): string {
   const targetPhone = params.phone || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '213550505050';
 
@@ -109,6 +110,7 @@ export function buildWhatsAppLink(params: {
     `⏱️ *Durée :* ${params.days} jour(s)`,
     params.totalPrice > 0 ? `💰 *Montant estimé :* ${formatDA(params.totalPrice)}` : '',
     params.customerName ? `👤 *Client :* ${params.customerName}` : '',
+    params.options ? `✨ *Options & Souhaits :* ${params.options}` : '',
     `----------------------------------------`,
     `Bonjour, je souhaite réserver ce véhicule à l'agence. Merci de me confirmer la disponibilité !`,
   ].filter(Boolean);
