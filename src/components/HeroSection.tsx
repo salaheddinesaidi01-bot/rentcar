@@ -71,12 +71,12 @@ export default function HeroSection({
           </span>
         </motion.h1>
 
-        {/* Subtitle: High contrast dark glass capsule */}
+        {/* Subtitle: High contrast dark glass capsule with attractive teaser copy */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-6 max-w-2xl px-6 py-4 rounded-2xl bg-slate-950/70 backdrop-blur-md border border-white/25 shadow-2xl text-balance"
+          className="mt-6 max-w-2xl px-6 py-5 rounded-2xl bg-slate-950/75 backdrop-blur-md border border-white/25 shadow-2xl text-balance"
         >
           <p
             className="text-base sm:text-lg text-white font-bold leading-relaxed tracking-wide"
@@ -84,27 +84,30 @@ export default function HeroSection({
               textShadow: '0 2px 10px rgba(0, 0, 0, 0.95)',
             }}
           >
-            La liberté de la route à Tlemcen. Citadines et berlines récentes et entretenues, retrait rapide des clés directement à notre agence sans démarche superflue.
+            La liberté de voyager à Tlemcen et ses environs en toute sérénité. Profitez d&apos;une flotte récente, soignée et climatisée pour tous vos trajets.
+          </p>
+          <p className="mt-2 text-xs sm:text-sm text-brand-amber font-semibold tracking-wide">
+            ✨ Réservez votre véhicule en quelques clics sans avance par carte • Remise immédiate des clés à l&apos;arrivée.
           </p>
         </motion.div>
 
-        {/* Eye-catching Commercial Hook Banner ("Bandeau Avantages Choc") */}
+        {/* Eye-catching Perks Hook Banner (Attrayant & Rassurant, sans tarif ni mention frais cachés) */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
           className="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 max-w-4xl"
         >
-          {/* 1. Tarif d'appel choc */}
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-orange-500/40 border border-orange-300/40 hover:scale-105 transition-transform duration-200">
+          {/* 1. Flotte Récente & Confort */}
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-orange-500/30 border border-orange-300/40 hover:scale-105 transition-transform duration-200">
             <Sparkles className="w-4 h-4 fill-white text-white animate-pulse" />
-            <span>À partir de <span className="underline decoration-white/70 decoration-2 font-black text-sm sm:text-base">7 000 DA</span> / jour</span>
+            <span>Véhicules Récents &amp; Climatisés</span>
           </div>
 
-          {/* 2. Zéro frais cachés */}
-          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-emerald-400 border border-emerald-500/40 font-bold text-xs sm:text-sm shadow-md">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <span className="text-white">0 Frais Cachés</span>
+          {/* 2. Remise Rapide */}
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-amber-300 border border-amber-400/40 font-bold text-xs sm:text-sm shadow-md">
+            <Zap className="w-4 h-4 text-amber-400 fill-amber-400 flex-shrink-0" />
+            <span className="text-white">Clés en 2 min chrono</span>
           </div>
 
           {/* 3. Kilométrage illimité */}
@@ -113,10 +116,10 @@ export default function HeroSection({
             <span>Kilométrage Illimité</span>
           </div>
 
-          {/* 4. Clés en main en 2 min */}
-          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-amber-300 border border-amber-400/40 font-bold text-xs sm:text-sm shadow-md">
-            <Zap className="w-4 h-4 text-amber-400 fill-amber-400 flex-shrink-0" />
-            <span className="text-white">Clés en 2 min chrono</span>
+          {/* 4. Réservation sans paiement préalable */}
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-950/75 backdrop-blur-md text-emerald-400 border border-emerald-500/40 font-bold text-xs sm:text-sm shadow-md">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <span className="text-white">Paiement à la prise en main</span>
           </div>
         </motion.div>
 

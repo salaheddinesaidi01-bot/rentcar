@@ -354,8 +354,8 @@ export default function ReviewsSection() {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div className="text-left">
-              <div className="text-xs font-black text-slate-900 uppercase">Zéro Frais Cachés</div>
-              <div className="text-[11px] text-slate-500 font-mono">Tarifs clairs et transparents</div>
+              <div className="text-xs font-black text-slate-900 uppercase">Réservation Simple</div>
+              <div className="text-[11px] text-slate-500 font-mono">Règlement sur place à l&apos;arrivée</div>
             </div>
           </div>
 

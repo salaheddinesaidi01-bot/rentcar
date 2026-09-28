@@ -119,7 +119,7 @@ export default function Footer() {
           <div className="flex items-center gap-4 font-mono text-[11px]">
             <span className="text-slate-400">FLOTTE RÉCENTE 2023 - 2024</span>
             <span>•</span>
-            <span className="text-brand-orange font-bold">À PARTIR DE 7 000 DA / JOUR</span>
+            <span className="text-brand-orange font-bold">SERVICE CLIENT RÉACTIF &amp; ACCUEIL DIRECT</span>
           </div>
         </div>
       </div>

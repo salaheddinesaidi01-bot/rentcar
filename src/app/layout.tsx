@@ -19,7 +19,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'Agence Tour Tlemcen | Location de Voitures & Véhicules Récente Flotte',
   description:
-    'La liberté de la route à Tlemcen. Citadines et berlines récentes, remise des clés directe à l\'aéroport Messali Hadj, à la gare ou à domicile sans démarche superflue. À partir de 7 000 DA / jour.',
+    'La liberté de voyager à Tlemcen. Flotte récente, soignée et climatisée avec remise rapide des clés à l\'agence ou à l\'aéroport Messali Hadj sans démarche superflue. Réservez simplement sans avance par carte.',
   keywords: [
     'location voiture tlemcen',
     'louer voiture tlemcen',
