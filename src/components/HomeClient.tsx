@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import AvailabilitySection from '@/components/AvailabilitySection';
 import FleetSection from '@/components/FleetSection';
 import AboutSection from '@/components/AboutSection';
 import ReviewsSection from '@/components/ReviewsSection';
@@ -83,8 +84,11 @@ export default function HomeClient({ initialVehicles }: HomeClientProps) {
       {/* 1. Top Navbar */}
       <Navbar />
 
-      {/* 2. Hero Section with "LOUEZ. ROULEZ." & Express Availability Widget */}
-      <HeroSection
+      {/* 2. Hero Section (Clean majestic title + attractive copy, without badges, widget displayed on scroll) */}
+      <HeroSection />
+
+      {/* 3. Availability Section (Displays when scrolling down) */}
+      <AvailabilitySection
         startDate={startDate}
         endDate={endDate}
         onDatesChange={handleDatesChange}
