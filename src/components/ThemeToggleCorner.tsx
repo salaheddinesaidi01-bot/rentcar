@@ -11,25 +11,10 @@ export default function ThemeToggleCorner() {
 
   return (
     <div
-      className="fixed bottom-24 sm:bottom-24 right-6 z-40 flex items-center gap-2"
+      className="fixed bottom-6 left-6 z-40 flex items-center gap-3"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Tooltip badge on hover (desktop) */}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, x: 10, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 10, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            className="hidden sm:flex items-center px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold shadow-xl border bg-white dark:bg-slate-900 text-slate-950 dark:text-slate-100 border-slate-300 dark:border-slate-700 backdrop-blur-md whitespace-nowrap pointer-events-none"
-          >
-            <span>{theme === 'dark' ? 'Basculer en Mode Clair ☀️' : 'Basculer en Mode Sombre 🌙'}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Main floating action button */}
       <motion.button
         whileHover={{ scale: 1.1 }}
@@ -67,6 +52,21 @@ export default function ThemeToggleCorner() {
           )}
         </AnimatePresence>
       </motion.button>
+
+      {/* Tooltip badge on hover (desktop, placed to the right of the button) */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, x: -10, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -10, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="hidden sm:flex items-center px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold shadow-xl border bg-white dark:bg-slate-900 text-slate-950 dark:text-slate-100 border-slate-300 dark:border-slate-700 backdrop-blur-md whitespace-nowrap pointer-events-none"
+          >
+            <span>{theme === 'dark' ? 'Basculer en Mode Clair ☀️' : 'Basculer en Mode Sombre 🌙'}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
