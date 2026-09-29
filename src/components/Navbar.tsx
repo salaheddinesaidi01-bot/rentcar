@@ -32,7 +32,7 @@ export default function Navbar() {
                 <span className="text-xl font-black tracking-wider text-slate-950 dark:text-white transition-colors">AGENCE</span>
                 <span className="text-xl font-black tracking-wider text-brand-orange">TOUR</span>
               </div>
-              <span className="text-[10px] uppercase font-mono tracking-[0.25em] text-slate-800 dark:text-slate-400 font-bold">
+              <span className="text-[10px] uppercase font-mono tracking-[0.25em] text-slate-950 dark:text-slate-400 font-black">
                 Location de Voitures • Tlemcen
               </span>
             </div>

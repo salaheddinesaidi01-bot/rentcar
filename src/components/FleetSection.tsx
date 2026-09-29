@@ -147,7 +147,7 @@ export default function FleetSection({
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                   currency === 'DZD'
                     ? 'bg-brand-orange text-white shadow-sm'
-                    : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
+                    : 'text-slate-950 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white font-bold'
                 }`}
                 title="Afficher en Dinars Algériens"
               >
@@ -158,7 +158,7 @@ export default function FleetSection({
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                   currency === 'EUR'
                     ? 'bg-brand-orange text-white shadow-sm'
-                    : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
+                    : 'text-slate-950 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white font-bold'
                 }`}
                 title="Afficher en Euros"
               >
@@ -184,7 +184,7 @@ export default function FleetSection({
                       className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
                         selectedCategory === cat
                           ? 'bg-white dark:bg-slate-700 text-slate-950 dark:text-white shadow-sm border border-slate-300 dark:border-slate-600 font-black'
-                          : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
+                          : 'text-slate-950 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white font-bold'
                       }`}
                     >
                       {cat}
@@ -210,7 +210,7 @@ export default function FleetSection({
                       className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center ${
                         selectedTransmission === t.id
                           ? 'bg-white dark:bg-slate-700 text-slate-950 dark:text-white shadow-sm border border-slate-300 dark:border-slate-600 font-black'
-                          : 'text-slate-900 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white'
+                          : 'text-slate-950 dark:text-slate-300 hover:text-brand-orange dark:hover:text-white font-bold'
                       }`}
                     >
                       {t.label}
@@ -227,7 +227,7 @@ export default function FleetSection({
                 <select
                   value={priceSort}
                   onChange={(e) => setPriceSort(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange cursor-pointer"
                 >
                   <option value="none">Ordre par défaut</option>
                   <option value="asc">Prix croissant (Moins cher)</option>
@@ -243,7 +243,7 @@ export default function FleetSection({
                     className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       acOnly
                         ? 'bg-blue-100 dark:bg-blue-950/60 border-blue-400 dark:border-blue-800 text-blue-950 dark:text-blue-300 shadow-xs'
-                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-950 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 font-bold'
                     }`}
                   >
                     <span>❄️ Climatisation</span>
@@ -254,10 +254,10 @@ export default function FleetSection({
                     className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       onlyAvailable
                         ? 'bg-emerald-100 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-800 text-emerald-950 dark:text-emerald-300 shadow-xs'
-                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-950 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 font-bold'
                     }`}
                   >
-                    <CheckCircle className={`w-3.5 h-3.5 ${onlyAvailable ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-400'}`} />
+                    <CheckCircle className={`w-3.5 h-3.5 ${onlyAvailable ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-950 dark:text-slate-400'}`} />
                     <span>Dispo</span>
                   </button>
                 </div>
@@ -266,10 +266,10 @@ export default function FleetSection({
             </div>
 
             {/* Filter Status & Reset Action */}
-            <div className="flex items-center justify-between pt-2 text-xs font-mono text-slate-950 dark:text-slate-300 font-semibold border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between pt-2 text-xs font-mono text-slate-950 dark:text-slate-300 font-bold border-t border-slate-200 dark:border-slate-800">
               <div>
                 <span>Affichage de </span>
-                <strong className="text-slate-900 dark:text-white">{filteredVehicles.length}</strong>
+                <strong className="text-slate-950 dark:text-white font-black">{filteredVehicles.length}</strong>
                 <span> véhicule{filteredVehicles.length > 1 ? 's' : ''}</span>
               </div>
 

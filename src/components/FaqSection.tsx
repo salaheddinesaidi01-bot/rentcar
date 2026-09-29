@@ -90,7 +90,7 @@ export default function FaqSection() {
             VOS <span className="text-brand-orange">QUESTIONS</span>.
           </h2>
 
-          <p className="mt-3 text-sm sm:text-base text-slate-900 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="mt-3 text-sm sm:text-base text-slate-950 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-bold">
             Tout ce que vous devez savoir pour louer une voiture en toute sérénité à Tlemcen. Clarté, simplicité et zéro démarche superflue.
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function FaqSection() {
                       <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-orange block">
                         {item.category}
                       </span>
-                      <h3 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-snug">
+                      <h3 className="text-sm sm:text-base font-black text-slate-950 dark:text-white leading-snug">
                         {item.question}
                       </h3>
                     </div>
@@ -144,7 +144,7 @@ export default function FaqSection() {
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
                       isOpen
                         ? 'rotate-180 bg-orange-100 dark:bg-brand-orange/20 text-brand-orange'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-400'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-400'
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -163,7 +163,7 @@ export default function FaqSection() {
                       className="overflow-hidden"
                     >
                       <div className="px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
-                        <p className="text-sm text-slate-900 dark:text-slate-300 leading-relaxed font-medium">
+                        <p className="text-sm text-slate-950 dark:text-slate-300 leading-relaxed font-bold">
                           {item.answer}
                         </p>
                         {item.highlight && (

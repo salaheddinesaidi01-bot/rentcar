@@ -214,7 +214,7 @@ export default function ReviewsSection() {
             <div className="flex items-center gap-4 bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-slate-300 dark:border-slate-700 shadow-sm">
               <div className="text-center border-r border-slate-300 dark:border-slate-700 pr-4">
                 <div className="text-3xl font-black text-slate-950 dark:text-white leading-none">
-                  4.9<span className="text-base text-slate-600 dark:text-slate-400 font-bold">/5</span>
+                  4.9<span className="text-base text-slate-950 dark:text-slate-400 font-bold">/5</span>
                 </div>
                 <div className="flex items-center gap-0.5 text-amber-500 mt-1 justify-center">
                   {[...Array(5)].map((_, i) => (
@@ -228,7 +228,7 @@ export default function ReviewsSection() {
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>+{reviewsList.length * 30} Avis Vérifiés</span>
                 </div>
-                <div className="text-[11px] text-slate-800 dark:text-slate-300 font-mono font-medium mt-0.5">
+                <div className="text-[11px] text-slate-950 dark:text-slate-300 font-mono font-bold mt-0.5">
                   98% de clients satisfaits
                 </div>
               </div>
@@ -268,7 +268,7 @@ export default function ReviewsSection() {
                         <Star key={i} className="w-4 h-4 fill-amber-400" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-mono text-slate-700 dark:text-slate-400 font-semibold">
+                    <span className="text-[11px] font-mono text-slate-950 dark:text-slate-400 font-bold">
                       {review.date}
                     </span>
                   </div>
@@ -291,7 +291,7 @@ export default function ReviewsSection() {
                         </span>
                       )}
                     </div>
-                    <div className="text-[11px] text-slate-800 dark:text-slate-300 font-medium">
+                    <div className="text-[11px] text-slate-950 dark:text-slate-300 font-bold">
                       {review.location}
                     </div>
                   </div>
@@ -356,7 +356,7 @@ export default function ReviewsSection() {
               {/* Close Button */}
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-5 right-5 p-2 rounded-full text-slate-700 hover:text-slate-950 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="absolute top-5 right-5 p-2 rounded-full text-slate-950 hover:text-black dark:text-slate-300 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 aria-label="Fermer"
               >
                 <X className="w-5 h-5" />

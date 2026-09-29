@@ -47,7 +47,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.05] select-none text-slate-900 dark:text-white drop-shadow-2xl transition-colors"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.05] select-none text-slate-950 dark:text-white drop-shadow-2xl transition-colors"
         >
           <span>Trouvez le Véhicule </span>
           <span className="bg-gradient-to-r from-brand-orange via-amber-400 to-orange-400 bg-clip-text text-transparent">
@@ -63,7 +63,7 @@ export default function HeroSection() {
           className="mt-6 max-w-2xl px-6 py-4 rounded-2xl bg-white/85 dark:bg-slate-950/70 backdrop-blur-md border border-slate-200/90 dark:border-white/20 shadow-2xl text-balance transition-colors"
         >
           <p
-            className="text-base sm:text-lg text-slate-800 dark:text-white font-medium leading-relaxed tracking-wide transition-colors"
+            className="text-base sm:text-lg text-slate-950 dark:text-white font-bold leading-relaxed tracking-wide transition-colors"
           >
             La liberté de voyager à Tlemcen et ses environs en toute sérénité. Profitez d&apos;une flotte moderne, propre et climatisée pour tous vos séjours en famille ou vos déplacements professionnels.
           </p>
@@ -82,7 +82,7 @@ export default function HeroSection() {
             </div>
             <div>
               <div className="text-xs font-black text-slate-950 dark:text-white uppercase tracking-wide">Véhicules Révisés</div>
-              <div className="text-[11px] text-slate-900 dark:text-slate-300 font-mono font-medium">Contrôle strict avant remise</div>
+              <div className="text-[11px] text-slate-950 dark:text-slate-300 font-mono font-bold">Contrôle strict avant remise</div>
             </div>
           </div>
 
@@ -92,7 +92,7 @@ export default function HeroSection() {
             </div>
             <div>
               <div className="text-xs font-black text-slate-950 dark:text-white uppercase tracking-wide">Réservation Simple</div>
-              <div className="text-[11px] text-slate-900 dark:text-slate-300 font-mono font-medium">Règlement sur place à l&apos;arrivée</div>
+              <div className="text-[11px] text-slate-950 dark:text-slate-300 font-mono font-bold">Règlement sur place à l&apos;arrivée</div>
             </div>
           </div>
 
@@ -102,7 +102,7 @@ export default function HeroSection() {
             </div>
             <div>
               <div className="text-xs font-black text-slate-950 dark:text-white uppercase tracking-wide">Accueil Direct</div>
-              <div className="text-[11px] text-slate-900 dark:text-slate-300 font-mono font-medium">Clés en main en 2 min à l&apos;agence</div>
+              <div className="text-[11px] text-slate-950 dark:text-slate-300 font-mono font-bold">Clés en main en 2 min à l&apos;agence</div>
             </div>
           </div>
         </motion.div>

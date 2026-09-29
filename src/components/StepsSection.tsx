@@ -29,7 +29,7 @@ const STEPS = [
 
 export default function StepsSection() {
   return (
-    <section id="etapes" className="relative py-24 bg-midnight-950 border-t border-white/5 overflow-hidden">
+    <section id="etapes" className="relative py-24 bg-transparent overflow-hidden z-10">
       
       {/* Ambient background light */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-brand-orange/5 blur-[160px] pointer-events-none" />
@@ -47,7 +47,7 @@ export default function StepsSection() {
           <span className="text-brand-orange font-mono text-xs font-bold tracking-wider">
             ( 01 )
           </span>
-          <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-800 dark:text-slate-300 font-bold">
+          <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-950 dark:text-slate-300 font-black">
             PROCESSUS SIMPLE & RETRAIT DIRECT EN AGENCE
           </span>
         </motion.div>
@@ -58,7 +58,7 @@ export default function StepsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-14"
+          className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950 dark:text-white mb-14 transition-colors"
         >
           RÉSERVEZ EN <span className="text-brand-orange">3 ÉTAPES</span> CHRONO.
         </motion.h2>
@@ -73,7 +73,7 @@ export default function StepsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.15 }}
               whileHover={{ y: -6, borderColor: 'rgba(255, 107, 0, 0.4)' }}
-              className="group relative rounded-xl glass-panel p-8 transition-all duration-300 hover:bg-midnight-800/90 hud-bracket overflow-hidden"
+              className="group relative rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md p-8 border border-slate-200 dark:border-slate-800 shadow-xl transition-all duration-300 hover:border-brand-orange/50 hud-bracket overflow-hidden"
             >
               {/* Outlined Watermark Number in background */}
               <div className="absolute right-4 top-4 select-none pointer-events-none watermark-number transition-all duration-500 group-hover:scale-105">
@@ -86,11 +86,11 @@ export default function StepsSection() {
                   {step.phase}
                 </span>
 
-                <h3 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white group-hover:text-brand-light transition-colors">
+                <h3 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-slate-950 dark:text-white group-hover:text-brand-orange transition-colors">
                   {step.title}
                 </h3>
 
-                <p className="text-sm text-slate-900 dark:text-slate-300 leading-relaxed pt-1 font-medium">
+                <p className="text-sm text-slate-950 dark:text-slate-300 leading-relaxed pt-1 font-bold">
                   {step.description}
                 </p>
               </div>

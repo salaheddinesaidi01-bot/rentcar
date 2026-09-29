@@ -58,10 +58,10 @@ export default function AboutSection() {
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950 dark:text-white">
             À PROPOS DE <span className="text-brand-orange">AGENCE TOUR</span>.
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-slate-900 dark:text-slate-300 leading-relaxed font-medium">
+          <p className="mt-4 text-sm sm:text-base text-slate-950 dark:text-slate-300 leading-relaxed font-bold">
             Votre partenaire de confiance pour explorer Tlemcen et ses environs en toute liberté. Fondée sur des valeurs de transparence et de convivialité, notre agence met à votre disposition des citadines et berlines de premier choix.
           </p>
         </motion.div>
@@ -89,16 +89,16 @@ export default function AboutSection() {
                     {val.tag}
                   </span>
 
-                  <h3 className="text-xl font-black uppercase tracking-wide text-slate-900 dark:text-white group-hover:text-brand-orange transition-colors">
+                  <h3 className="text-xl font-black uppercase tracking-wide text-slate-950 dark:text-white group-hover:text-brand-orange transition-colors">
                     {val.title}
                   </h3>
 
-                  <p className="text-sm text-slate-900 dark:text-slate-300 leading-relaxed pt-1 font-medium">
+                  <p className="text-sm text-slate-950 dark:text-slate-300 leading-relaxed pt-1 font-bold">
                     {val.description}
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-slate-200/70 dark:border-slate-800 mt-6 flex items-center gap-2 text-xs font-mono text-slate-900 dark:text-slate-300 font-bold">
+                <div className="pt-6 border-t border-slate-200/70 dark:border-slate-800 mt-6 flex items-center gap-2 text-xs font-mono text-slate-950 dark:text-slate-300 font-black">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Engagement Agence Tour</span>
                 </div>
@@ -119,7 +119,7 @@ export default function AboutSection() {
               <div className="text-3xl sm:text-4xl font-black text-brand-orange tracking-tight">
                 {stat.value}
               </div>
-              <div className="text-xs text-slate-900 dark:text-slate-300 font-bold">
+              <div className="text-xs text-slate-950 dark:text-slate-300 font-black">
                 {stat.label}
               </div>
             </div>
